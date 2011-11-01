@@ -10,7 +10,7 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private SimpleDateFormat formatter = new SimpleDateFormat(
-			"EEEEEEEEE\nd MMM KK:mm a");
+			"MMM d\nKK:mm a");
 	
 	@Override
 	public void onUpdate(Context context,
