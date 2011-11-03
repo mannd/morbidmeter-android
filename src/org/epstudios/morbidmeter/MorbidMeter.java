@@ -16,13 +16,16 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onUpdate(Context context,
 			AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 		String now = formatter.format(new Date());
+		final int count = appWidgetIds.length;
 		
-		RemoteViews updateViews = new RemoteViews( 
-				context.getPackageName(), R.layout.main);
-		updateViews.setTextViewText(R.id.text, now);
-		appWidgetManager.updateAppWidget(appWidgetIds, updateViews);
-		
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
+		for (int i = 0; i < count; i++) {
+			int appWidgetId = appWidgetIds[i];
+			RemoteViews updateViews = new RemoteViews(context.getPackageName(),
+					R.layout.main);
+			updateViews.setTextViewText(R.id.text, now);
+			appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+		}
+
 	}
 	
 }
