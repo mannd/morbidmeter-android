@@ -19,7 +19,6 @@
 package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class User {
 	public User(String name, Calendar birthDay, double longevity) {
