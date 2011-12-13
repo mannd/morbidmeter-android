@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Morbid Meter</string>
-    <string name="app_name">Morbid Meter</string>
+    <string name="app_name">MorbidMeter</string>
+    <string name="birthday_label">Birthday</string>
+    <string name="longevity_label">Estimated longevity in years</string>
+    <string name="longevity_hint">Longevity (yrs)</string>
+    <string name="timescale_label">Time Scale</string>
+    <string name="reverse_time_label">Reverse time</string>
+    <string name="show_msec_label">Show msec</string>
 </resources>

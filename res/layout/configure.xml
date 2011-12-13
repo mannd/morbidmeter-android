@@ -3,13 +3,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <TextView android:text="TEST"
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-    </TextView>
+        android:text="@string/birthday_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <DatePicker
+        android:id="@+id/birthday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/longevity_label"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/longevity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/longevity_hint"
+        android:inputType="numberDecimal" >
+
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/timescale_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+               <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reverse_time_label" />
+
+               <CheckBox
+                   android:id="@+id/checkBox2"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/show_msec_label" />
+ 
     <LinearLayout android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
        
     	<Button android:layout_width="wrap_content"
     	    android:layout_height="wrap_content"
