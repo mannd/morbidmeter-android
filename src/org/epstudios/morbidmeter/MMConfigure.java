@@ -19,17 +19,16 @@ public class MMConfigure extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setResult(RESULT_CANCELED); // in case user hits back button
+		setContentView(R.layout.configure);
+
 		Intent launchIntent = getIntent();
 		Bundle extras = launchIntent.getExtras();
-		appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				AppWidgetManager.INVALID_APPWIDGET_ID);
+		if (extras != null)
+			appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+					AppWidgetManager.INVALID_APPWIDGET_ID);
 		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
-		Intent cancelResultValue = new Intent();
-		cancelResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				appWidgetId);
-		setResult(RESULT_CANCELED, cancelResultValue);
-		setContentView(R.layout.configure);
 
 		longevityEditText = (EditText) findViewById(R.id.longevity);
 		final Context context = MMConfigure.this;
@@ -40,6 +39,10 @@ public class MMConfigure extends Activity {
 			public void onClick(View v) {
 				// stuff
 				savePrefs(context, appWidgetId);
+				AppWidgetManager appWidgetManager = AppWidgetManager
+						.getInstance(context);
+				// MorbidMeter.updateAppWidget(context, appWidgetManager,
+				// appWidgetId, "");
 				Intent resultValue = new Intent();
 				resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 						appWidgetId);

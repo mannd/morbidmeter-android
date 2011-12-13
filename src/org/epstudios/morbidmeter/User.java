@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */   
+ */
 
 package org.epstudios.morbidmeter;
 
@@ -26,50 +26,53 @@ public class User {
 		this.birthDay = birthDay;
 		this.longevity = longevity;
 	}
-	
+
 	public Calendar birthDay() {
 		return this.birthDay;
 	}
-	
+
 	public Calendar deathDay() {
 		Calendar deathDay = Calendar.getInstance();
 		deathDay.setTimeInMillis(deathDayMsec());
 		return deathDay;
 	}
-	
+
 	private long deathDayMsec() {
 		return birthDayMsec() + lifeDurationMsec();
 	}
-	
+
 	private long lifeDurationMsec() {
 		return (long) longevity * msecsPerYear;
 	}
-	
+
 	private long birthDayMsec() {
 		return birthDay.getTimeInMillis();
 	}
-	
+
 	public long msecAlive(Calendar date) {
 		return date.getTimeInMillis() - birthDayMsec();
 	}
-	
+
 	private long msecAlive() {
 		Calendar now = Calendar.getInstance();
 		return msecAlive(now);
 	}
-	
+
 	public double percentAlive(Calendar date) {
 		return ((double) msecAlive(date)) / lifeDurationMsec();
 	}
-	
+
 	public double percentAlive() {
 		return ((double) msecAlive()) / lifeDurationMsec();
 	}
-	
-	final private double daysPerYear = 365.25; 
+
+	public boolean isSane() {
+		return longevity > 0; // && birthday <
+	}
+
+	final private double daysPerYear = 365.25;
 	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
-	
-	
+
 	private String name;
 	private Calendar birthDay;
 	private double longevity;

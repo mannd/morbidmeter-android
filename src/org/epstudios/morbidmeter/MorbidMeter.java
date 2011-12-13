@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */   
+ */
 
 package org.epstudios.morbidmeter;
 
@@ -24,26 +24,37 @@ import java.util.Calendar;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
-	private SimpleDateFormat formatter = new SimpleDateFormat(
-			"MMM d\nKK:mm a");
-	
+	private SimpleDateFormat formatter = new SimpleDateFormat("MMM d\nKK:mm a");
+
 	@Override
-	public void onUpdate(Context context,
-			AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
+			int[] appWidgetIds) {
 		String now = formatter.format(Calendar.getInstance().getTime());
 		final int count = appWidgetIds.length;
-		
+
+		// below just a temporary test
+		user = new User("", Calendar.getInstance(), 80.0);
+
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
 			RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 					R.layout.main);
 			updateViews.setTextViewText(R.id.text, now);
 			appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+			updateAppWidget(context, appWidgetManager, appWidgetId, user);
 		}
+	}
+
+	private void updateAppWidget(Context context,
+			AppWidgetManager appWidgetManager, int appWidgetId, User user) {
+		Log.d("MorbidMeter", "UpdateAppWidget");
 
 	}
-	
+
+	private User user;
+
 }
