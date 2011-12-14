@@ -1,6 +1,10 @@
 package org.epstudios.morbidmeter;
 
 public class TimeScale {
+	public enum Duration {
+		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE
+	};
+
 	public TimeScale(String name, int minimum, int maximum, String formatString) {
 		this.name = name;
 		this.minimum = minimum;

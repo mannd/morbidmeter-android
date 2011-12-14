@@ -15,7 +15,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -61,20 +61,20 @@
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/timescale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
         </LinearLayout>
 
         <CheckBox
-            android:id="@+id/checkBox1"
+            android:id="@+id/reverse_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/reverse_time_label" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/show_msec"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_msec_label" />
@@ -85,13 +85,13 @@
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/load_user_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/load_user_label" />
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/save_user_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save_user_label" />
