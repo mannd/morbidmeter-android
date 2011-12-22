@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">MorbidMeter</string>
     <string name="birthday_label">Birthday</string>
     <string name="longevity_label">Estimated Longevity in Years</string>
@@ -12,4 +13,6 @@
     <string name="ok_label">Launch Widget</string>
     <string name="cancel_label">Cancel</string>
     <string name="user_name_label">User Name</string>
+    <string name="default_user_name">Default User</string>
+
 </resources>

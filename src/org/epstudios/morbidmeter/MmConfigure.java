@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -23,11 +26,12 @@ public class MmConfigure extends Activity {
 	private EditText userNameEditText;
 	private DatePicker birthdayDatePicker;
 	private EditText longevityEditText;
-	private Spinner timescaleSpinner;
+	private Spinner timeScaleSpinner;
+	private OnItemSelectedListener itemListener;
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 
-	private User user;
+	private Configuration configuration;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class MmConfigure extends Activity {
 		userNameEditText = (EditText) findViewById(R.id.user_name);
 		birthdayDatePicker = (DatePicker) findViewById(R.id.birthday);
 		longevityEditText = (EditText) findViewById(R.id.longevity);
-		// timescaleSpinner = (Spinner) findViewById(R.id.timescale);
+		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 
@@ -51,7 +55,10 @@ public class MmConfigure extends Activity {
 			finish();
 
 		final Context context = MmConfigure.this;
+		userNameEditText.setText(getString(R.string.default_user_name));
 		longevityEditText.setText(loadPrefs(context, appWidgetId));
+
+		setAdapters();
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -61,8 +68,8 @@ public class MmConfigure extends Activity {
 						.toString());
 				AppWidgetManager appWidgetManager = AppWidgetManager
 						.getInstance(context);
-				setUser();
-				if (user.isSane()) {
+				configuration.user = getUser();
+				if (configuration.user.isSane()) {
 
 					// MorbidMeter.updateAppWidget(context, appWidgetManager,
 					// appWidgetId, user, timescale, options);
@@ -92,6 +99,27 @@ public class MmConfigure extends Activity {
 		loadPrefs(context, appWidgetId);
 	}
 
+	private void setAdapters() {
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+				this, R.array.timescales, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		timeScaleSpinner.setAdapter(adapter);
+		itemListener = new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				;
+			}
+
+			public void onNothingSelected(AdapterView<?> parent) {
+				// do nothing
+			}
+
+		};
+
+		timeScaleSpinner.setOnItemSelectedListener(itemListener);
+
+	}
+
 	static void savePrefs(Context context, int appWidgetId, String longevity) {
 		// testing with just longevity first
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
@@ -109,7 +137,7 @@ public class MmConfigure extends Activity {
 			return "";
 	}
 
-	private void setUser() {
+	private User getUser() {
 		String name = userNameEditText.getText().toString();
 		int year = birthdayDatePicker.getYear();
 		int month = birthdayDatePicker.getMonth();
@@ -120,7 +148,7 @@ public class MmConfigure extends Activity {
 		double longevity = Double.parseDouble(longevityEditText.getText()
 				.toString());
 		// } catch ... etc.
-		user = new User(name, birthday, longevity);
+		return new User(name, birthday, longevity);
 	}
 
 }

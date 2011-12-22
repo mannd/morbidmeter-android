@@ -1,0 +1,119 @@
+#+TITLE: morbidmeter -- a program to display in an understandable way how much
+#+TITLE: time is left... Android Edition
+
+* Pre-Android Notes
+** How will it work
+*** Command line version
+    the command line just displays the result you are looking for based
+    on a configuration file, and the current date/time.  Default
+    display is based on calendar year.  Here are some options for
+    display units:
+    - year
+    - lunar month
+    - lunar phase
+    - month (need to select month)
+    - week
+    - day
+    - hour
+    - minute
+*** Gui version
+    This version does all of the above, but displays in real-time on
+    desktop and updates in real-time.  E.g., a 24-hour analog or
+    digital clock could be displayed, or just a simple text with
+    calendar date. "March 13", even with attached time: "March 13, 9:01
+    AM."
+** Variables
+   - date_of_birth
+   - predicted_life_span
+     This ideally should be calculated, based on sex, behavior,
+     etc. but for now will keep it simple.
+** Command line options
+*** program name
+    mmc = morbidmeter command line
+    mm = morbidmeter gui version
+*** options
+    --dob = date of birth
+    --life = life span in years (float)
+    --file = config file (default is mm.conf)
+    --units = display units
+*** display unit commands
+    example --units=year
+    year 
+    month (default is December) --month=Jan
+    lunarmonth
+    lunarphase
+    week
+    day
+    hour
+    minute
+** Language
+   Python
+** Command line parser
+** Measures (including Allie's suggestions)
+   - number of floors passed while falling off the Empire State Bldg
+   - length of candle burned down (say starting with 10" candle)
+   - lifetime of the Universe (e.g. 120 billion years have passed)
+   - year since year 1 AD 
+** Higher level planning
+*** User
+    Each user has the following attributes
+    - name
+    - birthday
+    - estimated longevity (mutable)
+    In addition, each user can generate by h[is|er]self
+    - time alive (in a timedelta)
+      - now - birthday
+    - percentage alive
+      - (time alive) / longevity
+    Most of the calculation above just involves getting the units
+    right.
+    Other user attributes could be
+    - last measure used
+    - preferred measure
+    - output formatting (i.e. resolution)
+*** TimeScale
+**** Definition
+     The TimeScale is the measurement used to calibrate MM.  The time
+     scale has a minimum value and maximum value.  At birth, the measure
+     = the min value and at age of death measure = max value.  If age is
+     > age of death then a "borrowed time" indicator can be used along
+     with a > max value result.
+**** Non-Time based TimeScales
+     The TimeScale doesn't have to be based on DateTime objects.  An
+     extended time scale that would use years as its basis would be the
+     AgeOfTheUniverse.  The min would be the Big Bang at year 0 and the
+     max would be say 100 billion years.  The time to proton
+     dissolution could be used, the time from the Big Bang to the
+     present could be used, the time from invention of writing until
+     now, etc. etc. all could be used.  Burning a candle, where the
+     measurement is in inches could be used.
+**** Calculating TimeScales
+     For integral or float TimeScales, just multiplying percent_alive()
+     times the TimeScale.max() and adding the result to TimeScale.min()
+     should work.  With datetime TimeScales, it is not possible to
+     multiple a float times a datetime.  The algorithm will be:
+
+     ts = TimeScale("whatever")
+     total_secs = timedelta(ts.max() - ts.min()).seconds
+     alive_secs = percent_alive() * total_secs
+     current_date = ts.min() + timedelta(alive_secs)
+
+
+* ========ALL NOTES BELOW ARE ANDROID SPECIFIC==========
+* Configuration
+** User
+   User contains a name, birthday, longevity
+** Configuration
+   This is a "fake" class.  It is a way to lump together everything
+   passed in Shared Preferences to the widget. This includes:
+   - User
+   - Timescale
+   - Timescale options
+   - Widget options (such as frame, background color, etc.
+** Menu settings
+   Can set default Timescale, timescale options, background etc.
+** Configuration behavior
+   MmConfigure will load last configuration used.
+** Load/Save Configuration
+   Will load/save user data in database.  Other configuration options
+   will be saved as preferences.

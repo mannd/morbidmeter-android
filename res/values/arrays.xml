@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<array name="timescales">
-	    <item>age</item>
-	    <item>day</item>
-	    <item>hour</item>
-	    <item>month</item>
-	    <item>percent</item>
-	    <item>year</item>
-	    <item>universe</item>
-	</array>
-    
+
+    <array name="timescales">
+        <item>age</item>
+        <item>day</item>
+        <item>hour</item>
+        <item>month</item>
+        <item>percent</item>
+        <item>year</item>
+        <item>universe</item>
+    </array>
+
 </resources>
