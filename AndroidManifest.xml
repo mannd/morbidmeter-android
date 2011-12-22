@@ -15,7 +15,7 @@
 			<meta-data android:name="android.appwidget.provider"
 				android:resource="@xml/widget" />    		
     		</receiver>
-    	<activity android:name=".MMConfigure">
+    	<activity android:name=".MmConfigure">
     	    <intent-filter>
     	        <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
     	    </intent-filter>

@@ -16,9 +16,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class MMConfigure extends Activity {
+public class MmConfigure extends Activity {
 	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-	static final String PREFS_NAME = "org.epstudios.morbidmeter.MMConfigure";
+	static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
 
 	private EditText userNameEditText;
 	private DatePicker birthdayDatePicker;
@@ -50,7 +50,7 @@ public class MMConfigure extends Activity {
 		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
 
-		final Context context = MMConfigure.this;
+		final Context context = MmConfigure.this;
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
