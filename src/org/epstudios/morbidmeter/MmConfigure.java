@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,7 +17,8 @@ import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
 	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-	static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
+	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
+	private static final String LONGEVITY_KEY = "longevity";
 
 	private EditText userNameEditText;
 	private DatePicker birthdayDatePicker;
@@ -51,12 +51,14 @@ public class MmConfigure extends Activity {
 			finish();
 
 		final Context context = MmConfigure.this;
+		longevityEditText.setText(loadPrefs(context, appWidgetId));
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				savePrefs(context, appWidgetId);
+				savePrefs(context, appWidgetId, longevityEditText.getText()
+						.toString());
 				AppWidgetManager appWidgetManager = AppWidgetManager
 						.getInstance(context);
 				setUser();
@@ -90,21 +92,21 @@ public class MmConfigure extends Activity {
 		loadPrefs(context, appWidgetId);
 	}
 
-	private void savePrefs(Context context, int appWidgetId) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		prefs.edit().putString("longevity",
-				longevityEditText.getText().toString());
+	static void savePrefs(Context context, int appWidgetId, String longevity) {
+		// testing with just longevity first
+		SharedPreferences.Editor prefs = context.getSharedPreferences(
+				PREFS_NAME, 0).edit();
+		prefs.putString(LONGEVITY_KEY, longevity);
+		prefs.commit();
 	}
 
-	private void loadPrefs(Context context, int appWidgetId) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context);
-		String longevity = prefs.getString("longevity", null);
+	static String loadPrefs(Context context, int appWidgetId) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		String longevity = prefs.getString(LONGEVITY_KEY, null);
 		if (longevity != null)
-			longevityEditText.setText(longevity);
+			return longevity;
 		else
-			longevityEditText.setText("");
+			return "";
 	}
 
 	private void setUser() {
