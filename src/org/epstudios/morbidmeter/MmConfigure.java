@@ -31,8 +31,6 @@ public class MmConfigure extends Activity {
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 
-	private Configuration configuration;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,8 +66,8 @@ public class MmConfigure extends Activity {
 						.toString());
 				AppWidgetManager appWidgetManager = AppWidgetManager
 						.getInstance(context);
-				configuration.user = getUser();
-				if (configuration.user.isSane()) {
+				User user = getUser();
+				if (user.isSane()) {
 
 					// MorbidMeter.updateAppWidget(context, appWidgetManager,
 					// appWidgetId, user, timescale, options);
