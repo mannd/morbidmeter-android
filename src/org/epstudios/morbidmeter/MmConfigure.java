@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -24,7 +25,7 @@ public class MmConfigure extends Activity {
 	private static final String LONGEVITY_KEY = "longevity";
 
 	private EditText userNameEditText;
-	private DatePicker birthdayDatePicker;
+	private DatePicker birthDayDatePicker;
 	private EditText longevityEditText;
 	private Spinner timeScaleSpinner;
 	private OnItemSelectedListener itemListener;
@@ -38,7 +39,7 @@ public class MmConfigure extends Activity {
 		setContentView(R.layout.configure);
 
 		userNameEditText = (EditText) findViewById(R.id.user_name);
-		birthdayDatePicker = (DatePicker) findViewById(R.id.birthday);
+		birthDayDatePicker = (DatePicker) findViewById(R.id.birthday);
 		longevityEditText = (EditText) findViewById(R.id.longevity);
 		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
@@ -54,7 +55,8 @@ public class MmConfigure extends Activity {
 
 		final Context context = MmConfigure.this;
 		userNameEditText.setText(getString(R.string.default_user_name));
-		longevityEditText.setText(loadPrefs(context, appWidgetId));
+		longevityEditText.setText(Double.toString(loadPrefs(context,
+				appWidgetId)));
 
 		setAdapters();
 
@@ -62,11 +64,24 @@ public class MmConfigure extends Activity {
 		ok.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				savePrefs(context, appWidgetId, longevityEditText.getText()
-						.toString());
+				// get all variables from the various entry boxes
+				String userName = userNameEditText.getText().toString();
+				Calendar birthDay = Calendar.getInstance();
+				int year = birthDayDatePicker.getYear();
+				int month = birthDayDatePicker.getMonth();
+				int day = birthDayDatePicker.getDayOfMonth();
+				birthDay.set(year, month, day);
+				double longevity = Double.parseDouble(longevityEditText
+						.getText().toString());
+				String timeScaleName = (String) timeScaleSpinner
+						.getSelectedItem();
+				boolean reverseTime = reverseTimeCheckBox.isChecked();
+				boolean useMsec = useMsecCheckBox.isChecked();
+				Log.d("TimeScaleName", timeScaleName);
+				savePrefs(context, appWidgetId, longevity);
 				AppWidgetManager appWidgetManager = AppWidgetManager
 						.getInstance(context);
-				User user = getUser();
+				User user = new User(userName, birthDay, longevity);
 				if (user.isSane()) {
 
 					// MorbidMeter.updateAppWidget(context, appWidgetManager,
@@ -118,35 +133,18 @@ public class MmConfigure extends Activity {
 
 	}
 
-	static void savePrefs(Context context, int appWidgetId, String longevity) {
+	static void savePrefs(Context context, int appWidgetId, double longevity) {
 		// testing with just longevity first
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
 				PREFS_NAME, 0).edit();
-		prefs.putString(LONGEVITY_KEY, longevity);
+		prefs.putFloat(LONGEVITY_KEY, (float) longevity);
 		prefs.commit();
 	}
 
-	static String loadPrefs(Context context, int appWidgetId) {
+	static double loadPrefs(Context context, int appWidgetId) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-		String longevity = prefs.getString(LONGEVITY_KEY, null);
-		if (longevity != null)
-			return longevity;
-		else
-			return "";
-	}
-
-	private User getUser() {
-		String name = userNameEditText.getText().toString();
-		int year = birthdayDatePicker.getYear();
-		int month = birthdayDatePicker.getMonth();
-		int day = birthdayDatePicker.getDayOfMonth();
-		Calendar birthday = Calendar.getInstance();
-		birthday.set(year, month, day);
-		// try { this might throw number exception
-		double longevity = Double.parseDouble(longevityEditText.getText()
-				.toString());
-		// } catch ... etc.
-		return new User(name, birthday, longevity);
+		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 0);
+		return longevity;
 	}
 
 }

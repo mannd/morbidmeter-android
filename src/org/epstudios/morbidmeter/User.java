@@ -67,11 +67,50 @@ public class User {
 	}
 
 	public boolean isSane() {
-		return longevity > 0; // && birthday <
+		boolean sane = longevity > 0 && longevity < 999;
+		Calendar earliestbirthDay = Calendar.getInstance();
+		earliestbirthDay.set(1800, 0, 0);
+		Calendar latestbirthDay = Calendar.getInstance();
+		latestbirthDay.set(2100, 0, 0);
+		sane = sane && birthDay.after(earliestbirthDay)
+				&& birthDay.before(latestbirthDay);
+		return sane;
 	}
 
 	final private double daysPerYear = 365.25;
 	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Calendar getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Calendar birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public double getLongevity() {
+		return longevity;
+	}
+
+	public void setLongevity(double longevity) {
+		this.longevity = longevity;
+	}
+
+	public double getDaysPerYear() {
+		return daysPerYear;
+	}
+
+	public long getMsecsPerYear() {
+		return msecsPerYear;
+	}
 
 	private String name;
 	private Calendar birthDay;

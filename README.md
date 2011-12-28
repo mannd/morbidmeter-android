@@ -26,6 +26,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+The skull icon is in the public domain.  Source and documentation is [here](http://http://www.clker.com/clipart-80943.html).
+
 ## Author
 David Mann
 [mannd@epstudiossoftware.com](mailto:mannd@epstudiossoftware.com)  

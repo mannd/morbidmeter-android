@@ -14,5 +14,13 @@
     <string name="cancel_label">Cancel</string>
     <string name="user_name_label">User Name</string>
     <string name="default_user_name">Default User</string>
+    <!-- TimeScales -->
+    <string name="ts_age">AGE</string>
+    <string name="ts_day">DAY</string>
+    <string name="ts_hour">HOUR</string>
+    <string name="ts_month">MONTH</string>
+    <string name="ts_percent">PERCENT</string>
+    <string name="ts_year">YEAR</string>
+    <string name="ts_universe">UNIVERSE</string>
 
 </resources>

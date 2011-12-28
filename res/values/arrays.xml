@@ -2,13 +2,13 @@
 <resources>
 
     <array name="timescales">
-        <item>age</item>
-        <item>day</item>
-        <item>hour</item>
-        <item>month</item>
-        <item>percent</item>
-        <item>year</item>
-        <item>universe</item>
+        <item>@string/ts_age</item>
+        <item>@string/ts_day</item>
+        <item>@string/ts_hour</item>
+        <item>@string/ts_month</item>
+        <item>@string/ts_percent</item>
+        <item>@string/ts_year</item>
+        <item>@string/ts_universe</item>
     </array>
 
 </resources>
