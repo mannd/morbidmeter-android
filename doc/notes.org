@@ -118,13 +118,16 @@
    Will load/save user data in database.  Other configuration options
    will be saved as preferences.
 * Icon sizes
-** drawable-mdpi
-   48 x 48 px
 ** drawable-ldpi
    36 x 36 px
+** drawable-mdpi
+   48 x 48 px
 ** drawable-hdpi
    72 x 72 px
 ** drawable-xhdpi
    96 x 96 px 
 ** application icon
    512 x 512 px
+* Skull icon
+  The skull icon is in the public domain.  
+  Source is here: http://www.clker.com/clipart-80943.html

@@ -79,13 +79,25 @@ public class MmConfigure extends Activity {
 		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
 
+		setAdapters();
+
 		final Context context = MmConfigure.this;
 		configuration = loadPrefs(context, appWidgetId);
 		userNameEditText.setText(configuration.user.getName());
+		int year = configuration.user.getBirthDay().get(Calendar.YEAR);
+		int month = configuration.user.getBirthDay().get(Calendar.MONTH);
+		int day = configuration.user.getBirthDay().get(Calendar.DAY_OF_MONTH);
+		birthDayDatePicker.updateDate(year, month, day);
 		longevityEditText.setText(Double.toString(configuration.user
 				.getLongevity()));
-
-		setAdapters();
+		@SuppressWarnings("unchecked")
+		// best way to do this is below, so suppress warning
+		ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) timeScaleSpinner
+				.getAdapter();
+		int position = arrayAdapter.getPosition(configuration.timeScaleName);
+		timeScaleSpinner.setSelection(position);
+		reverseTimeCheckBox.setChecked(configuration.reverseTime);
+		useMsecCheckBox.setChecked(configuration.useMsec);
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
