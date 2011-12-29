@@ -19,11 +19,12 @@
 package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class User {
 	public User(String name, Calendar birthDay, double longevity) {
 		this.name = name;
-		this.birthDay = birthDay;
+		setBirthDay(birthDay);
 		this.longevity = longevity;
 	}
 
@@ -32,7 +33,7 @@ public class User {
 	}
 
 	public Calendar deathDay() {
-		Calendar deathDay = Calendar.getInstance();
+		Calendar deathDay = new GregorianCalendar();
 		deathDay.setTimeInMillis(deathDayMsec());
 		return deathDay;
 	}
@@ -41,8 +42,8 @@ public class User {
 		return birthDayMsec() + lifeDurationMsec();
 	}
 
-	private long lifeDurationMsec() {
-		return (long) longevity * msecsPerYear;
+	public long lifeDurationMsec() {
+		return (long) (longevity * msecsPerYear);
 	}
 
 	private long birthDayMsec() {
@@ -54,8 +55,7 @@ public class User {
 	}
 
 	private long msecAlive() {
-		Calendar now = Calendar.getInstance();
-		return msecAlive(now);
+		return System.currentTimeMillis() - birthDayMsec();
 	}
 
 	public double percentAlive(Calendar date) {
@@ -68,9 +68,9 @@ public class User {
 
 	public boolean isSane() {
 		boolean sane = longevity > 0 && longevity < 999;
-		Calendar earliestbirthDay = Calendar.getInstance();
+		Calendar earliestbirthDay = GregorianCalendar.getInstance();
 		earliestbirthDay.set(1800, 0, 0);
-		Calendar latestbirthDay = Calendar.getInstance();
+		Calendar latestbirthDay = GregorianCalendar.getInstance();
 		latestbirthDay.set(2100, 0, 0);
 		sane = sane && birthDay.after(earliestbirthDay)
 				&& birthDay.before(latestbirthDay);
@@ -94,6 +94,11 @@ public class User {
 
 	public void setBirthDay(Calendar birthDay) {
 		this.birthDay = birthDay;
+		// normalize all birthdays to the stroke of midnight
+		this.birthDay.set(Calendar.HOUR, 0);
+		this.birthDay.set(Calendar.MINUTE, 0);
+		this.birthDay.set(Calendar.SECOND, 0);
+		this.birthDay.set(Calendar.MILLISECOND, 0);
 	}
 
 	public double getLongevity() {

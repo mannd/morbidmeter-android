@@ -19,6 +19,7 @@
 package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -79,13 +80,25 @@ public class MmConfigure extends Activity {
 		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
 			finish();
 
+		setAdapters();
+
 		final Context context = MmConfigure.this;
 		configuration = loadPrefs(context, appWidgetId);
 		userNameEditText.setText(configuration.user.getName());
+		int year = configuration.user.getBirthDay().get(Calendar.YEAR);
+		int month = configuration.user.getBirthDay().get(Calendar.MONTH);
+		int day = configuration.user.getBirthDay().get(Calendar.DAY_OF_MONTH);
+		birthDayDatePicker.updateDate(year, month, day);
 		longevityEditText.setText(Double.toString(configuration.user
 				.getLongevity()));
-
-		setAdapters();
+		@SuppressWarnings("unchecked")
+		// best way to do this is below, so suppress warning
+		ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) timeScaleSpinner
+				.getAdapter();
+		int position = arrayAdapter.getPosition(configuration.timeScaleName);
+		timeScaleSpinner.setSelection(position);
+		reverseTimeCheckBox.setChecked(configuration.reverseTime);
+		useMsecCheckBox.setChecked(configuration.useMsec);
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -104,13 +117,13 @@ public class MmConfigure extends Activity {
 						.getSelectedItem();
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
-				savePrefs(context, appWidgetId, configuration);
-				AppWidgetManager appWidgetManager = AppWidgetManager
-						.getInstance(context);
-				if (configuration.user.isSane()) {
 
-					// MorbidMeter.updateAppWidget(context, appWidgetManager,
-					// appWidgetId, user, timescale, options);
+				if (configuration.user.isSane()) {
+					savePrefs(context, appWidgetId, configuration);
+					AppWidgetManager appWidgetManager = AppWidgetManager
+							.getInstance(context);
+					MorbidMeter.updateAppWidget(context, appWidgetManager,
+							appWidgetId, configuration);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);
@@ -184,7 +197,7 @@ public class MmConfigure extends Activity {
 		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 0);
 		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 0);
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 0);
-		Calendar birthDay = Calendar.getInstance();
+		GregorianCalendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
 		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 0);
 		configuration.user = new User(name, birthDay, longevity);

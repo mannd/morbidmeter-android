@@ -18,43 +18,78 @@
 
 package org.epstudios.morbidmeter;
 
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
-	private SimpleDateFormat formatter = new SimpleDateFormat("MMM d\nKK:mm a");
-
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		String now = formatter.format(Calendar.getInstance().getTime());
 		final int count = appWidgetIds.length;
-
-		// below just a temporary test
-		user = new User("", Calendar.getInstance(), 80.0);
 
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
-			RemoteViews updateViews = new RemoteViews(context.getPackageName(),
-					R.layout.main);
-			updateViews.setTextViewText(R.id.text, now);
-			appWidgetManager.updateAppWidget(appWidgetId, updateViews);
-			updateAppWidget(context, appWidgetManager, appWidgetId, user);
+			Configuration configuration = MmConfigure.loadPrefs(context,
+					appWidgetId);
+			updateAppWidget(context, appWidgetManager, appWidgetId,
+					configuration);
 		}
 	}
 
-	private void updateAppWidget(Context context,
-			AppWidgetManager appWidgetManager, int appWidgetId, User user) {
-		Log.d("MorbidMeter", "UpdateAppWidget");
-
+	static void updateAppWidget(Context context,
+			AppWidgetManager appWidgetManager, int appWidgetId,
+			Configuration configuration) {
+		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
+				R.layout.main);
+		String time = getTime(context, configuration);
+		String timeScaleName = "Timescale: " + configuration.timeScaleName
+				+ "\n";
+		if (configuration.reverseTime)
+			timeScaleName = "REVERSE " + timeScaleName;
+		String label = "MorbidMeter\n" + timeScaleName;
+		label += time;
+		if (configuration.useMsec)
+			label += " msec";
+		updateViews.setTextViewText(R.id.text, label);
+		//
+		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
-	private User user;
+	public static String getTime(Context context, Configuration configuration) {
+		String formatString = "";
+		Format formatter = new DecimalFormat(formatString);
+		TimeScale ts = new TimeScale();
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_percent))) {
+			ts = new TimeScale(configuration.timeScaleName, 0, 100);
+			formatString += "#.000000";
+			formatter = new DecimalFormat(formatString);
 
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(2000, Calendar.JANUARY, 1),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+			formatString += "MMMM d K:mm:ss a";
+			if (configuration.useMsec)
+				formatString += " S";
+			formatter = new SimpleDateFormat(formatString);
+		}
+		if (configuration.reverseTime)
+			return formatter
+					.format(ts.reverseProportionalTime(configuration.user
+							.percentAlive()));
+		else
+			return formatter.format(ts.proportionalTime(configuration.user
+					.percentAlive()));
+	}
 }
