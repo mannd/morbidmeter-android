@@ -5,11 +5,10 @@ public class TimeScale {
 		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE
 	};
 
-	public TimeScale(String name, int minimum, int maximum, String formatString) {
+	public TimeScale(String name, int minimum, int maximum) {
 		this.name = name;
 		this.minimum = minimum;
 		this.maximum = maximum;
-		this.formatString = formatString;
 	}
 
 	public int duration() {
@@ -27,5 +26,4 @@ public class TimeScale {
 	private String name;
 	private int maximum;
 	private int minimum;
-	private String formatString;
 }

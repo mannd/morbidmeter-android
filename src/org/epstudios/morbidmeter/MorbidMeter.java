@@ -19,12 +19,10 @@
 package org.epstudios.morbidmeter;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
@@ -33,28 +31,37 @@ public class MorbidMeter extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		String now = formatter.format(Calendar.getInstance().getTime());
 		final int count = appWidgetIds.length;
-
-		// below just a temporary test
-		user = new User("", Calendar.getInstance(), 80.0);
 
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
-			RemoteViews updateViews = new RemoteViews(context.getPackageName(),
-					R.layout.main);
-			updateViews.setTextViewText(R.id.text, now);
-			appWidgetManager.updateAppWidget(appWidgetId, updateViews);
-			updateAppWidget(context, appWidgetManager, appWidgetId, user);
+			Configuration configuration = MmConfigure.loadPrefs(context,
+					appWidgetId);
+			updateAppWidget(context, appWidgetManager, appWidgetId,
+					configuration);
 		}
 	}
 
-	private void updateAppWidget(Context context,
-			AppWidgetManager appWidgetManager, int appWidgetId, User user) {
-		Log.d("MorbidMeter", "UpdateAppWidget");
-
+	static void updateAppWidget(Context context,
+			AppWidgetManager appWidgetManager, int appWidgetId,
+			Configuration configuration) {
+		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
+				R.layout.main);
+		String time = getTime(context, configuration);
+		updateViews.setTextViewText(R.id.text, time);
+		//
+		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
-	private User user;
+	public static String getTime(Context context, Configuration configuration) {
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_percent))) {
+			TimeScale ts = new TimeScale(configuration.timeScaleName, 0, 100);
+			return Double.toString(ts.proportionalTime(configuration.user
+					.percentAlive()));
+		}
+
+		return "test";
+	}
 
 }

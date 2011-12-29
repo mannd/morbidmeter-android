@@ -116,13 +116,13 @@ public class MmConfigure extends Activity {
 						.getSelectedItem();
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
-				savePrefs(context, appWidgetId, configuration);
-				AppWidgetManager appWidgetManager = AppWidgetManager
-						.getInstance(context);
-				if (configuration.user.isSane()) {
 
-					// MorbidMeter.updateAppWidget(context, appWidgetManager,
-					// appWidgetId, user, timescale, options);
+				if (configuration.user.isSane()) {
+					savePrefs(context, appWidgetId, configuration);
+					AppWidgetManager appWidgetManager = AppWidgetManager
+							.getInstance(context);
+					MorbidMeter.updateAppWidget(context, appWidgetManager,
+							appWidgetId, configuration);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);
