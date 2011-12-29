@@ -19,6 +19,7 @@
 package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -196,7 +197,7 @@ public class MmConfigure extends Activity {
 		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 0);
 		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 0);
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 0);
-		Calendar birthDay = Calendar.getInstance();
+		GregorianCalendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
 		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 0);
 		configuration.user = new User(name, birthDay, longevity);

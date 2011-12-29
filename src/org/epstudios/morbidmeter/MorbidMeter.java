@@ -18,7 +18,11 @@
 
 package org.epstudios.morbidmeter;
 
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -26,8 +30,6 @@ import android.content.Context;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
-	private SimpleDateFormat formatter = new SimpleDateFormat("MMM d\nKK:mm a");
-
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
@@ -48,20 +50,46 @@ public class MorbidMeter extends AppWidgetProvider {
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
 		String time = getTime(context, configuration);
-		updateViews.setTextViewText(R.id.text, time);
+		String timeScaleName = "Timescale: " + configuration.timeScaleName
+				+ "\n";
+		if (configuration.reverseTime)
+			timeScaleName = "REVERSE " + timeScaleName;
+		String label = "MorbidMeter\n" + timeScaleName;
+		label += time;
+		if (configuration.useMsec)
+			label += " msec";
+		updateViews.setTextViewText(R.id.text, label);
 		//
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
+		String formatString = "";
+		Format formatter = new DecimalFormat(formatString);
+		TimeScale ts = new TimeScale();
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_percent))) {
-			TimeScale ts = new TimeScale(configuration.timeScaleName, 0, 100);
-			return Double.toString(ts.proportionalTime(configuration.user
-					.percentAlive()));
+			ts = new TimeScale(configuration.timeScaleName, 0, 100);
+			formatString += "#.000000";
+			formatter = new DecimalFormat(formatString);
+
 		}
-
-		return "test";
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(2000, Calendar.JANUARY, 1),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+			formatString += "MMMM d K:mm:ss a";
+			if (configuration.useMsec)
+				formatString += " S";
+			formatter = new SimpleDateFormat(formatString);
+		}
+		if (configuration.reverseTime)
+			return formatter
+					.format(ts.reverseProportionalTime(configuration.user
+							.percentAlive()));
+		else
+			return formatter.format(ts.proportionalTime(configuration.user
+					.percentAlive()));
 	}
-
 }

@@ -18,40 +18,30 @@
 
 package org.epstudios.morbidmeter;
 
-public class TimeScale {
-	public enum Duration {
-		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE
-	};
+import java.util.Calendar;
 
-	public TimeScale() {
-		this.name = "";
-		this.minimum = 0L;
-		this.maximum = 0L;
+public class CalendarTimeScale extends TimeScale {
+	public CalendarTimeScale(String name, Calendar minTime, Calendar maxTime) {
+		super(name, 0, 0);
+		this.minTime = minTime;
+		this.maxTime = maxTime;
 	}
 
-	public TimeScale(String name, long minimum, long maximum) {
-		this.name = name;
-		this.minimum = minimum;
-		this.maximum = maximum;
-	}
-
+	@Override
 	public long duration() {
-		return maximum - minimum;
+		return maxTime.getTimeInMillis() - minTime.getTimeInMillis();
 	}
 
+	@Override
 	public double proportionalTime(double percent) {
-		return minimum + percent * duration();
+		return minTime.getTimeInMillis() + percent * duration();
 	}
 
+	@Override
 	public double reverseProportionalTime(double percent) {
-		return maximum - percent * duration();
+		return maxTime.getTimeInMillis() - percent * duration();
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	private final String name;
-	private final long maximum;
-	private final long minimum;
+	private final Calendar minTime;
+	private final Calendar maxTime;
 }

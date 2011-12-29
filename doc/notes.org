@@ -98,7 +98,6 @@
      alive_secs = percent_alive() * total_secs
      current_date = ts.min() + timedelta(alive_secs)
 
-
 * ========ALL NOTES BELOW ARE ANDROID SPECIFIC==========
 * Configuration
 ** User
@@ -131,3 +130,10 @@
 * Skull icon
   The skull icon is in the public domain.  
   Source is here: http://www.clker.com/clipart-80943.html
+* Quirks
+** Daylight Savings Time
+   The generated date and time appear to use standard time, even
+   during dates when daylight savings time is active.  The Android
+   version takes into account daylight savings time.  For example:
+   | Python         | Android        |
+   | Sept 7 5:30 AM | Sept 7 6:30 AM |
