@@ -38,6 +38,10 @@ public class User {
 		return deathDay;
 	}
 
+	public boolean isDead() {
+		return msecAlive() + birthDayMsec() > deathDay().getTimeInMillis();
+	}
+
 	private long deathDayMsec() {
 		return birthDayMsec() + lifeDurationMsec();
 	}

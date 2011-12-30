@@ -50,21 +50,27 @@ public class MorbidMeter extends AppWidgetProvider {
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
 		String time = getTime(context, configuration);
-		String timeScaleName = "Timescale: " + configuration.timeScaleName
-				+ "\n";
+		String timeScaleName = "Timescale: ";
 		if (configuration.reverseTime)
-			timeScaleName = "REVERSE " + timeScaleName;
-		String label = "MorbidMeter\n" + timeScaleName;
-		label += time;
-		if (configuration.useMsec)
-			label += " msec";
+			timeScaleName += "REVERSE ";
+		timeScaleName += configuration.timeScaleName + "\n";
+		String userName = configuration.user.getName();
+		if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+			userName += "'";
+		else
+			userName += "'s";
+		String label = userName + " MorbidMeter\n" + timeScaleName;
+		if (configuration.user.isDead())
+			label += context.getString(R.string.user_dead_message);
+		else
+			label += time;
 		updateViews.setTextViewText(R.id.text, label);
-		//
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
 		String formatString = "";
+		String timeString = "";
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
 		if (configuration.timeScaleName.equals(context
@@ -79,17 +85,65 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2001, Calendar.JANUARY, 1));
-			formatString += "MMMM d K:mm:ss a";
+			formatString += "MMMM d\nh:mm:ss a";
 			if (configuration.useMsec)
 				formatString += " S";
 			formatter = new SimpleDateFormat(formatString);
 		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_day))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(2000, Calendar.JANUARY, 1),
+					new GregorianCalendar(2000, Calendar.JANUARY, 2));
+			formatString += "h:mm:ss a";
+			if (configuration.useMsec)
+				formatString += " S";
+			formatter = new SimpleDateFormat(formatString);
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_hour))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
+			formatString += "h:mm:ss";
+			if (configuration.useMsec)
+				formatString += " S";
+			formatter = new SimpleDateFormat(formatString);
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_month))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(2000, Calendar.JANUARY, 1),
+					new GregorianCalendar(2000, Calendar.FEBRUARY, 1));
+			formatString += "MMMM d\nh:mm:ss a";
+			if (configuration.useMsec)
+				formatString += " S";
+			formatter = new SimpleDateFormat(formatString);
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_universe))) {
+			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
+			formatString += "#";
+			formatter = new DecimalFormat(formatString);
+		}
+		// fix age
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_age))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					configuration.user.birthDay(),
+					configuration.user.deathDay());
+			formatString += "#.0000";
+			formatter = new DecimalFormat(formatString);
+		}
 		if (configuration.reverseTime)
-			return formatter
+			timeString = formatter
 					.format(ts.reverseProportionalTime(configuration.user
 							.percentAlive()));
 		else
-			return formatter.format(ts.proportionalTime(configuration.user
-					.percentAlive()));
+			timeString = formatter.format(ts
+					.proportionalTime(configuration.user.percentAlive()));
+		if (configuration.useMsec && ts.okToUseMsec())
+			timeString += " msec";
+		return timeString;
 	}
 }

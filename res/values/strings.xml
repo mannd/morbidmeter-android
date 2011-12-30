@@ -22,5 +22,6 @@
     <string name="ts_percent">PERCENT</string>
     <string name="ts_year">YEAR</string>
     <string name="ts_universe">UNIVERSE</string>
+    <string name="user_dead_message">You Are Living On Borrowed Time!</string>
 
 </resources>

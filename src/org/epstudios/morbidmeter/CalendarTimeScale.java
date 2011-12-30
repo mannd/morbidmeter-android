@@ -28,6 +28,11 @@ public class CalendarTimeScale extends TimeScale {
 	}
 
 	@Override
+	public boolean okToUseMsec() {
+		return true;
+	}
+
+	@Override
 	public long duration() {
 		return maxTime.getTimeInMillis() - minTime.getTimeInMillis();
 	}

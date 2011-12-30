@@ -193,13 +193,14 @@ public class MmConfigure extends Activity {
 	static Configuration loadPrefs(Context context, int appWidgetId) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		Configuration configuration = new Configuration();
-		String name = prefs.getString(USER_NAME_KEY, "");
-		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 0);
-		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 0);
-		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 0);
+		String name = prefs.getString(USER_NAME_KEY,
+				context.getString(R.string.default_user_name));
+		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 1970);
+		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 1);
+		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 1);
 		GregorianCalendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 0);
+		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 79);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY, "YEAR");
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY, false);

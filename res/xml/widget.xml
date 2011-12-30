@@ -2,9 +2,8 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:configure="org.epstudios.morbidmeter.MmConfigure"
     android:initialLayout="@layout/main"
-    android:maxWidth="600dip"
     android:minHeight="72dip"
-    android:minWidth="250dip"
+    android:minWidth="216dip"
     android:updatePeriodMillis="1800000" >
 
 </appwidget-provider>

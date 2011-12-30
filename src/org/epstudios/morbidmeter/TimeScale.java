@@ -35,6 +35,10 @@ public class TimeScale {
 		this.maximum = maximum;
 	}
 
+	public boolean okToUseMsec() {
+		return false;
+	}
+
 	public long duration() {
 		return maximum - minimum;
 	}
