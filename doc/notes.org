@@ -137,3 +137,7 @@
    version takes into account daylight savings time.  For example:
    | Python         | Android        |
    | Sept 7 5:30 AM | Sept 7 6:30 AM |
+   UPDATED: not sure the above is true.  Need to retest.
+** DatePicker too large in Ice Cream Sandwich
+   Consider DatePicker dialog instead for this version.  Would need
+   separate layout.

@@ -18,6 +18,9 @@
 
 package org.epstudios.morbidmeter;
 
+import java.text.DecimalFormat;
+import java.text.Format;
+
 public class TimeScale {
 	public enum Duration {
 		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE
@@ -27,6 +30,8 @@ public class TimeScale {
 		this.name = "";
 		this.minimum = 0L;
 		this.maximum = 0L;
+		formatString = "#";
+		formatter = new DecimalFormat(formatString);
 	}
 
 	public TimeScale(String name, long minimum, long maximum) {
@@ -55,7 +60,22 @@ public class TimeScale {
 		return name;
 	}
 
+	public Format getFormatter() {
+		return formatter;
+	}
+
+	public void setFormatter(Format formatter) {
+		this.formatter = formatter;
+	}
+
+	public void setFormatString(String formatString) {
+		this.formatString = formatString;
+	}
+
 	private final String name;
 	private final long maximum;
 	private final long minimum;
+	private Format formatter;
+	private String formatString;
+
 }
