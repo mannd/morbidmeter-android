@@ -42,7 +42,7 @@ public class User {
 		return msecAlive() + birthDayMsec() > deathDay().getTimeInMillis();
 	}
 
-	private long deathDayMsec() {
+	public long deathDayMsec() {
 		return birthDayMsec() + lifeDurationMsec();
 	}
 
@@ -50,7 +50,7 @@ public class User {
 		return (long) (longevity * msecsPerYear);
 	}
 
-	private long birthDayMsec() {
+	public long birthDayMsec() {
 		return birthDay.getTimeInMillis();
 	}
 

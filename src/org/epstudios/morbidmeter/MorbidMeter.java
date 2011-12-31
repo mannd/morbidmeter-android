@@ -24,41 +24,66 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
+	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		final int count = appWidgetIds.length;
 
+		Configuration configuration = MmConfigure.loadPrefs(context);
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
-			Configuration configuration = MmConfigure.loadPrefs(context,
-					appWidgetId);
 			updateAppWidget(context, appWidgetManager, appWidgetId,
 					configuration);
 		}
 	}
 
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
+			Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
+			AppWidgetManager appWidgetManager = AppWidgetManager
+					.getInstance(context);
+			int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
+					context, MorbidMeter.class));
+			this.onUpdate(context, appWidgetManager, ids);
+		} else
+			super.onReceive(context, intent);
+	}
+
 	static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId,
 			Configuration configuration) {
+		Intent intent = new Intent(context, MorbidMeter.class);
+		intent.setAction(ACTION_WIDGET_REFRESH);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+				intent, 0);
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
+		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 		String time = getTime(context, configuration);
 		String timeScaleName = "Timescale: ";
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName + "\n";
 		String userName = configuration.user.getName();
-		if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
-			userName += "'";
-		else
-			userName += "'s";
+		if (userName.length() > 0) {
+			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+				userName += "'";
+			else
+				userName += "'s";
+		}
 		String label = userName + " MorbidMeter\n" + timeScaleName;
 		if (configuration.user.isDead())
 			label += context.getString(R.string.user_dead_message);
@@ -71,6 +96,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	public static String getTime(Context context, Configuration configuration) {
 		String formatString = "";
 		String timeString = "";
+		String units = "";
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
 		if (configuration.timeScaleName.equals(context
@@ -78,6 +104,9 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);
 			formatString += "#.000000";
 			formatter = new DecimalFormat(formatString);
+			units = "%";
+			if (configuration.reverseTime)
+				units += " left";
 
 		}
 		if (configuration.timeScaleName.equals(context
@@ -105,7 +134,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
-			formatString += "h:mm:ss";
+			formatString += "mm:ss";
 			if (configuration.useMsec)
 				formatString += " S";
 			formatter = new SimpleDateFormat(formatString);
@@ -125,25 +154,46 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
 			formatString += "#";
 			formatter = new DecimalFormat(formatString);
+			if (configuration.reverseTime)
+				units = " years left";
+			else
+				units = " years from Big Bang";
 		}
-		// fix age
+		// age in days does a different calculation
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_age))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					configuration.user.birthDay(),
-					configuration.user.deathDay());
-			formatString += "#.0000";
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += "#.000000";
 			formatter = new DecimalFormat(formatString);
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numDays(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " days left";
+			} else {
+				timeString = formatter.format(numDays(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " days old";
+			}
+		} else {
+			if (configuration.reverseTime) {
+				timeString = formatter.format(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive()));
+			} else {
+				timeString = formatter.format(ts
+						.proportionalTime(configuration.user.percentAlive()));
+			}
 		}
-		if (configuration.reverseTime)
-			timeString = formatter
-					.format(ts.reverseProportionalTime(configuration.user
-							.percentAlive()));
-		else
-			timeString = formatter.format(ts
-					.proportionalTime(configuration.user.percentAlive()));
 		if (configuration.useMsec && ts.okToUseMsec())
 			timeString += " msec";
+		timeString += units;
 		return timeString;
 	}
+
+	public static double numDays(double timeInMsecs) {
+		return (double) timeInMsecs / (24 * 60 * 60 * 1000);
+	}
+
 }
