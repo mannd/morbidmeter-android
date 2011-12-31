@@ -96,6 +96,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	public static String getTime(Context context, Configuration configuration) {
 		String formatString = "";
 		String timeString = "";
+		String units = "";
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
 		if (configuration.timeScaleName.equals(context
@@ -103,6 +104,9 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);
 			formatString += "#.000000";
 			formatter = new DecimalFormat(formatString);
+			units = "%";
+			if (configuration.reverseTime)
+				units += " left";
 
 		}
 		if (configuration.timeScaleName.equals(context
@@ -130,7 +134,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
-			formatString += "h:mm:ss";
+			formatString += "mm:ss";
 			if (configuration.useMsec)
 				formatString += " S";
 			formatter = new SimpleDateFormat(formatString);
@@ -150,25 +154,33 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
 			formatString += "#";
 			formatter = new DecimalFormat(formatString);
+			if (configuration.reverseTime)
+				units = " years left";
+			else
+				units = " years from Big Bang";
 		}
-		// fix age
+		// age in days does a different calculation
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_age))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					configuration.user.birthDay(),
-					configuration.user.deathDay());
-			formatString += "d h:mm:ss";
-			formatter = new SimpleDateFormat(formatString);
-		}
-		if (configuration.reverseTime)
-			timeString = formatter
-					.format(ts.reverseProportionalTime(configuration.user
-							.percentAlive()));
-		else {
-			if (configuration.timeScaleName.equals(context
-					.getString(R.string.ts_age))) {
-				// Calendar daysAlive = new GregorianCalendar();
-
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += "#.000000";
+			formatter = new DecimalFormat(formatString);
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numDays(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " days left";
+			} else {
+				timeString = formatter.format(numDays(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " days old";
+			}
+		} else {
+			if (configuration.reverseTime) {
+				timeString = formatter.format(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive()));
 			} else {
 				timeString = formatter.format(ts
 						.proportionalTime(configuration.user.percentAlive()));
@@ -176,7 +188,12 @@ public class MorbidMeter extends AppWidgetProvider {
 		}
 		if (configuration.useMsec && ts.okToUseMsec())
 			timeString += " msec";
+		timeString += units;
 		return timeString;
+	}
+
+	public static double numDays(double timeInMsecs) {
+		return (double) timeInMsecs / (24 * 60 * 60 * 1000);
 	}
 
 }

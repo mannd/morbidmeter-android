@@ -10,7 +10,8 @@
         android:id="@+id/update_button"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/icon" />
+        android:background="@android:color/transparent"
+        android:src="@drawable/selector" />
 
     <TextView
         android:id="@+id/text"
