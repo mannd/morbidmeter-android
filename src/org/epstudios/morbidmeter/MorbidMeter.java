@@ -55,10 +55,12 @@ public class MorbidMeter extends AppWidgetProvider {
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName + "\n";
 		String userName = configuration.user.getName();
-		if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
-			userName += "'";
-		else
-			userName += "'s";
+		if (userName.length() > 0) {
+			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+				userName += "'";
+			else
+				userName += "'s";
+		}
 		String label = userName + " MorbidMeter\n" + timeScaleName;
 		if (configuration.user.isDead())
 			label += context.getString(R.string.user_dead_message);
@@ -132,16 +134,23 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					configuration.user.birthDay(),
 					configuration.user.deathDay());
-			formatString += "#.0000";
-			formatter = new DecimalFormat(formatString);
+			formatString += "d h:mm:ss";
+			formatter = new SimpleDateFormat(formatString);
 		}
 		if (configuration.reverseTime)
 			timeString = formatter
 					.format(ts.reverseProportionalTime(configuration.user
 							.percentAlive()));
-		else
-			timeString = formatter.format(ts
-					.proportionalTime(configuration.user.percentAlive()));
+		else {
+			if (configuration.timeScaleName.equals(context
+					.getString(R.string.ts_age))) {
+				// Calendar daysAlive = new GregorianCalendar();
+
+			} else {
+				timeString = formatter.format(ts
+						.proportionalTime(configuration.user.percentAlive()));
+			}
+		}
 		if (configuration.useMsec && ts.okToUseMsec())
 			timeString += " msec";
 		return timeString;

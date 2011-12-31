@@ -198,9 +198,9 @@ public class MmConfigure extends Activity {
 		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 1970);
 		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 1);
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 1);
-		GregorianCalendar birthDay = new GregorianCalendar();
+		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 79);
+		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 79.0f);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY, "YEAR");
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY, false);

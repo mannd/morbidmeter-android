@@ -3,7 +3,7 @@
     android:configure="org.epstudios.morbidmeter.MmConfigure"
     android:initialLayout="@layout/main"
     android:minHeight="72dip"
-    android:minWidth="216dip"
+    android:minWidth="294dip"
     android:updatePeriodMillis="1800000" >
 
 </appwidget-provider>
