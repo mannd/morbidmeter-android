@@ -1,14 +1,14 @@
-## Description
-MorbidMeter is soon to appear on [Android](http://www.android.com) as a home
-page widget.  MorbidMeter is a perverse little program that puts your lifespan
-into perspective using various timescales that are easier (or sometimes
-harder) to grasp than an actual lifetime.
+## Description 
+MorbidMeter is on [Android](http://www.android.com) as
+an app widget.  MorbidMeter is a perverse little program that puts
+your lifespan into perspective using various timescales that are
+easier (or sometimes harder) to grasp than an actual lifetime.
 
 Time is running out -- MorbidMeter lets you know how quickly!
 
 
-MorbidMeter is free, open source, and available under the 
-[GNU GPL v3 license.](http://http://www.gnu.org/licenses/gpl.html)
+MorbidMeter is open source, and available under the 
+[GNU GPL v3 license.](//http://www.gnu.org/licenses/gpl.html)
 
 ## License
 Copyright 2011 [EP Studios, Inc.](http://www.epstudiossoftware.com)
@@ -26,7 +26,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-The skull icon is in the public domain.  Source and documentation is [here](http://http://www.clker.com/clipart-80943.html).
+The skull icon is in the public domain.  Source and documentation are
+[here](//http://www.clker.com/clipart-80943.html).
 
 ## Author
 David Mann

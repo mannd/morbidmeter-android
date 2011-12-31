@@ -1,0 +1,42 @@
+MorbidMeter is a perverse little widget that puts your lifespan
+into perspective using various timescales that are easier (or
+sometimes harder) to grasp than an actual lifetime.
+
+The program takes your date of birth, your estimated life-span,
+today's date, and a unit of time (year, hour, minute, month, and
+others) and generates where (when?) you are right now in that time
+unit.  For example, if you select year as your timescale, the month,
+day and time will indicate how far along you are in that year,
+assuming you life ends at midnight on December 31st.  Use a life
+expectancy calculator such as this one (http://www.livingto100.com) to
+figure out how long you should live (or just make up the number).  Per
+Wikipedia (as of 12/31/2011) the average US lifespan is 78.3 years
+overall: 75.6 years for men and 80.8 years for women (36th in rank of
+all countries, tied with Cuba).
+
+Time is running out -- MorbidMeter lets you know how quickly!
+
+Hints:
+
+To setup MorbidMeter, do a long press on your screen, select Widgets,
+and select MorbidMeter.
+
+MorbidMeter updates every half-hour automatically.  Press the skull
+button to get an instant update.
+
+Try out different timescales.  You can reverse time and in some
+timescales can add msecs, which can increase with
+disturbing rapidity.
+
+MorbidMeter remembers its startup configuration.  To change the
+configuration, delete the widget (long press and drag it to the trash)
+and then restart it.
+
+MorbidMeter is a good way to remind you that nothing lasts forever.
+Not even you.
+
+MorbidMeter is open source, and available under the GNU GPL v3 license
+(http://http://www.gnu.org/licenses/gpl.html). The source code is
+available at https://www.github.com/mannd/morbidmeter-android.  The
+skull icon is in the public domain.  Source and documentation are at
+http://www.clker.com/clipart-80943.html.
