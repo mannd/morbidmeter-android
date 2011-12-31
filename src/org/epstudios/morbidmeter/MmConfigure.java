@@ -72,6 +72,8 @@ public class MmConfigure extends Activity {
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 
+		userNameEditText.requestFocus();
+
 		Intent launchIntent = getIntent();
 		Bundle extras = launchIntent.getExtras();
 		if (extras != null)
