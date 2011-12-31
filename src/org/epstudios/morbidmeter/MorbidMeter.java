@@ -24,31 +24,54 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
+	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		final int count = appWidgetIds.length;
 
+		Configuration configuration = MmConfigure.loadPrefs(context);
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
-			Configuration configuration = MmConfigure.loadPrefs(context,
-					appWidgetId);
 			updateAppWidget(context, appWidgetManager, appWidgetId,
 					configuration);
 		}
 	}
 
+	@Override
+	public void onReceive(Context context, Intent intent) {
+		if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
+			Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
+			AppWidgetManager appWidgetManager = AppWidgetManager
+					.getInstance(context);
+			int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
+					context, MorbidMeter.class));
+			this.onUpdate(context, appWidgetManager, ids);
+		} else
+			super.onReceive(context, intent);
+	}
+
 	static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId,
 			Configuration configuration) {
+		Intent intent = new Intent(context, MorbidMeter.class);
+		intent.setAction(ACTION_WIDGET_REFRESH);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+				intent, 0);
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
+		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 		String time = getTime(context, configuration);
 		String timeScaleName = "Timescale: ";
 		if (configuration.reverseTime)
@@ -155,4 +178,5 @@ public class MorbidMeter extends AppWidgetProvider {
 			timeString += " msec";
 		return timeString;
 	}
+
 }
