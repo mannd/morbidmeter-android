@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Morbid Meter</string>
-    <string name="app_name">Morbid Meter</string>
+
+    <string name="app_name">MorbidMeter</string>
+    <string name="birthday_label">Birthday</string>
+    <string name="longevity_label">Estimated Longevity in Years</string>
+    <string name="longevity_hint">Longevity (yrs)</string>
+    <string name="timescale_label">Time Scale</string>
+    <string name="reverse_time_label">Reverse time</string>
+    <string name="show_msec_label">Show msec</string>
+    <string name="load_user_label">Load</string>
+    <string name="save_user_label">Save</string>
+    <string name="ok_label">Launch Widget</string>
+    <string name="cancel_label">Cancel</string>
+    <string name="user_name_label">User Name</string>
+    <string name="default_user_name">Default User</string>
+    <!-- TimeScales -->
+    <string name="ts_age">AGE</string>
+    <string name="ts_day">DAY</string>
+    <string name="ts_hour">HOUR</string>
+    <string name="ts_month">MONTH</string>
+    <string name="ts_percent">PERCENT</string>
+    <string name="ts_year">YEAR</string>
+    <string name="ts_universe">UNIVERSE</string>
+    <string name="user_dead_message">You Are Living On Borrowed Time!</string>
+
 </resources>
