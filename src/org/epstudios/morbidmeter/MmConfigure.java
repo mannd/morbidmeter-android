@@ -22,6 +22,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -48,6 +49,7 @@ public class MmConfigure extends Activity {
 	public static final String TIMESCALE_KEY = "timescale";
 	public static final String REVERSE_TIME_KEY = "reverse_time";
 	public static final String USE_MSEC_KEY = "use_msec";
+	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
 
 	private EditText userNameEditText;
 	private DatePicker birthDayDatePicker;
@@ -85,7 +87,8 @@ public class MmConfigure extends Activity {
 		setAdapters();
 
 		final Context context = MmConfigure.this;
-		configuration = loadPrefs(context);
+		configuration = loadPrefs(context, loadLastAppWidgetId(context));
+
 		userNameEditText.setText(configuration.user.getName());
 		int year = configuration.user.getBirthDay().get(Calendar.YEAR);
 		int month = configuration.user.getBirthDay().get(Calendar.MONTH);
@@ -121,7 +124,7 @@ public class MmConfigure extends Activity {
 				configuration.useMsec = useMsecCheckBox.isChecked();
 
 				if (configuration.user.isSane()) {
-					savePrefs(context, configuration);
+					savePrefs(context, appWidgetId, configuration);
 					AppWidgetManager appWidgetManager = AppWidgetManager
 							.getInstance(context);
 					MorbidMeter.updateAppWidget(context, appWidgetManager,
@@ -138,6 +141,14 @@ public class MmConfigure extends Activity {
 			}
 		});
 
+		Button help = (Button) findViewById(R.id.help_button);
+		help.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				displayHelpMessage();
+			}
+		});
+
 		Button cancel = (Button) findViewById(R.id.cancel_button);
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
@@ -149,7 +160,14 @@ public class MmConfigure extends Activity {
 				finish();
 			}
 		});
-		loadPrefs(context);
+	}
+
+	private void displayHelpMessage() {
+		AlertDialog dialog = new AlertDialog.Builder(this).create();
+		String message = getString(R.string.help_message);
+		dialog.setMessage(message);
+		dialog.setTitle(getString(R.string.help_title));
+		dialog.show();
 	}
 
 	private void setAdapters() {
@@ -173,39 +191,54 @@ public class MmConfigure extends Activity {
 
 	}
 
-	static void savePrefs(Context context, Configuration configuration) {
+	static void savePrefs(Context context, int appWidgetId,
+			Configuration configuration) {
 		// testing with just longevity first
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
 				PREFS_NAME, 0).edit();
-		prefs.putString(USER_NAME_KEY, configuration.user.getName());
-		prefs.putInt(BIRTHDAY_YEAR_KEY,
-				configuration.user.getBirthDay().get(Calendar.YEAR));
-		prefs.putInt(BIRTHDAY_MONTH_KEY,
-				configuration.user.getBirthDay().get(Calendar.MONTH));
-		prefs.putInt(BIRTHDAY_DAY_KEY,
-				configuration.user.getBirthDay().get(Calendar.DAY_OF_MONTH));
-		prefs.putFloat(LONGEVITY_KEY, (float) configuration.user.getLongevity());
-		prefs.putString(TIMESCALE_KEY, configuration.timeScaleName);
-		prefs.putBoolean(REVERSE_TIME_KEY, configuration.reverseTime);
-		prefs.putBoolean(USE_MSEC_KEY, configuration.useMsec);
+		prefs.putString(USER_NAME_KEY + appWidgetId,
+				configuration.user.getName());
+		prefs.putInt(BIRTHDAY_YEAR_KEY + appWidgetId, configuration.user
+				.getBirthDay().get(Calendar.YEAR));
+		prefs.putInt(BIRTHDAY_MONTH_KEY + appWidgetId, configuration.user
+				.getBirthDay().get(Calendar.MONTH));
+		prefs.putInt(BIRTHDAY_DAY_KEY + appWidgetId, configuration.user
+				.getBirthDay().get(Calendar.DAY_OF_MONTH));
+		prefs.putFloat(LONGEVITY_KEY + appWidgetId,
+				(float) configuration.user.getLongevity());
+		prefs.putString(TIMESCALE_KEY + appWidgetId,
+				configuration.timeScaleName);
+		prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
+				configuration.reverseTime);
+		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
+		prefs.putInt(LAST_APP_WIDGET_ID, appWidgetId);
 		prefs.commit();
 	}
 
-	static Configuration loadPrefs(Context context) {
+	static Configuration loadPrefs(Context context, int appWidgetId) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		Configuration configuration = new Configuration();
-		String name = prefs.getString(USER_NAME_KEY,
+		String name = prefs.getString(USER_NAME_KEY + appWidgetId,
 				context.getString(R.string.default_user_name));
-		int year = prefs.getInt(BIRTHDAY_YEAR_KEY, 1970);
-		int month = prefs.getInt(BIRTHDAY_MONTH_KEY, 1);
-		int day = prefs.getInt(BIRTHDAY_DAY_KEY, 1);
+		int year = prefs.getInt(BIRTHDAY_YEAR_KEY + appWidgetId, 1970);
+		int month = prefs.getInt(BIRTHDAY_MONTH_KEY + appWidgetId, 1);
+		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY, 79.0f);
+		double longevity = (double) prefs.getFloat(LONGEVITY_KEY + appWidgetId,
+				79.0f);
 		configuration.user = new User(name, birthDay, longevity);
-		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY, "YEAR");
-		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY, false);
-		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY, false);
+		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
+				+ appWidgetId, "YEAR");
+		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
+				+ appWidgetId, false);
+		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
+				false);
 		return configuration;
+	}
+
+	static int loadLastAppWidgetId(Context context) {
+		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
 	}
 }
