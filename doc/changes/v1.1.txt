@@ -1,0 +1,9 @@
+MorbidMeter v1.1 Release Notes
+
+Changes since v1.0
+
+* MorbidMeter now supports multiple widgets with different configures.
+
+* Added Help button to configuration screen.
+
+
