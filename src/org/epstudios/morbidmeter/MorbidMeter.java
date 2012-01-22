@@ -41,9 +41,10 @@ public class MorbidMeter extends AppWidgetProvider {
 			int[] appWidgetIds) {
 		final int count = appWidgetIds.length;
 
-		Configuration configuration = MmConfigure.loadPrefs(context);
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
+			Configuration configuration = MmConfigure.loadPrefs(context,
+					appWidgetId);
 			updateAppWidget(context, appWidgetManager, appWidgetId,
 					configuration);
 		}

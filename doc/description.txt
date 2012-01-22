@@ -4,7 +4,7 @@ Time is running out -- MorbidMeter lets you know how quickly!
 
 Hints:
 
-To setup MorbidMeter, do a long press on your screen, select Widgets, and select MorbidMeter.
+To setup MorbidMeter, do a long press on your screen, select Widgets, and select MorbidMeter.  For Android 4.0 (Ice Cream Sandwich), press the Apps button, switch to the Widgets tab, then long press on the MorbidMeter widget.
 
 MorbidMeter updates every half-hour automatically.  Press the skull button to get an instant update.
 
