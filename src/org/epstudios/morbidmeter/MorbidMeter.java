@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -70,6 +71,14 @@ public class MorbidMeter extends AppWidgetProvider {
 		intent.setAction(ACTION_WIDGET_REFRESH);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
 				intent, 0);
+		NotificationManager notificationManager = (NotificationManager) context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		// Notification noty = new Notification(R.drawable.icon,
+		// "Button 1 clicked",
+		// System.currentTimeMillis());
+		// noty.setLatestEventInfo(context, "Notice", msg, contentIntent);
+		// notificationManager.notify(1, noty);
+
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
 		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
