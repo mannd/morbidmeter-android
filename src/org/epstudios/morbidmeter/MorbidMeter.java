@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -31,6 +32,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -73,11 +75,13 @@ public class MorbidMeter extends AppWidgetProvider {
 				intent, 0);
 		NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		// Notification noty = new Notification(R.drawable.icon,
-		// "Button 1 clicked",
-		// System.currentTimeMillis());
-		// noty.setLatestEventInfo(context, "Notice", msg, contentIntent);
-		// notificationManager.notify(1, noty);
+		Notification noty = new Notification(R.drawable.notificationskull,
+				"Button 1 clicked", System.currentTimeMillis());
+		noty.setLatestEventInfo(context, "Notice", "test", pendingIntent);
+		// noty.defaults |= Notification.DEFAULT_SOUND;
+		noty.sound = Uri
+				.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+		notificationManager.notify(1, noty);
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);

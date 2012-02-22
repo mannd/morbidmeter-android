@@ -8,6 +8,11 @@
     <string name="timescale_label">Time Scale</string>
     <string name="reverse_time_label">Reverse time</string>
     <string name="show_msec_label">Show msec</string>
+    <string name="show_notifications_label">Show notifications</string>
+    <string name="notification_sound_label">Notification sound</string>
+    <string name="no_sound_label">No notification sound</string>
+    <string name="default_sound_label">Use default notification sound</string>
+    <string name="mm_sound_label">Use MorbidMeter sound (Bells)</string>
     <string name="load_user_label">Load</string>
     <string name="save_user_label">Save</string>
     <string name="ok_label">Launch Widget</string>
@@ -25,7 +30,7 @@
     <string name="ts_universe">UNIVERSE</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
-    <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.
+    <string name="help_message">orbidMeter tracks your lifespan over an alternative timescale.
         For example, using a single year as a time scale and an estimated longevity of 80 years,
         a person in their 40s would have a MorbidMeter date sometime in the summer. Using a day-long
         timescale, the MorbidMeter time would be around noon. Fill in your name, birth date, and
@@ -37,7 +42,6 @@
         on your screen with different parameters at the same time.  Long press and drag to the trash any MorbidMeter widget
         that you are done with.  MorbidMeter remembers the last parameters used when you start a new widget.
         MorbidMeter updates automatically every half-hour.  Press the Skull
-        to update immediately.
-  	</string>
+        to update immediately.</string>
 
 </resources>

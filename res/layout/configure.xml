@@ -81,6 +81,36 @@
             android:layout_height="wrap_content"
             android:text="@string/show_msec_label" />
 
+        <CheckBox
+            android:id="@+id/show_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/show_notifications_label" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_sound_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <RadioGroup android:id="@+id/notification_sound_radio_group" >
+
+            <RadioButton
+                android:id="@+id/no_sound"
+                android:text="@string/no_sound_label" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/default_sound"
+                android:text="@string/default_sound_label" >
+            </RadioButton>
+
+            <RadioButton
+                android:id="@+id/mm_sound"
+                android:text="@string/mm_sound_label" >
+            </RadioButton>
+        </RadioGroup>
+
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
