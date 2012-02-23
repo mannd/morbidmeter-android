@@ -20,10 +20,6 @@ package org.epstudios.morbidmeter;
 
 // essentially a C++ style 'struct'
 public class Configuration {
-	public static final int NO_SOUND = 0;
-	public static final int DEFAULT_SOUND = 1;
-	public static final int MM_SOUND = 2;
-
 	public User user;
 	public String timeScaleName;
 	public boolean reverseTime;

@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
@@ -61,6 +62,7 @@ public class MmConfigure extends Activity {
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 	private CheckBox showNotificationsCheckBox;
+	private RadioGroup notificationSoundRadioGroup;
 
 	private Configuration configuration;
 
@@ -77,6 +79,7 @@ public class MmConfigure extends Activity {
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
+		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
 		userNameEditText.requestFocus();
 
@@ -109,6 +112,7 @@ public class MmConfigure extends Activity {
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
+		notificationSoundRadioGroup.check(configuration.notificationSound);
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -129,6 +133,8 @@ public class MmConfigure extends Activity {
 				configuration.useMsec = useMsecCheckBox.isChecked();
 				configuration.showNotifications = showNotificationsCheckBox
 						.isChecked();
+				configuration.notificationSound = notificationSoundRadioGroup
+						.getCheckedRadioButtonId();
 
 				if (configuration.user.isSane()) {
 					savePrefs(context, appWidgetId, configuration);
@@ -248,7 +254,7 @@ public class MmConfigure extends Activity {
 		configuration.showNotifications = prefs.getBoolean(
 				SHOW_NOTIFICATIONS_KEY + appWidgetId, false);
 		configuration.notificationSound = prefs.getInt(NOTIFICATION_SOUND_KEY
-				+ appWidgetId, Configuration.NO_SOUND);
+				+ appWidgetId, R.id.no_sound);
 		return configuration;
 	}
 
