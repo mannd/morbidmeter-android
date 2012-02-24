@@ -38,6 +38,7 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+	private static Boolean resetNotification = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -73,15 +74,6 @@ public class MorbidMeter extends AppWidgetProvider {
 		intent.setAction(ACTION_WIDGET_REFRESH);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
 				intent, 0);
-		NotificationManager notificationManager = (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification noty = new Notification(R.drawable.notificationskull,
-				"Button 1 clicked", System.currentTimeMillis());
-		noty.setLatestEventInfo(context, "Notice", "test", pendingIntent);
-		// noty.defaults |= Notification.DEFAULT_SOUND;
-		noty.sound = Uri
-				.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-		notificationManager.notify(1, noty);
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
@@ -104,6 +96,41 @@ public class MorbidMeter extends AppWidgetProvider {
 		else
 			label += time;
 		updateViews.setTextViewText(R.id.text, label);
+		Boolean isMilestone = false;
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year)))
+			isMilestone = time.contains(":00:");
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_month))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_day)))
+			isMilestone = time.contains(":00");
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_age))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_percent)))
+			isMilestone = time.contains(".0");
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_universe)))
+			isMilestone = time.matches(".+,000,... y");
+		if (resetNotification && !isMilestone) // allow notifications once out
+												// of milestone
+			resetNotification = false;
+		if (configuration.showNotifications && isMilestone
+				&& !resetNotification) {
+			resetNotification = true;
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+			Notification noty = new Notification(R.drawable.notificationskull,
+					"Milestone reached", System.currentTimeMillis());
+			noty.setLatestEventInfo(context, "Notice", "test", pendingIntent);
+			if (configuration.notificationSound == R.id.default_sound)
+				noty.defaults |= Notification.DEFAULT_SOUND;
+			else if (configuration.notificationSound == R.id.mm_sound)
+				noty.sound = Uri
+						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+			notificationManager.notify(1, noty);
+		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
@@ -166,7 +193,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_universe))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
-			formatString += "#";
+			formatString += "##,###,###,###";
 			formatter = new DecimalFormat(formatString);
 			if (configuration.reverseTime)
 				units = " years left";
@@ -180,6 +207,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
 			formatString += "#.000000";
 			formatter = new DecimalFormat(formatString);
+
 			if (configuration.reverseTime) {
 				timeString = formatter.format(numDays(ts
 						.reverseProportionalTime(configuration.user

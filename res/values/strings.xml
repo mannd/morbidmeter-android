@@ -8,6 +8,7 @@
     <string name="timescale_label">Time Scale</string>
     <string name="reverse_time_label">Reverse time</string>
     <string name="show_msec_label">Show msec</string>
+    <string name="notifications_label">Notifications</string>
     <string name="show_notifications_label">Show notifications</string>
     <string name="notification_sound_label">Notification sound</string>
     <string name="no_sound_label">No notification sound</string>

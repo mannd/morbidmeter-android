@@ -143,3 +143,16 @@
    separate layout.
 * Button 9 patch
   http://android9patch.blogspot.com/search?updated-max=2011-10-04T00:49:00-04:00&max-results=10&start=5&by-date=false
+* Milestones
+** Year
+   Contains string :00: implies new hour
+** Month
+   Contains string :00 implies new minute
+** Day
+   Contains string :00 implies new minute
+** Age
+   Contains string .0 implies another day
+** Percent
+   Contains string .0 impiles another percentage point
+** Universe
+   Contains string 000??? implies another million years
