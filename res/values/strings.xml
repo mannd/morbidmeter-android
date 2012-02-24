@@ -31,7 +31,7 @@
     <string name="ts_universe">UNIVERSE</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
-    <string name="help_message">orbidMeter tracks your lifespan over an alternative timescale.
+    <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.
         For example, using a single year as a time scale and an estimated longevity of 80 years,
         a person in their 40s would have a MorbidMeter date sometime in the summer. Using a day-long
         timescale, the MorbidMeter time would be around noon. Fill in your name, birth date, and
