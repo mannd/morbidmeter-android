@@ -96,23 +96,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		else
 			label += time;
 		updateViews.setTextViewText(R.id.text, label);
-		Boolean isMilestone = false;
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_year)))
-			isMilestone = time.contains(":00:");
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_month))
-				|| configuration.timeScaleName.equals(context
-						.getString(R.string.ts_day)))
-			isMilestone = time.contains(":00");
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_age))
-				|| configuration.timeScaleName.equals(context
-						.getString(R.string.ts_percent)))
-			isMilestone = time.contains(".0");
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_universe)))
-			isMilestone = time.matches(".+,000,... y");
+		Boolean isMilestone = isMilestone(context, configuration, time);
 		if (resetNotification && !isMilestone) // allow notifications once out
 												// of milestone
 			resetNotification = false;
@@ -132,6 +116,45 @@ public class MorbidMeter extends AppWidgetProvider {
 			notificationManager.notify(1, noty);
 		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+	}
+
+	// is public for testing
+	public static Boolean isMilestone(Context context,
+			Configuration configuration, String time) {
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year)))
+			return isEvenHour(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_month))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_day)))
+			return isEvenMinute(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_age))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_percent)))
+			return isEvenPercentage(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_universe)))
+			return isEvenMillion(time);
+		else
+			return false;
+	}
+
+	public static Boolean isEvenHour(String time) {
+		return time.contains(":00:");
+	}
+
+	public static Boolean isEvenMinute(String time) {
+		return time.contains(":00 ");
+	}
+
+	public static Boolean isEvenPercentage(String time) {
+		return time.contains(".0");
+	}
+
+	public static Boolean isEvenMillion(String time) {
+		return time.matches(".+,000,... y");
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
