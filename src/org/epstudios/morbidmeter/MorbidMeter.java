@@ -107,7 +107,8 @@ public class MorbidMeter extends AppWidgetProvider {
 					.getSystemService(Context.NOTIFICATION_SERVICE);
 			Notification noty = new Notification(R.drawable.notificationskull,
 					"Milestone reached", System.currentTimeMillis());
-			noty.setLatestEventInfo(context, "Notice", "test", pendingIntent);
+			noty.setLatestEventInfo(context, "MorbidMeter",
+					"Milestone reached", pendingIntent);
 			if (configuration.notificationSound == R.id.default_sound)
 				noty.defaults |= Notification.DEFAULT_SOUND;
 			else if (configuration.notificationSound == R.id.mm_sound)
@@ -223,8 +224,23 @@ public class MorbidMeter extends AppWidgetProvider {
 			else
 				units = " years from Big Bang";
 		}
-		// age in days does a different calculation
 		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_raw))) {
+			if (configuration.reverseTime)
+				timeString = configuration.user.reverseMsecAlive()
+						+ " msec remaining";
+			else
+				timeString = configuration.user.msecAlive() + " msec alive";
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_seconds))) {
+			if (configuration.reverseTime)
+				timeString = configuration.user.reverseSecAlive()
+						+ " sec remaining";
+			else
+				timeString = configuration.user.secAlive() + " sec alive";
+		}
+		// age in days does a different calculation
+		else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_age))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);

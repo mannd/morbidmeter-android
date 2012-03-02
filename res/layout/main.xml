@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/a9p_09_11_00983"
+    android:background="@drawable/a9p_09_11_00977"
     android:orientation="horizontal"
     android:padding="@dimen/widget_margin" >
 
