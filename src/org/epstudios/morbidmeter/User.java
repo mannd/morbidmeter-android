@@ -74,6 +74,16 @@ public class User {
 		return ((double) msecAlive()) / lifeDurationMsec();
 	}
 
+	// next 2 only used in tests so far
+
+	public long msecAlive(Calendar date) {
+		return date.getTimeInMillis() - birthDayMsec();
+	}
+
+	public double percentAlive(Calendar date) {
+		return ((double) msecAlive(date)) / lifeDurationMsec();
+	}
+
 	public boolean isSane() {
 		boolean sane = longevity > 0 && longevity < 999;
 		Calendar earliestbirthDay = GregorianCalendar.getInstance();

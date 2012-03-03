@@ -100,13 +100,16 @@ public class MorbidMeter extends AppWidgetProvider {
 		if (resetNotification && !isMilestone) // allow notifications once out
 												// of milestone
 			resetNotification = false;
-		if (configuration.showNotifications && isMilestone
-				&& !resetNotification) {
+		// if below true will send notification with each update
+		Boolean debugNotifications = false;
+		if (debugNotifications || configuration.showNotifications
+				&& isMilestone && !resetNotification) {
 			resetNotification = true;
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
 			Notification noty = new Notification(R.drawable.notificationskull,
 					"Milestone reached", System.currentTimeMillis());
+			noty.flags |= Notification.FLAG_AUTO_CANCEL;
 			noty.setLatestEventInfo(context, "MorbidMeter",
 					"Milestone reached", pendingIntent);
 			if (configuration.notificationSound == R.id.default_sound)
