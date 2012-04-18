@@ -54,20 +54,34 @@ public class User {
 		return birthDay.getTimeInMillis();
 	}
 
-	public long msecAlive(Calendar date) {
-		return date.getTimeInMillis() - birthDayMsec();
-	}
-
-	private long msecAlive() {
+	public long msecAlive() {
 		return System.currentTimeMillis() - birthDayMsec();
 	}
 
-	public double percentAlive(Calendar date) {
-		return ((double) msecAlive(date)) / lifeDurationMsec();
+	public long reverseMsecAlive() {
+		return deathDayMsec() - msecAlive();
+	}
+
+	public long secAlive() {
+		return msecAlive() / 60;
+	}
+
+	public long reverseSecAlive() {
+		return reverseMsecAlive() / 60;
 	}
 
 	public double percentAlive() {
 		return ((double) msecAlive()) / lifeDurationMsec();
+	}
+
+	// next 2 only used in tests so far
+
+	public long msecAlive(Calendar date) {
+		return date.getTimeInMillis() - birthDayMsec();
+	}
+
+	public double percentAlive(Calendar date) {
+		return ((double) msecAlive(date)) / lifeDurationMsec();
 	}
 
 	public boolean isSane() {

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/frame"
+    android:background="@drawable/a9p_09_11_00977"
     android:orientation="horizontal"
     android:padding="@dimen/widget_margin" >
 
@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/update_button_label"
         android:src="@drawable/selector" />
 
     <TextView
@@ -20,7 +21,7 @@
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/app_name"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="14sp" />
 
 </LinearLayout>

@@ -23,18 +23,24 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
-	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+	static boolean notificationOngoing = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -58,6 +64,7 @@ public class MorbidMeter extends AppWidgetProvider {
 					.getInstance(context);
 			int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
 					context, MorbidMeter.class));
+			Log.d("DEBUG", "ids.length = " + ids.length);
 			this.onUpdate(context, appWidgetManager, ids);
 		} else
 			super.onReceive(context, intent);
@@ -70,6 +77,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		intent.setAction(ACTION_WIDGET_REFRESH);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
 				intent, 0);
+
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
 		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
@@ -91,7 +99,87 @@ public class MorbidMeter extends AppWidgetProvider {
 		else
 			label += time;
 		updateViews.setTextViewText(R.id.text, label);
+		Boolean isMilestone = isMilestone(context, configuration, time);
+		// being dead is a milestone too!
+		isMilestone = isMilestone || configuration.user.isDead();
+		// if below true will ignore milestones and send notification with each
+		// update
+		if (notificationOngoing)
+			if (!isMilestone)
+				notificationOngoing = false;
+		Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
+		Boolean debugNotifications = false;
+		if (debugNotifications
+				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
+			NotificationManager notificationManager = (NotificationManager) context
+					.getSystemService(Context.NOTIFICATION_SERVICE);
+			Notification noty = new Notification(R.drawable.notificationskull,
+					"MorbidMeter Milestone", System.currentTimeMillis());
+			noty.flags |= Notification.FLAG_AUTO_CANCEL;
+			Intent notificationIntent = new Intent(context, MorbidMeter.class);
+			PendingIntent notyPendingIntent = PendingIntent.getActivity(
+					context, 0, notificationIntent, 0);
+			noty.setLatestEventInfo(context, "MorbidMeter", time,
+					notyPendingIntent);
+			if (configuration.notificationSound == R.id.default_sound)
+				noty.defaults |= Notification.DEFAULT_SOUND;
+			else if (configuration.notificationSound == R.id.mm_sound)
+				noty.sound = Uri
+						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+			notificationManager.notify(1, noty);
+			notificationOngoing = true;
+		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+	}
+
+	// is public for testing
+	public static Boolean isMilestone(Context context,
+			Configuration configuration, String time) {
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year)))
+			// return isTestTime(time); // for testing
+			// return isEvenMinute(time); // for testing
+			return isEvenHour(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_month))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_day)))
+			return isEvenMinute(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_age))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_percent)))
+			return isEvenPercentage(time);
+		else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_universe)))
+			return isEvenMillion(time);
+		else
+			return false;
+	}
+
+	public static Boolean isEvenHour(String time) {
+		return time.contains(":00:");
+	}
+
+	public static Boolean isEvenMinute(String time) {
+		return time.contains(":00 ");
+	}
+
+	public static Boolean isEvenPercentage(String time) {
+		return time.contains(".000");
+	}
+
+	public static Boolean isEvenMillion(String time) {
+		Pattern p = Pattern.compile(".*,000,... y.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
+	}
+
+	// for testing, allows quicker notifications than usual
+	public static Boolean isTestTime(String time) {
+		Pattern p = Pattern.compile(".*[1369] [AP]M.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
@@ -153,20 +241,36 @@ public class MorbidMeter extends AppWidgetProvider {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_universe))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
-			formatString += "#";
+			formatString += "##,###,###,###";
 			formatter = new DecimalFormat(formatString);
 			if (configuration.reverseTime)
 				units = " years left";
 			else
 				units = " years from Big Bang";
 		}
-		// age in days does a different calculation
 		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_raw))) {
+			if (configuration.reverseTime)
+				timeString = configuration.user.reverseMsecAlive()
+						+ " msec remaining";
+			else
+				timeString = configuration.user.msecAlive() + " msec alive";
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_seconds))) {
+			if (configuration.reverseTime)
+				timeString = configuration.user.reverseSecAlive()
+						+ " sec remaining";
+			else
+				timeString = configuration.user.secAlive() + " sec alive";
+		}
+		// age in days does a different calculation
+		else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_age))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
 			formatString += "#.000000";
 			formatter = new DecimalFormat(formatString);
+
 			if (configuration.reverseTime) {
 				timeString = formatter.format(numDays(ts
 						.reverseProportionalTime(configuration.user

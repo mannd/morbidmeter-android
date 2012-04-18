@@ -23,7 +23,7 @@ import java.text.Format;
 
 public class TimeScale {
 	public enum Duration {
-		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE
+		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE, RAW
 	};
 
 	public TimeScale() {

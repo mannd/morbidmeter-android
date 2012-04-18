@@ -36,6 +36,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
@@ -50,6 +51,8 @@ public class MmConfigure extends Activity {
 	public static final String REVERSE_TIME_KEY = "reverse_time";
 	public static final String USE_MSEC_KEY = "use_msec";
 	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
+	public static final String SHOW_NOTIFICATIONS_KEY = "show_notifications";
+	public static final String NOTIFICATION_SOUND_KEY = "notification_sound";
 
 	private EditText userNameEditText;
 	private DatePicker birthDayDatePicker;
@@ -58,6 +61,8 @@ public class MmConfigure extends Activity {
 	private OnItemSelectedListener itemListener;
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
+	private CheckBox showNotificationsCheckBox;
+	private RadioGroup notificationSoundRadioGroup;
 
 	private Configuration configuration;
 
@@ -73,6 +78,8 @@ public class MmConfigure extends Activity {
 		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
+		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
+		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
 		userNameEditText.requestFocus();
 
@@ -104,6 +111,8 @@ public class MmConfigure extends Activity {
 		timeScaleSpinner.setSelection(position);
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
+		showNotificationsCheckBox.setChecked(configuration.showNotifications);
+		notificationSoundRadioGroup.check(configuration.notificationSound);
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -122,6 +131,10 @@ public class MmConfigure extends Activity {
 						.getSelectedItem();
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
+				configuration.showNotifications = showNotificationsCheckBox
+						.isChecked();
+				configuration.notificationSound = notificationSoundRadioGroup
+						.getCheckedRadioButtonId();
 
 				if (configuration.user.isSane()) {
 					savePrefs(context, appWidgetId, configuration);
@@ -212,6 +225,10 @@ public class MmConfigure extends Activity {
 				configuration.reverseTime);
 		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
 		prefs.putInt(LAST_APP_WIDGET_ID, appWidgetId);
+		prefs.putBoolean(SHOW_NOTIFICATIONS_KEY + appWidgetId,
+				configuration.showNotifications);
+		prefs.putInt(NOTIFICATION_SOUND_KEY + appWidgetId,
+				configuration.notificationSound);
 		prefs.commit();
 	}
 
@@ -234,6 +251,10 @@ public class MmConfigure extends Activity {
 				+ appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
 				false);
+		configuration.showNotifications = prefs.getBoolean(
+				SHOW_NOTIFICATIONS_KEY + appWidgetId, false);
+		configuration.notificationSound = prefs.getInt(NOTIFICATION_SOUND_KEY
+				+ appWidgetId, R.id.no_sound);
 		return configuration;
 	}
 
