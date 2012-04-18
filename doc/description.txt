@@ -18,4 +18,6 @@ MorbidMeter remembers its startup configuration.  To change the configuration, d
 
 MorbidMeter is a good way to remind you that nothing lasts forever. Not even you.
 
+If you have any trouble with this update, uninstall MorbidMeter and reinstall it.
+
 MorbidMeter is open source, and available under the GNU GPL v3 license (http://http://www.gnu.org/licenses/gpl.html). The source code is available at https://www.github.com/mannd/morbidmeter-android.  The skull icon is in the public domain.  Source and documentation are at http://www.clker.com/clipart-80943.html. 
