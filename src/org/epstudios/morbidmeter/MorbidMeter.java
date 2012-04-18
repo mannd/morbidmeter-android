@@ -38,7 +38,6 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
-	private static Boolean resetNotification = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -97,21 +96,23 @@ public class MorbidMeter extends AppWidgetProvider {
 			label += time;
 		updateViews.setTextViewText(R.id.text, label);
 		Boolean isMilestone = isMilestone(context, configuration, time);
-		if (resetNotification && !isMilestone) // allow notifications once out
-												// of milestone
-			resetNotification = false;
-		// if below true will send notification with each update
+		// being dead is a milestone too!
+		isMilestone = isMilestone || configuration.user.isDead();
+		// if below true will ignore milestones and send notification with each
+		// update
 		Boolean debugNotifications = false;
-		if (debugNotifications || configuration.showNotifications
-				&& isMilestone && !resetNotification) {
-			resetNotification = true;
+		if (debugNotifications
+				|| (configuration.showNotifications && isMilestone)) {
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
 			Notification noty = new Notification(R.drawable.notificationskull,
-					"Milestone reached", System.currentTimeMillis());
+					"MorbidMeter Milestone", System.currentTimeMillis());
 			noty.flags |= Notification.FLAG_AUTO_CANCEL;
-			noty.setLatestEventInfo(context, "MorbidMeter",
-					"Milestone reached", pendingIntent);
+			Intent notificationIntent = new Intent(context, MorbidMeter.class);
+			PendingIntent notyPendingIntent = PendingIntent.getActivity(
+					context, 0, notificationIntent, 0);
+			noty.setLatestEventInfo(context, "MorbidMeter", time,
+					notyPendingIntent);
 			if (configuration.notificationSound == R.id.default_sound)
 				noty.defaults |= Notification.DEFAULT_SOUND;
 			else if (configuration.notificationSound == R.id.mm_sound)
@@ -127,6 +128,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			Configuration configuration, String time) {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year)))
+			// return isEvenMinute(time); // for testing
 			return isEvenHour(time);
 		else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_month))

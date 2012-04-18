@@ -46,5 +46,6 @@
         that you are done with.  MorbidMeter remembers the last parameters used when you start a new widget.
         MorbidMeter updates automatically every half-hour.  Press the Skull
         to update immediately.</string>
+    <string name="update_button_label">Update Button</string>
 
 </resources>
