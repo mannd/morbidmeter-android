@@ -156,3 +156,24 @@
    Contains string .0 impiles another percentage point
 ** Universe
    Contains string 000??? implies another million years
+
+* Preparing new version -- IMPORTANT!
+  - finish version, commit.
+  - git flow release start vx.y
+  - IMPORTANT - update AndroidManifest.xml
+    - increment android:versionCode
+    - change android:versionName
+  - run git log --pretty=oneline and update changes/x.y.z.txt
+  - git add changes/x.y.z.txt
+  - update doc/description.txt
+  - update screenshots - resize them with GIMP to 320 x 480!
+  - git commit
+  - git flow release finish v0.x
+  - git push --tags origin master
+  - refresh eclipse morbidmeter
+  - make/sign morbidmeter.apk, save it in dev/morbidmeterapp/vX.Y.Z/
+  - on market.android.com update product details
+  - upload apk, deactivate old one
+  - Tweet It! (after confirming it's on the Market)
+  - DONE!
+    

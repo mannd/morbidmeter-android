@@ -10,6 +10,10 @@ MorbidMeter updates every half-hour automatically.  Press the skull button to ge
 
 Try out different timescales.  You can reverse time and in some timescales can add msecs, which can increase with disturbing rapidity.
 
+Select Show Notifications on the setup screen and get notifications when major MorbidMeter milestones are reached (e.g. an hour of MorbidMeter time passes using the Year timescale).
+
+You can have multiple MorbidMeter widgets showing different timescales simultaneously.
+
 MorbidMeter remembers its startup configuration.  To change the configuration, delete the widget (long press and drag it to the trash) and then restart it.
 
 MorbidMeter is a good way to remind you that nothing lasts forever. Not even you.

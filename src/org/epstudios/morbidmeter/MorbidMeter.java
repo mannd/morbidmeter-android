@@ -23,6 +23,8 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -37,7 +39,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
-	public static String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
+	static boolean notificationOngoing = false;
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
@@ -61,6 +64,7 @@ public class MorbidMeter extends AppWidgetProvider {
 					.getInstance(context);
 			int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
 					context, MorbidMeter.class));
+			Log.d("DEBUG", "ids.length = " + ids.length);
 			this.onUpdate(context, appWidgetManager, ids);
 		} else
 			super.onReceive(context, intent);
@@ -100,9 +104,13 @@ public class MorbidMeter extends AppWidgetProvider {
 		isMilestone = isMilestone || configuration.user.isDead();
 		// if below true will ignore milestones and send notification with each
 		// update
+		if (notificationOngoing)
+			if (!isMilestone)
+				notificationOngoing = false;
+		Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
 		Boolean debugNotifications = false;
 		if (debugNotifications
-				|| (configuration.showNotifications && isMilestone)) {
+				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
 			Notification noty = new Notification(R.drawable.notificationskull,
@@ -119,6 +127,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				noty.sound = Uri
 						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
 			notificationManager.notify(1, noty);
+			notificationOngoing = true;
 		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
@@ -128,6 +137,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			Configuration configuration, String time) {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year)))
+			// return isTestTime(time); // for testing
 			// return isEvenMinute(time); // for testing
 			return isEvenHour(time);
 		else if (configuration.timeScaleName.equals(context
@@ -156,11 +166,20 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static Boolean isEvenPercentage(String time) {
-		return time.contains(".0");
+		return time.contains(".000");
 	}
 
 	public static Boolean isEvenMillion(String time) {
-		return time.matches(".+,000,... y");
+		Pattern p = Pattern.compile(".*,000,... y.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
+	}
+
+	// for testing, allows quicker notifications than usual
+	public static Boolean isTestTime(String time) {
+		Pattern p = Pattern.compile(".*[1369] [AP]M.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
