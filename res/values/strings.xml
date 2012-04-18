@@ -41,11 +41,16 @@
         You might want to know that the AGE timescale gives your age in total days, the PERCENT just
         gives the percentage of you life you have lived, and UNIVERSE stretches your life to the life
         of the universe, estimated at 15 billion years. You can reverse time
-        and/or add milliseconds to some of the timescales.  You can have multiple different MorbidMeter widgets
-        on your screen with different parameters at the same time.  Long press and drag to the trash any MorbidMeter widget
+        and/or add milliseconds to some of the timescales.  Select Show Notifications and pick
+        a notification sound if you want to be notified when you reach a MorbidMeter milestone
+        (e.g. an hour of MorbidMeter time has passed).  You can have multiple different MorbidMeter widgets
+        on your screen with different parameters at the same time.  
+        Long press and drag to the trash any MorbidMeter widget
         that you are done with.  MorbidMeter remembers the last parameters used when you start a new widget.
+        Therefore if you want to change any startup parameters, just drag the old widget to the trash and
+        start a new one. 
         MorbidMeter updates automatically every half-hour.  Press the Skull
-        to update immediately.</string>
+        to update immediately.\n</string>
     <string name="update_button_label">Update Button</string>
 
 </resources>
