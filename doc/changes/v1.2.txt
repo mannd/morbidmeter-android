@@ -1,4 +1,4 @@
-MorbidMeter v1.2 Release Notes
+MorbidMeter v1.2.1 Release Notes
 
 Changes since v1.1
 
