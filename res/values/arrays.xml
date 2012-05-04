@@ -2,15 +2,16 @@
 <resources>
 
     <array name="timescales">
-        <item>@string/ts_age</item>
         <item>@string/ts_day</item>
+        <item>@string/ts_days</item>
         <item>@string/ts_hour</item>
+        <item>@string/ts_raw</item>
         <item>@string/ts_month</item>
         <item>@string/ts_percent</item>
-        <item>@string/ts_year</item>
-        <item>@string/ts_universe</item>
-        <item>@string/ts_raw</item>
         <item>@string/ts_seconds</item>
+        <item>@string/ts_universe</item>
+        <item>@string/ts_year</item>
+        <item>@string/ts_years</item>
     </array>
 
 </resources>

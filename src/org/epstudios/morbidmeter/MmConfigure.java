@@ -149,7 +149,12 @@ public class MmConfigure extends Activity {
 					finish();
 				} else {
 					// dialog saying user not sane
-					finish();
+					AlertDialog alert = new AlertDialog.Builder(context)
+							.create();
+					String message = getString(R.string.sanity_message);
+					alert.setMessage(message);
+					alert.setTitle(getString(R.string.sanity_title));
+					alert.show();
 				}
 			}
 		});

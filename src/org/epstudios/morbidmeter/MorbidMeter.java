@@ -248,6 +248,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			else
 				units = " years from Big Bang";
 		}
+		// deal with raw time scales, i.e. real time
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_raw))) {
 			if (configuration.reverseTime)
@@ -263,9 +264,9 @@ public class MorbidMeter extends AppWidgetProvider {
 			else
 				timeString = configuration.user.secAlive() + " sec alive";
 		}
-		// age in days does a different calculation
+		// age in days or years does a different calculation
 		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_age))) {
+				.getString(R.string.ts_days))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
 			formatString += "#.000000";
@@ -280,6 +281,23 @@ public class MorbidMeter extends AppWidgetProvider {
 				timeString = formatter.format(numDays(ts
 						.proportionalTime(configuration.user.percentAlive())));
 				units = " days old";
+			}
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_years))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += "#.000000";
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numYears(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " years left";
+			} else {
+				timeString = formatter.format(numYears(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " years old";
 			}
 		} else {
 			if (configuration.reverseTime) {
@@ -298,7 +316,11 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static double numDays(double timeInMsecs) {
-		return (double) timeInMsecs / (24 * 60 * 60 * 1000);
+		return timeInMsecs / (24 * 60 * 60 * 1000.0);
+	}
+
+	public static double numYears(double timeInMsecs) {
+		return numDays(timeInMsecs) / 365.25;
 	}
 
 }

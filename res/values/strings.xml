@@ -22,15 +22,17 @@
     <string name="user_name_label">User Name</string>
     <string name="default_user_name">Default User</string>
     <!-- TimeScales -->
-    <string name="ts_age">AGE</string>
+    <string name="ts_age">AGE - deprecated</string>
     <string name="ts_day">DAY</string>
     <string name="ts_hour">HOUR</string>
     <string name="ts_month">MONTH</string>
     <string name="ts_percent">PERCENT</string>
     <string name="ts_year">YEAR</string>
     <string name="ts_universe">UNIVERSE</string>
-    <string name="ts_raw">RAW</string>
+    <string name="ts_raw">MILLISECONDS</string>
     <string name="ts_seconds">SECONDS</string>
+    <string name="ts_days">DAYS</string>
+    <string name="ts_years">YEARS</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.
@@ -52,5 +54,7 @@
         MorbidMeter updates automatically every half-hour.  Press the Skull
         to update immediately.\n</string>
     <string name="update_button_label">Update Button</string>
+    <string name="sanity_message">User parameters are out of range.  Please correct and relaunch or cancel.</string>
+    <string name="sanity_title">User Parameter Error</string>
 
 </resources>
