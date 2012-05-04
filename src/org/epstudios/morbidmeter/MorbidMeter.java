@@ -113,20 +113,20 @@ public class MorbidMeter extends AppWidgetProvider {
 				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
-			Notification noty = new Notification(R.drawable.notificationskull,
+			Notification notification = new Notification(R.drawable.notificationskull,
 					"MorbidMeter Milestone", System.currentTimeMillis());
-			noty.flags |= Notification.FLAG_AUTO_CANCEL;
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 			Intent notificationIntent = new Intent(context, MorbidMeter.class);
 			PendingIntent notyPendingIntent = PendingIntent.getActivity(
 					context, 0, notificationIntent, 0);
-			noty.setLatestEventInfo(context, "MorbidMeter", time,
+			notification.setLatestEventInfo(context, "MorbidMeter", time,
 					notyPendingIntent);
 			if (configuration.notificationSound == R.id.default_sound)
-				noty.defaults |= Notification.DEFAULT_SOUND;
+				notification.defaults |= Notification.DEFAULT_SOUND;
 			else if (configuration.notificationSound == R.id.mm_sound)
-				noty.sound = Uri
+				notification.sound = Uri
 						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-			notificationManager.notify(1, noty);
+			notificationManager.notify(1, notification);
 			notificationOngoing = true;
 		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
