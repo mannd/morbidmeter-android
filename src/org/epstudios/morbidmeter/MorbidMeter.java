@@ -113,8 +113,9 @@ public class MorbidMeter extends AppWidgetProvider {
 				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
-			Notification notification = new Notification(R.drawable.notificationskull,
-					"MorbidMeter Milestone", System.currentTimeMillis());
+			Notification notification = new Notification(
+					R.drawable.notificationskull, "MorbidMeter Milestone",
+					System.currentTimeMillis());
 			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 			Intent notificationIntent = new Intent(context, MorbidMeter.class);
 			PendingIntent notyPendingIntent = PendingIntent.getActivity(
@@ -299,6 +300,24 @@ public class MorbidMeter extends AppWidgetProvider {
 						.proportionalTime(configuration.user.percentAlive())));
 				units = " years old";
 			}
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_hours))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += "#.000000";
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numHours(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " hours left";
+			} else {
+				timeString = formatter.format(numHours(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " hours old";
+			}
+
 		} else {
 			if (configuration.reverseTime) {
 				timeString = formatter.format(ts
@@ -321,6 +340,10 @@ public class MorbidMeter extends AppWidgetProvider {
 
 	public static double numYears(double timeInMsecs) {
 		return numDays(timeInMsecs) / 365.25;
+	}
+
+	public static double numHours(double timeInMsecs) {
+		return timeInMsecs / (60 * 60 * 1000);
 	}
 
 }
