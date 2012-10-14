@@ -47,6 +47,9 @@ public class MorbidMeter extends AppWidgetProvider {
 			int[] appWidgetIds) {
 		final int count = appWidgetIds.length;
 
+		// / TODO is this correct to add?
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
 			Configuration configuration = MmConfigure.loadPrefs(context,
@@ -184,6 +187,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
+		final String DECIMAL_FORMAT_STRING = "#.000000";
 		String formatString = "";
 		String timeString = "";
 		String units = "";
@@ -192,7 +196,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_percent))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 			units = "%";
 			if (configuration.reverseTime)
@@ -270,7 +274,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				.getString(R.string.ts_days))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -287,7 +291,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				.getString(R.string.ts_years))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -304,7 +308,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				.getString(R.string.ts_hours))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
