@@ -47,9 +47,6 @@ public class MorbidMeter extends AppWidgetProvider {
 			int[] appWidgetIds) {
 		final int count = appWidgetIds.length;
 
-		// / TODO is this correct to add?
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
-
 		for (int i = 0; i < count; i++) {
 			int appWidgetId = appWidgetIds[i];
 			Configuration configuration = MmConfigure.loadPrefs(context,
