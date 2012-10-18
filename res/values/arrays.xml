@@ -5,6 +5,7 @@
         <item>@string/ts_day</item>
         <item>@string/ts_days</item>
         <item>@string/ts_hour</item>
+        <item>@string/ts_hours</item>
         <item>@string/ts_raw</item>
         <item>@string/ts_month</item>
         <item>@string/ts_percent</item>
