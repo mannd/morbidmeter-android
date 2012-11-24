@@ -14,4 +14,6 @@
         <item>@string/ts_universe</item>
         <item>@string/ts_year</item>
         <item>@string/ts_years</item>
-    </array>&lt;"res/drawable-mdpi/icon.png"/resources>
+    </array>
+
+</resources>
