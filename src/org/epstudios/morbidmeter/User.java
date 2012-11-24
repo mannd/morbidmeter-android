@@ -55,7 +55,8 @@ public class User {
 	}
 
 	public long msecAlive() {
-		return System.currentTimeMillis() - birthDayMsec();
+		// return System.currentTimeMillis() - birthDayMsec();
+		return Calendar.getInstance().getTimeInMillis() - birthDayMsec();
 	}
 
 	public long reverseMsecAlive() {

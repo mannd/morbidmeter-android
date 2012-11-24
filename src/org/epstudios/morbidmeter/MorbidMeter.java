@@ -199,6 +199,21 @@ public class MorbidMeter extends AppWidgetProvider {
 
 		}
 		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_debug))) {
+			ts = new TimeScale(configuration.timeScaleName, 0, 0);
+			long currentCalendarTime = Calendar.getInstance().getTimeInMillis();
+			long currentSystemTime = System.currentTimeMillis();
+			timeString = "SystemMsec = " + currentSystemTime + " msec";
+			timeString += "\nCalendarTime = " + currentCalendarTime + " msec";
+			timeString += "\nBDMsec = " + configuration.user.birthDayMsec()
+					+ " msec";
+			timeString += "\nDDMsec = " + configuration.user.deathDayMsec()
+					+ " msec";
+			timeString += "\n%Alive = " + configuration.user.percentAlive()
+					+ "%";
+			return timeString;
+		}
+		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1),

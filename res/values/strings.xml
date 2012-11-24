@@ -31,6 +31,7 @@
     <string name="ts_universe">UNIVERSE</string>
     <string name="ts_raw">RAW</string>
     <string name="ts_seconds">SECONDS</string>
+    <string name="ts_debug">DEBUG</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.
