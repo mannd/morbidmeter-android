@@ -26,6 +26,7 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -37,6 +38,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class MorbidMeter extends AppWidgetProvider {
 	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
@@ -45,6 +47,8 @@ public class MorbidMeter extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+		Toast.makeText(context, "onUpdate()", Toast.LENGTH_SHORT).show();
+
 		final int count = appWidgetIds.length;
 
 		for (int i = 0; i < count; i++) {
@@ -54,11 +58,40 @@ public class MorbidMeter extends AppWidgetProvider {
 			updateAppWidget(context, appWidgetManager, appWidgetId,
 					configuration);
 		}
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+	}
+
+	@Override
+	public void onDisabled(Context context) {
+		Toast.makeText(context, "onDisabled():last widget instance removed",
+				Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+		PendingIntent sender = PendingIntent
+				.getBroadcast(context, 0, intent, 0);
+		AlarmManager alarmManager = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(sender);
+		super.onDisabled(context);
+	}
+
+	@Override
+	public void onEnabled(Context context) {
+		super.onEnabled(context);
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+		// After after 3 seconds
+		am.setRepeating(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis() + 1000 * 3, 1000, pi);
+		Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
+
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
+			Toast.makeText(context, "onReceive()", Toast.LENGTH_SHORT).show();
 			Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
@@ -113,20 +146,21 @@ public class MorbidMeter extends AppWidgetProvider {
 				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
 			NotificationManager notificationManager = (NotificationManager) context
 					.getSystemService(Context.NOTIFICATION_SERVICE);
-			Notification noty = new Notification(R.drawable.notificationskull,
-					"MorbidMeter Milestone", System.currentTimeMillis());
-			noty.flags |= Notification.FLAG_AUTO_CANCEL;
+			Notification notification = new Notification(
+					R.drawable.notificationskull, "MorbidMeter Milestone",
+					System.currentTimeMillis());
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 			Intent notificationIntent = new Intent(context, MorbidMeter.class);
 			PendingIntent notyPendingIntent = PendingIntent.getActivity(
 					context, 0, notificationIntent, 0);
-			noty.setLatestEventInfo(context, "MorbidMeter", time,
+			notification.setLatestEventInfo(context, "MorbidMeter", time,
 					notyPendingIntent);
 			if (configuration.notificationSound == R.id.default_sound)
-				noty.defaults |= Notification.DEFAULT_SOUND;
+				notification.defaults |= Notification.DEFAULT_SOUND;
 			else if (configuration.notificationSound == R.id.mm_sound)
-				noty.sound = Uri
+				notification.sound = Uri
 						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-			notificationManager.notify(1, noty);
+			notificationManager.notify(1, notification);
 			notificationOngoing = true;
 		}
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
@@ -183,6 +217,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static String getTime(Context context, Configuration configuration) {
+		final String DECIMAL_FORMAT_STRING = "#.000000";
 		String formatString = "";
 		String timeString = "";
 		String units = "";
@@ -191,7 +226,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_percent))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 			units = "%";
 			if (configuration.reverseTime)
@@ -263,6 +298,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			else
 				units = " years from Big Bang";
 		}
+		// deal with raw time scales, i.e. real time
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_raw))) {
 			if (configuration.reverseTime)
@@ -278,12 +314,12 @@ public class MorbidMeter extends AppWidgetProvider {
 			else
 				timeString = configuration.user.secAlive() + " sec alive";
 		}
-		// age in days does a different calculation
+		// age in days or years does a different calculation
 		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_age))) {
+				.getString(R.string.ts_days))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += "#.000000";
+			formatString += DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -296,6 +332,41 @@ public class MorbidMeter extends AppWidgetProvider {
 						.proportionalTime(configuration.user.percentAlive())));
 				units = " days old";
 			}
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_years))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += DECIMAL_FORMAT_STRING;
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numYears(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " years left";
+			} else {
+				timeString = formatter.format(numYears(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " years old";
+			}
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_hours))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += DECIMAL_FORMAT_STRING;
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numHours(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " hours left";
+			} else {
+				timeString = formatter.format(numHours(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " hours old";
+			}
+
 		} else {
 			if (configuration.reverseTime) {
 				timeString = formatter.format(ts
@@ -313,7 +384,15 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static double numDays(double timeInMsecs) {
-		return (double) timeInMsecs / (24 * 60 * 60 * 1000);
+		return timeInMsecs / (24 * 60 * 60 * 1000.0);
+	}
+
+	public static double numYears(double timeInMsecs) {
+		return numDays(timeInMsecs) / 365.25;
+	}
+
+	public static double numHours(double timeInMsecs) {
+		return timeInMsecs / (60 * 60 * 1000);
 	}
 
 }

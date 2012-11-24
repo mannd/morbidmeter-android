@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class User {
+	final private double daysPerYear = 365.25;
+	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
+
 	public User(String name, Calendar birthDay, double longevity) {
 		this.name = name;
 		setBirthDay(birthDay);
@@ -67,6 +70,22 @@ public class User {
 		return msecAlive() / 60;
 	}
 
+	public double daysAlive() {
+		return secAlive() / 60 * 60 * 24.0;
+	}
+
+	public double reverseDaysAlive() {
+		return reverseSecAlive() / 60 * 60 * 24.0;
+	}
+
+	public double yearsAlive() {
+		return daysAlive() / daysPerYear;
+	}
+
+	public double reverseYearsAlive() {
+		return reverseDaysAlive() / daysPerYear;
+	}
+
 	public long reverseSecAlive() {
 		return reverseMsecAlive() / 60;
 	}
@@ -95,9 +114,6 @@ public class User {
 				&& birthDay.before(latestbirthDay);
 		return sane;
 	}
-
-	final private double daysPerYear = 365.25;
-	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
 
 	public String getName() {
 		return name;
