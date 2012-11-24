@@ -26,6 +26,7 @@ import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -37,6 +38,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 public class MorbidMeter extends AppWidgetProvider {
 	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
@@ -45,6 +47,8 @@ public class MorbidMeter extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
+		Toast.makeText(context, "onUpdate()", Toast.LENGTH_SHORT).show();
+
 		final int count = appWidgetIds.length;
 
 		for (int i = 0; i < count; i++) {
@@ -54,11 +58,40 @@ public class MorbidMeter extends AppWidgetProvider {
 			updateAppWidget(context, appWidgetManager, appWidgetId,
 					configuration);
 		}
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
+	}
+
+	@Override
+	public void onDisabled(Context context) {
+		Toast.makeText(context, "onDisabled():last widget instance removed",
+				Toast.LENGTH_SHORT).show();
+		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+		PendingIntent sender = PendingIntent
+				.getBroadcast(context, 0, intent, 0);
+		AlarmManager alarmManager = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(sender);
+		super.onDisabled(context);
+	}
+
+	@Override
+	public void onEnabled(Context context) {
+		super.onEnabled(context);
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+		// After after 3 seconds
+		am.setRepeating(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis() + 1000 * 3, 1000, pi);
+		Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
+
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
+			Toast.makeText(context, "onReceive()", Toast.LENGTH_SHORT).show();
 			Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
 			AppWidgetManager appWidgetManager = AppWidgetManager
 					.getInstance(context);
