@@ -5,8 +5,8 @@
     android:versionName="1.2.1" >
 
     <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="16" />
+        android:minSdkVersion="7"
+        android:targetSdkVersion="14" />
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
