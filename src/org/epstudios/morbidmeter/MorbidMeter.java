@@ -83,7 +83,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 		// After after 3 seconds
 		am.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis() + 1000 * 3, 1000, pi);
+				System.currentTimeMillis() + 100 * 3, 1000, pi);
 		Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
 
 	}

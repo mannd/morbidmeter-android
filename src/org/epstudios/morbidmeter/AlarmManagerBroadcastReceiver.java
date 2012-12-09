@@ -1,5 +1,9 @@
 package org.epstudios.morbidmeter;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -22,6 +26,10 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 		// You can do the processing here update the widget/remote views.
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
+		Format formatter = new SimpleDateFormat("hh:mm:ss a");
+		String time = formatter.format(new Date());
+
+		remoteViews.setTextViewText(R.id.text, time);
 		ComponentName thiswidget = new ComponentName(context, MorbidMeter.class);
 		AppWidgetManager manager = AppWidgetManager.getInstance(context);
 		manager.updateAppWidget(thiswidget, remoteViews);

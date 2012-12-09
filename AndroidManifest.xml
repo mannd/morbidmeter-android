@@ -5,8 +5,8 @@
     android:versionName="1.2.1" >
 
     <uses-sdk
-        android:minSdkVersion="7"
-        android:targetSdkVersion="14" />
+        android:minSdkVersion="16"
+        android:targetSdkVersion="16" />
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -19,7 +19,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="org.epstudios.MorbidMeter.ACTION_WIDGET_REFRESH" />
             </intent-filter>
 
             <meta-data
@@ -30,7 +29,10 @@
 
         <activity android:name=".MmConfigure" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+                <action android:name="android.appwidget.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" >
+                </category>
             </intent-filter>
         </activity>
     </application>
