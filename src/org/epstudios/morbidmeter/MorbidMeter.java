@@ -111,7 +111,10 @@ public class MorbidMeter extends AppWidgetProvider {
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
-		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
+		// can place stuff here, but not specific to each widget
+		intent.putExtra("Test", "test");
+		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		// After after 3 seconds
 		// using RTC instead of RTC_WAKEUP prevents waking of system
 		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 100 * 3,
