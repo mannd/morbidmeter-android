@@ -22,6 +22,7 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,28 +44,58 @@ import android.widget.Toast;
 public class MorbidMeter extends AppWidgetProvider {
 	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
 	static boolean notificationOngoing = false;
+	// set false for production
+	static final boolean MM_DEBUG = true;
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		if (MM_DEBUG)
+			Toast.makeText(context, "MM WidgetRemoved id(s):" + appWidgetIds,
+					Toast.LENGTH_SHORT).show();
+		super.onDeleted(context, appWidgetIds);
+	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		Toast.makeText(context, "onUpdate()", Toast.LENGTH_SHORT).show();
+		if (MM_DEBUG)
+			Toast.makeText(context, "onUpdate()", Toast.LENGTH_SHORT).show();
 
-		final int count = appWidgetIds.length;
+		ComponentName thisWidget = new ComponentName(context, MorbidMeter.class);
 
-		for (int i = 0; i < count; i++) {
-			int appWidgetId = appWidgetIds[i];
+		for (int widgetId : appWidgetManager.getAppWidgetIds(thisWidget)) {
+			RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+					R.layout.main);
 			Configuration configuration = MmConfigure.loadPrefs(context,
-					appWidgetId);
-			updateAppWidget(context, appWidgetManager, appWidgetId,
-					configuration);
+					widgetId);
+			String label = getLabel(configuration);
+			Toast.makeText(context, "Timescale " + configuration.timeScaleName,
+					Toast.LENGTH_SHORT).show();
+			Format formatter = new SimpleDateFormat("hh:mm:ss a");
+			String time = formatter.format(new Date());
+			remoteViews.setTextViewText(R.id.text, label);
+			remoteViews.setTextViewText(R.id.time, time);
+			appWidgetManager.updateAppWidget(widgetId, remoteViews);
 		}
-		super.onUpdate(context, appWidgetManager, appWidgetIds);
+
+		// final int count = appWidgetIds.length;
+
+		// for (int i = 0; i < count; i++) {
+		// int appWidgetId = appWidgetIds[i];
+		// Configuration configuration = MmConfigure.loadPrefs(context,
+		// appWidgetId);
+		// updateAppWidget(context, appWidgetManager, appWidgetId,
+		// configuration);
+		// }
+		// super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
 	public void onDisabled(Context context) {
-		Toast.makeText(context, "onDisabled():last widget instance removed",
-				Toast.LENGTH_SHORT).show();
+		if (MM_DEBUG)
+			Toast.makeText(context,
+					"onDisabled():last widget instance removed",
+					Toast.LENGTH_SHORT).show();
 		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
 		PendingIntent sender = PendingIntent
 				.getBroadcast(context, 0, intent, 0);
@@ -82,25 +113,42 @@ public class MorbidMeter extends AppWidgetProvider {
 		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 		// After after 3 seconds
-		am.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis() + 100 * 3, 1000, pi);
-		Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
+		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 100 * 3,
+				5000, pi);
+		if (MM_DEBUG)
+			Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
 
 	}
 
-	@Override
-	public void onReceive(Context context, Intent intent) {
-		if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
-			Toast.makeText(context, "onReceive()", Toast.LENGTH_SHORT).show();
-			Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
-			AppWidgetManager appWidgetManager = AppWidgetManager
-					.getInstance(context);
-			int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
-					context, MorbidMeter.class));
-			Log.d("DEBUG", "ids.length = " + ids.length);
-			this.onUpdate(context, appWidgetManager, ids);
-		} else
-			super.onReceive(context, intent);
+	// @Override
+	// public void onReceive(Context context, Intent intent) {
+	// if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
+	// Toast.makeText(context, "onReceive()", Toast.LENGTH_SHORT).show();
+	// Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
+	// AppWidgetManager appWidgetManager = AppWidgetManager
+	// .getInstance(context);
+	// int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
+	// context, MorbidMeter.class));
+	// Log.d("DEBUG", "ids.length = " + ids.length);
+	// this.onUpdate(context, appWidgetManager, ids);
+	// } else
+	// super.onReceive(context, intent);
+	// }
+
+	private String getLabel(Configuration configuration) {
+		String timeScaleName = "Timescale: ";
+		if (configuration.reverseTime)
+			timeScaleName += "REVERSE ";
+		timeScaleName += configuration.timeScaleName + "\n";
+		String userName = configuration.user.getName();
+		if (userName.length() > 0) {
+			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+				userName += "'";
+			else
+				userName += "'s";
+		}
+		String label = userName + " MorbidMeter\n" + timeScaleName;
+		return label;
 	}
 
 	static void updateAppWidget(Context context,

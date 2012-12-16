@@ -138,10 +138,10 @@ public class MmConfigure extends Activity {
 
 				if (configuration.user.isSane()) {
 					savePrefs(context, appWidgetId, configuration);
-					AppWidgetManager appWidgetManager = AppWidgetManager
-							.getInstance(context);
-					MorbidMeter.updateAppWidget(context, appWidgetManager,
-							appWidgetId, configuration);
+					// AppWidgetManager appWidgetManager = AppWidgetManager
+					// .getInstance(context);
+					// MorbidMeter.updateAppWidget(context, appWidgetManager,
+					// appWidgetId, configuration);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);

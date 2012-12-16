@@ -177,3 +177,13 @@
   - Tweet It! (after confirming it's on the Market)
   - DONE!
     
+
+* AlarmManager version
+** Power locking
+   there is an option to allow CPU to be awakened with each alarm
+   event or not.  Probably notifications will require the CPU be
+   awakened.  Otherwise the widget will only update when not in sleep
+   mode.  Can have option to wake device or not.  Might be ok with
+   long update intervals (e.g. 30 mins) but not recommended for shorter.
+** Skull button
+   Possibly use to spawn or edit new morbidmeter.
