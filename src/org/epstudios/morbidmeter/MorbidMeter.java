@@ -113,27 +113,13 @@ public class MorbidMeter extends AppWidgetProvider {
 		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent, 0);
 		// After after 3 seconds
+		// using RTC instead of RTC_WAKEUP prevents waking of system
 		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 100 * 3,
 				5000, pi);
 		if (MM_DEBUG)
 			Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
 
 	}
-
-	// @Override
-	// public void onReceive(Context context, Intent intent) {
-	// if (intent.getAction().equals(ACTION_WIDGET_REFRESH)) {
-	// Toast.makeText(context, "onReceive()", Toast.LENGTH_SHORT).show();
-	// Log.d("DEBUG", "ACTION_WIDGET_REFRESH");
-	// AppWidgetManager appWidgetManager = AppWidgetManager
-	// .getInstance(context);
-	// int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(
-	// context, MorbidMeter.class));
-	// Log.d("DEBUG", "ids.length = " + ids.length);
-	// this.onUpdate(context, appWidgetManager, ids);
-	// } else
-	// super.onReceive(context, intent);
-	// }
 
 	private String getLabel(Configuration configuration) {
 		String timeScaleName = "Timescale: ";
