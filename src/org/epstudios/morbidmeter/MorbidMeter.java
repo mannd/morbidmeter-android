@@ -22,7 +22,6 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,10 +68,8 @@ public class MorbidMeter extends AppWidgetProvider {
 			Configuration configuration = MmConfigure.loadPrefs(context,
 					widgetId);
 			String label = getLabel(configuration);
-			Toast.makeText(context, "Timescale " + configuration.timeScaleName,
-					Toast.LENGTH_SHORT).show();
-			Format formatter = new SimpleDateFormat("hh:mm:ss a");
-			String time = formatter.format(new Date());
+			Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
+			String time = MorbidMeterClock.getFormattedTime();
 			remoteViews.setTextViewText(R.id.text, label);
 			remoteViews.setTextViewText(R.id.time, time);
 			appWidgetManager.updateAppWidget(widgetId, remoteViews);
@@ -112,6 +109,9 @@ public class MorbidMeter extends AppWidgetProvider {
 				.getSystemService(Context.ALARM_SERVICE);
 		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
 		// can place stuff here, but not specific to each widget
+		// I think this means we can have multiple widgets, but no longer
+		// multiple
+		// configurations, i.e. they will all look the same.
 		intent.putExtra("Test", "test");
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);

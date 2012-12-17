@@ -37,6 +37,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.RemoteViews;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
@@ -138,10 +139,11 @@ public class MmConfigure extends Activity {
 
 				if (configuration.user.isSane()) {
 					savePrefs(context, appWidgetId, configuration);
-					// AppWidgetManager appWidgetManager = AppWidgetManager
-					// .getInstance(context);
-					// MorbidMeter.updateAppWidget(context, appWidgetManager,
-					// appWidgetId, configuration);
+					AppWidgetManager appWidgetManager = AppWidgetManager
+							.getInstance(context);
+					RemoteViews views = new RemoteViews(context
+							.getPackageName(), R.layout.main);
+					appWidgetManager.updateAppWidget(appWidgetId, views);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);
