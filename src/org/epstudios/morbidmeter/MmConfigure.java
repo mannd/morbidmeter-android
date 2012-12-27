@@ -84,7 +84,7 @@ public class MmConfigure extends Activity {
 
 		userNameEditText.requestFocus();
 
-		Intent launchIntent = getIntent();
+		Intent launchIntent = this.getIntent();
 		Bundle extras = launchIntent.getExtras();
 		if (extras != null)
 			appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -143,6 +143,9 @@ public class MmConfigure extends Activity {
 							.getInstance(context);
 					RemoteViews views = new RemoteViews(context
 							.getPackageName(), R.layout.main);
+
+					views.setTextViewText(R.id.text, getLabel(configuration));
+
 					appWidgetManager.updateAppWidget(appWidgetId, views);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -180,6 +183,22 @@ public class MmConfigure extends Activity {
 				finish();
 			}
 		});
+	}
+
+	private final String getLabel(Configuration configuration) {
+		String timeScaleName = "Timescale: ";
+		if (configuration.reverseTime)
+			timeScaleName += "REVERSE ";
+		timeScaleName += configuration.timeScaleName + "\n";
+		String userName = configuration.user.getName();
+		if (userName.length() > 0) {
+			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+				userName += "'";
+			else
+				userName += "'s";
+		}
+		String label = userName + " MorbidMeter\n" + timeScaleName;
+		return label;
 	}
 
 	private void displayHelpMessage() {

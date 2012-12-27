@@ -68,11 +68,13 @@ public class MorbidMeter extends AppWidgetProvider {
 			Configuration configuration = MmConfigure.loadPrefs(context,
 					widgetId);
 			String label = getLabel(configuration);
-			Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
-			String time = MorbidMeterClock.getFormattedTime();
-			remoteViews.setTextViewText(R.id.text, label);
-			remoteViews.setTextViewText(R.id.time, time);
-			appWidgetManager.updateAppWidget(widgetId, remoteViews);
+			if (label != null) {
+				Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
+				String time = MorbidMeterClock.getFormattedTime();
+				remoteViews.setTextViewText(R.id.text, label);
+				remoteViews.setTextViewText(R.id.time, time);
+				appWidgetManager.updateAppWidget(widgetId, remoteViews);
+			}
 		}
 
 		// final int count = appWidgetIds.length;
@@ -117,8 +119,8 @@ public class MorbidMeter extends AppWidgetProvider {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 		// After after 3 seconds
 		// using RTC instead of RTC_WAKEUP prevents waking of system
-		am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + 100 * 3,
-				5000, pi);
+		am.setRepeating(AlarmManager.RTC,
+				System.currentTimeMillis() + 1000 * 3, 20000, pi);
 		if (MM_DEBUG)
 			Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
 
