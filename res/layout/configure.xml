@@ -103,16 +103,22 @@
 
             <RadioButton
                 android:id="@+id/no_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/no_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/default_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/default_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/mm_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/mm_sound_label" >
             </RadioButton>
         </RadioGroup>

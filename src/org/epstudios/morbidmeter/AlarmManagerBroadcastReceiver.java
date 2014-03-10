@@ -29,6 +29,11 @@ public class AlarmManagerBroadcastReceiver extends BroadcastReceiver {
 		// You can do the processing here update the widget/remote views.
 		RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
+		// Configuration configuration = MmConfigure.loadPrefs(context,
+		// widgetId);
+		// MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
+		// configuration);
+		// String label = morbidMeterClock.getLabel();
 		String time = MorbidMeterClock.getFormattedTime();
 
 		remoteViews.setTextViewText(R.id.time, time);

@@ -1,5 +1,5 @@
 /*  MorbidMeter - Lifetime in perspective 
-    Copyright (C) 2011 EP Studios, Inc.
+    Copyright (C) 2011, 2014 EP Studios, Inc.
     www.epstudiossoftware.com
 
     This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,7 +68,9 @@ public class MorbidMeter extends AppWidgetProvider {
 					R.layout.main);
 			Configuration configuration = MmConfigure.loadPrefs(context,
 					widgetId);
-			String label = getLabel(configuration);
+			MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
+					configuration);
+			String label = morbidMeterClock.getLabel();
 			if (label != null) {
 				Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
 				// String time = getTime(context, configuration);
@@ -118,29 +121,12 @@ public class MorbidMeter extends AppWidgetProvider {
 		intent.putExtra("Test", "test");
 		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT);
-		// After after 3 seconds
 		// using RTC instead of RTC_WAKEUP prevents waking of system
 		am.setRepeating(AlarmManager.RTC,
-				System.currentTimeMillis() + 1000 * 3, 20000, pi);
+				System.currentTimeMillis() + 1000 * 3, 1000, pi);
 		if (MM_DEBUG)
 			Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
 
-	}
-
-	private String getLabel(Configuration configuration) {
-		String timeScaleName = "Timescale: ";
-		if (configuration.reverseTime)
-			timeScaleName += "REVERSE ";
-		timeScaleName += configuration.timeScaleName + "\n";
-		String userName = configuration.user.getName();
-		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
-				userName += "'";
-			else
-				userName += "'s";
-		}
-		String label = userName + " MorbidMeter\n" + timeScaleName;
-		return label;
 	}
 
 	static void updateAppWidget(Context context,
@@ -154,14 +140,16 @@ public class MorbidMeter extends AppWidgetProvider {
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
 		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
-		String time = getTime(context, configuration);
+		String time = "Test";
+		// String time = getTime(context, configuration);
 		String timeScaleName = "Timescale: ";
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName + "\n";
 		String userName = configuration.user.getName();
 		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+			if (userName.toUpperCase(Locale.getDefault()).charAt(
+					userName.length() - 1) == 'S')
 				userName += "'";
 			else
 				userName += "'s";

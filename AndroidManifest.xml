@@ -7,7 +7,7 @@
     <!-- minimum installed SDK version in my user base is 10 -->
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="14" />
+        android:targetSdkVersion="19" />
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
