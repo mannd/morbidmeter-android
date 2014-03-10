@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -215,11 +216,13 @@ public class MmConfigure extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeScaleSpinner.setAdapter(adapter);
 		itemListener = new OnItemSelectedListener() {
+			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
 				;
 			}
 
+			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// do nothing
 			}
@@ -268,8 +271,7 @@ public class MmConfigure extends Activity {
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY + appWidgetId,
-				79.0f);
+		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, "YEAR");

@@ -45,11 +45,7 @@ public class MorbidMeter extends AppWidgetProvider {
 
 	public static String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
 
-	// static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
 	private static boolean notificationOngoing = false;
-
-	// set false for production
-	private static final boolean MM_DEBUG = true;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -87,13 +83,13 @@ public class MorbidMeter extends AppWidgetProvider {
 
 			// Create an Intent to launch ExampleActivity
 			// Use this to have summary or relaunch config screen
-			// Intent intent = new Intent(context, WidgetExampleActivity.class);
-			// PendingIntent pendingIntent = PendingIntent.getActivity(context,
-			// 0, intent, 0);
+			Intent intent = new Intent(context, MmConfigure.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+					intent, 0);
 
 			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
-			// views.setOnClickPendingIntent(R.id.button, pendingIntent);
+			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
