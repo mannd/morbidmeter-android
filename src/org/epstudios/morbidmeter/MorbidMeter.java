@@ -140,6 +140,18 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
+
+		// / TODO note below uses deleted AlarmManagerBroadcastReceiver class
+		// and passes
+		// / extras to it, somehow the MmConfigure class uses this to decide
+		// whether to continue or not.
+		// Intent intent = new Intent(context,
+		// AlarmManagerBroadcastReceiver.class);
+		// can place stuff here, but not specific to each widget
+		// I think this means we can have multiple widgets, but no longer
+		// multiple
+		// configurations, i.e. they will all look the same.
+		// intent.putExtra("Test", "test");
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Calendar calendar = Calendar.getInstance();

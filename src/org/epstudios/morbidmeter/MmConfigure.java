@@ -42,7 +42,7 @@ import android.widget.RemoteViews;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
-	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private final int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
 	public static final String USER_NAME_KEY = "user_name";
 	public static final String BIRTHDAY_YEAR_KEY = "birthday_year";
@@ -85,6 +85,9 @@ public class MmConfigure extends Activity {
 
 		userNameEditText.requestFocus();
 
+		// / TODO note that below kills the activity unless extras has something
+		// in it.
+		// // skull button won't work due to this code.
 		Intent launchIntent = this.getIntent();
 		Bundle extras = launchIntent.getExtras();
 		if (extras != null)
