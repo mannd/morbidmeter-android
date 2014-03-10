@@ -70,6 +70,7 @@ public class MorbidMeter extends AppWidgetProvider {
 			String label = getLabel(configuration);
 			if (label != null) {
 				Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
+				// String time = getTime(context, configuration);
 				String time = MorbidMeterClock.getFormattedTime();
 				remoteViews.setTextViewText(R.id.text, label);
 				remoteViews.setTextViewText(R.id.time, time);
