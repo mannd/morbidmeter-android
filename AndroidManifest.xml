@@ -30,9 +30,17 @@
         <activity android:name=".MmConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.MAIN" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
 
                 <category android:name="android.intent.category.LAUNCHER" >
                 </category>
+            </intent-filter>
+        </activity>
+        <activity android:name=".Summary" >
+            <intent-filter>
+                <action android:name="android.appwidwidget.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

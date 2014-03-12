@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:configure="org.epstudios.morbidmeter.MmConfigure"
     android:initialLayout="@layout/main"
     android:minHeight="294dip"
     android:minWidth="294dip"
@@ -8,3 +7,4 @@
     android:updatePeriodMillis="0" >
 
 </appwidget-provider>
+<!-- android:configure="org.epstudios.morbidmeter.MmConfigure" -->

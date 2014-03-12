@@ -84,8 +84,10 @@ public class MorbidMeter extends AppWidgetProvider {
 			// Create an Intent to launch ExampleActivity
 			// Use this to have summary or relaunch config screen
 			Intent intent = new Intent(context, MmConfigure.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			// flag is needed or extra is null in configuration activity
 			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-					intent, 0);
+					intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
@@ -137,16 +139,22 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		super.onDeleted(context, appWidgetIds);
+		Log.d(LOG_TAG, "MM Widget deleted.");
+	}
+
+	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
 		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
 
 		// / TODO note below uses deleted AlarmManagerBroadcastReceiver class
 		// and passes
+		// / TODO this is questionable here
 		// / extras to it, somehow the MmConfigure class uses this to decide
 		// whether to continue or not.
-		// Intent intent = new Intent(context,
-		// AlarmManagerBroadcastReceiver.class);
+		// Intent intent = new Intent(context, MmConfigure.class);
 		// can place stuff here, but not specific to each widget
 		// I think this means we can have multiple widgets, but no longer
 		// multiple
@@ -160,6 +168,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		// using RTC instead of RTC_WAKEUP prevents waking of system
 		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000,
 				createClockTickIntent(context));
+
 	}
 
 	public static void updateAppWidget(Context context,

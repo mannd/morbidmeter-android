@@ -20,6 +20,7 @@ package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,7 +43,7 @@ import android.widget.RemoteViews;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
-	private final int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
 	public static final String USER_NAME_KEY = "user_name";
 	public static final String BIRTHDAY_YEAR_KEY = "birthday_year";
@@ -83,7 +84,8 @@ public class MmConfigure extends Activity {
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
 		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
-		userNameEditText.requestFocus();
+		// setting the focus is kinda annoying
+		userNameEditText.request();
 
 		// / TODO note that below kills the activity unless extras has something
 		// in it.
@@ -196,7 +198,8 @@ public class MmConfigure extends Activity {
 		timeScaleName += configuration.timeScaleName + "\n";
 		String userName = configuration.user.getName();
 		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+			if (userName.toUpperCase(Locale.getDefault()).charAt(
+					userName.length() - 1) == 'S')
 				userName += "'";
 			else
 				userName += "'s";
