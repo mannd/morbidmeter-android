@@ -81,8 +81,6 @@ public class MorbidMeter extends AppWidgetProvider {
 		for (int i = 0; i < appWidgetIds.length; ++i) {
 			int appWidgetId = appWidgetIds[i];
 
-			// Create an Intent to launch ExampleActivity
-			// Use this to have summary or relaunch config screen
 			Intent intent = new Intent(context, MmConfigure.class);
 			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 			// flag is needed or extra is null in configuration activity
@@ -92,6 +90,15 @@ public class MorbidMeter extends AppWidgetProvider {
 			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
 			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+
+			Configuration configuration = MmConfigure.loadPrefs(context,
+					appWidgetId);
+			MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
+					configuration);
+			String label = morbidMeterClock.getLabel();
+			if (label != null) {
+				views.setTextViewText(R.id.text, label);
+			}
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
@@ -126,7 +133,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		// // updateAppWidget(context, appWidgetManager, appWidgetId,
 		// // configuration);
 		// // }
-		// // super.onUpdate(context, appWidgetManager, appWidgetIds);
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
@@ -149,17 +156,6 @@ public class MorbidMeter extends AppWidgetProvider {
 		super.onEnabled(context);
 		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
 
-		// / TODO note below uses deleted AlarmManagerBroadcastReceiver class
-		// and passes
-		// / TODO this is questionable here
-		// / extras to it, somehow the MmConfigure class uses this to decide
-		// whether to continue or not.
-		// Intent intent = new Intent(context, MmConfigure.class);
-		// can place stuff here, but not specific to each widget
-		// I think this means we can have multiple widgets, but no longer
-		// multiple
-		// configurations, i.e. they will all look the same.
-		// intent.putExtra("Test", "test");
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 		Calendar calendar = Calendar.getInstance();
@@ -171,8 +167,9 @@ public class MorbidMeter extends AppWidgetProvider {
 
 	}
 
-	public static void updateAppWidget(Context context,
+	public void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
+
 		String currentTime = df.format(new Date());
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),

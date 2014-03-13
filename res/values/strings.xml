@@ -16,7 +16,7 @@
     <string name="mm_sound_label">Use MorbidMeter sound (Bells)</string>
     <string name="load_user_label">Load</string>
     <string name="save_user_label">Save</string>
-    <string name="ok_label">Launch Widget</string>
+    <string name="ok_label">Update Widget</string>
     <string name="help_label">Help</string>
     <string name="cancel_label">Cancel</string>
     <string name="user_name_label">User Name</string>
