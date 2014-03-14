@@ -7,7 +7,7 @@
     android:padding="@dimen/widget_margin" >
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
@@ -23,8 +23,7 @@
         <TextView
             android:id="@+id/text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:padding="8dp"
             android:text="@string/initial_label"
@@ -40,6 +39,6 @@
         android:padding="2dp"
         android:text="@string/app_name"
         android:textColor="@android:color/white"
-        android:textSize="16sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>
