@@ -23,7 +23,6 @@ import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,19 +39,19 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private static final String LOG_TAG = "MM";
-
 	private static final DateFormat df = new SimpleDateFormat("hh:mm:ss");
-
-	public static String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
-
+	public static final String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
 	private static boolean notificationOngoing = false;
+	static boolean firstRun = true;
+
+	private Configuration configuration;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
 
 		if (MM_CLOCK_WIDGET_UPDATE.equals(intent.getAction())) {
-			Log.d(LOG_TAG, "Clock update");
+			// Log.d(LOG_TAG, "Clock update");
 			ComponentName thisAppWidget = new ComponentName(
 					context.getPackageName(), getClass().getName());
 			AppWidgetManager appWidgetManager = AppWidgetManager
@@ -90,14 +89,15 @@ public class MorbidMeter extends AppWidgetProvider {
 			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
 			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
-
-			Configuration configuration = MmConfigure.loadPrefs(context,
-					appWidgetId);
-			MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
-					configuration);
-			String label = morbidMeterClock.getLabel();
-			if (label != null) {
-				views.setTextViewText(R.id.text, label);
+			// don't configure until skull button pushed
+			if (firstRun) {
+				firstRun = false;
+			} else {
+				MorbidMeterClock.resetConfiguration(context, appWidgetId);
+				String label = MorbidMeterClock.getLabel();
+				if (label != null) {
+					views.setTextViewText(R.id.text, label);
+				}
 			}
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -167,10 +167,13 @@ public class MorbidMeter extends AppWidgetProvider {
 
 	}
 
-	public void updateAppWidget(Context context,
+	public static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
 
-		String currentTime = df.format(new Date());
+		MorbidMeterClock.loadConfiguration(context, appWidgetId);
+
+		// String currentTime = df.format(new Date());
+		String currentTime = MorbidMeterClock.getFormattedTime();
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);

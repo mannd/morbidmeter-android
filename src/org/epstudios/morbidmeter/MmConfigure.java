@@ -90,9 +90,6 @@ public class MmConfigure extends Activity {
 		// setting the focus is kinda annoying
 		userNameEditText.requestFocus();
 
-		// / TODO note that below kills the activity unless extras has something
-		// in it.
-		// // skull button won't work due to this code.
 		Intent launchIntent = this.getIntent();
 		Bundle extras = launchIntent.getExtras();
 		if (extras != null)

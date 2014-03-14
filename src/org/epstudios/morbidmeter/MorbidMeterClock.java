@@ -24,21 +24,41 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import android.content.Context;
+
 public class MorbidMeterClock {
-	public MorbidMeterClock(String userName, String timeScaleName,
-			Calendar birthday, double longevity) {
-		this.userName = userName;
-		this.timeScaleName = timeScaleName;
-		this.birthday = birthday;
-		this.longevity = longevity;
+
+	private String userName;
+	private String timeScaleName;
+	private Calendar birthday;
+	private double longevity;
+	private static Configuration configuration = null;
+
+	// public MorbidMeterClock(String userName, String timeScaleName,
+	// Calendar birthday, double longevity) {
+	// this.userName = userName;
+	// this.timeScaleName = timeScaleName;
+	// this.birthday = birthday;
+	// this.longevity = longevity;
+	//
+	// }
+	//
+	// public MorbidMeterClock(Configuration configuration) {
+	// this.configuration = configuration;
+	// }
+
+	public static void loadConfiguration(Context context, int appWidgetId) {
+		if (configuration == null) {
+			resetConfiguration(context, appWidgetId);
+		}
+	}
+
+	public static void resetConfiguration(Context context, int appWidgetId) {
+		configuration = MmConfigure.loadPrefs(context, appWidgetId);
 
 	}
 
-	public MorbidMeterClock(Configuration configuration) {
-		this.configuration = configuration;
-	}
-
-	public String getLabel() {
+	public static String getLabel() {
 		String timeScaleName = "Timescale: ";
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
@@ -55,9 +75,9 @@ public class MorbidMeterClock {
 		return label;
 	}
 
-	public Calendar getBirthday() {
-		return birthday;
-	}
+	// public static Calendar getBirthday() {
+	// return birthday;
+	// }
 
 	static public String getFormattedTime() {
 		// for testing, clock time for now
@@ -66,9 +86,4 @@ public class MorbidMeterClock {
 		return time;
 	}
 
-	private String userName;
-	private String timeScaleName;
-	private Calendar birthday;
-	private double longevity;
-	private Configuration configuration;
 }
