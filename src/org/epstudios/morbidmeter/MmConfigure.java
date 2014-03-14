@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -88,7 +89,9 @@ public class MmConfigure extends Activity {
 		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
 		// setting the focus is kinda annoying
-		userNameEditText.requestFocus();
+		// userNameEditText.requestFocus();
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		Intent launchIntent = this.getIntent();
 		Bundle extras = launchIntent.getExtras();
@@ -288,7 +291,7 @@ public class MmConfigure extends Activity {
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
-				+ appWidgetId, "YEAR");
+				+ appWidgetId, context.getString(R.string.ts_time));
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
 				+ appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,

@@ -19,11 +19,8 @@
 package org.epstudios.morbidmeter;
 
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -102,37 +99,6 @@ public class MorbidMeter extends AppWidgetProvider {
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
-
-		// ComponentName thisWidget = new ComponentName(context,
-		// MorbidMeter.class);
-		//
-		// for (int widgetId : appWidgetManager.getAppWidgetIds(thisWidget)) {
-		// RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
-		// R.layout.main);
-		// Configuration configuration = MmConfigure.loadPrefs(context,
-		// widgetId);
-		// MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
-		// configuration);
-		// String label = morbidMeterClock.getLabel();
-		// if (label != null) {
-		// Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
-		// // String time = getTime(context, configuration);
-		// String time = MorbidMeterClock.getFormattedTime();
-		// remoteViews.setTextViewText(R.id.text, label);
-		// remoteViews.setTextViewText(R.id.time, time);
-		// appWidgetManager.updateAppWidget(widgetId, remoteViews);
-		// }
-		// }
-		//
-		// // final int count = appWidgetIds.length;
-		//
-		// // for (int i = 0; i < count; i++) {
-		// // int appWidgetId = appWidgetIds[i];
-		// // Configuration configuration = MmConfigure.loadPrefs(context,
-		// // appWidgetId);
-		// // updateAppWidget(context, appWidgetManager, appWidgetId,
-		// // configuration);
-		// // }
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
@@ -170,10 +136,11 @@ public class MorbidMeter extends AppWidgetProvider {
 	public static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
 
+		// below necessary?
 		MorbidMeterClock.loadConfiguration(context, appWidgetId);
 
 		// String currentTime = df.format(new Date());
-		String currentTime = MorbidMeterClock.getFormattedTime();
+		String currentTime = MorbidMeterClock.getFormattedTime(context);
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
@@ -295,185 +262,6 @@ public class MorbidMeter extends AppWidgetProvider {
 		Pattern p = Pattern.compile(".*[1369] [AP]M.*", Pattern.DOTALL);
 		Matcher m = p.matcher(time);
 		return m.find();
-	}
-
-	public static String getTime(Context context, Configuration configuration) {
-		final String DECIMAL_FORMAT_STRING = "#.000000";
-		String formatString = "";
-		String timeString = "";
-		String units = "";
-		Format formatter = new DecimalFormat(formatString);
-		TimeScale ts = new TimeScale();
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_percent))) {
-			ts = new TimeScale(configuration.timeScaleName, 0, 100);
-			formatString += DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
-			units = "%";
-			if (configuration.reverseTime)
-				units += " left";
-
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_debug))) {
-			ts = new TimeScale(configuration.timeScaleName, 0, 0);
-			long currentCalendarTime = Calendar.getInstance().getTimeInMillis();
-			long currentSystemTime = System.currentTimeMillis();
-			timeString = "SystemMsec = " + currentSystemTime + " msec";
-			timeString += "\nCalendarTime = " + currentCalendarTime + " msec";
-			timeString += "\nBDMsec = " + configuration.user.birthDayMsec()
-					+ " msec";
-			timeString += "\nDDMsec = " + configuration.user.deathDayMsec()
-					+ " msec";
-			timeString += "\n%Alive = " + configuration.user.percentAlive()
-					+ "%";
-			return timeString;
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_year))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2001, Calendar.JANUARY, 1));
-			formatString += "MMMM d\nh:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_day))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.JANUARY, 2));
-			formatString += "h:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_hour))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
-					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
-			formatString += "mm:ss";
-			if (configuration.useMsec)
-				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_month))) {
-			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.FEBRUARY, 1));
-			formatString += "MMMM d\nh:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
-		}
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_universe))) {
-			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
-			formatString += "##,###,###,###";
-			formatter = new DecimalFormat(formatString);
-			if (configuration.reverseTime)
-				units = " years left";
-			else
-				units = " years from Big Bang";
-		}
-		// deal with raw time scales, i.e. real time
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_raw))) {
-			if (configuration.reverseTime)
-				timeString = configuration.user.reverseMsecAlive()
-						+ " msec remaining";
-			else
-				timeString = configuration.user.msecAlive() + " msec alive";
-		} else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_seconds))) {
-			if (configuration.reverseTime)
-				timeString = configuration.user.reverseSecAlive()
-						+ " sec remaining";
-			else
-				timeString = configuration.user.secAlive() + " sec alive";
-		}
-		// age in days or years does a different calculation
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_days))) {
-			long lifeInMsec = configuration.user.lifeDurationMsec();
-			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
-
-			if (configuration.reverseTime) {
-				timeString = formatter.format(numDays(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive())));
-				units = " days left";
-			} else {
-				timeString = formatter.format(numDays(ts
-						.proportionalTime(configuration.user.percentAlive())));
-				units = " days old";
-			}
-		} else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_years))) {
-			long lifeInMsec = configuration.user.lifeDurationMsec();
-			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
-
-			if (configuration.reverseTime) {
-				timeString = formatter.format(numYears(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive())));
-				units = " years left";
-			} else {
-				timeString = formatter.format(numYears(ts
-						.proportionalTime(configuration.user.percentAlive())));
-				units = " years old";
-			}
-		} else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_hours))) {
-			long lifeInMsec = configuration.user.lifeDurationMsec();
-			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
-
-			if (configuration.reverseTime) {
-				timeString = formatter.format(numHours(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive())));
-				units = " hours left";
-			} else {
-				timeString = formatter.format(numHours(ts
-						.proportionalTime(configuration.user.percentAlive())));
-				units = " hours old";
-			}
-
-		} else {
-			if (configuration.reverseTime) {
-				timeString = formatter.format(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive()));
-			} else {
-				timeString = formatter.format(ts
-						.proportionalTime(configuration.user.percentAlive()));
-			}
-		}
-		if (configuration.useMsec && ts.okToUseMsec())
-			timeString += " msec";
-		timeString += units;
-		return timeString;
-	}
-
-	public static double numDays(double timeInMsecs) {
-		return timeInMsecs / (24 * 60 * 60 * 1000.0);
-	}
-
-	public static double numYears(double timeInMsecs) {
-		return numDays(timeInMsecs) / 365.25;
-	}
-
-	public static double numHours(double timeInMsecs) {
-		return timeInMsecs / (60 * 60 * 1000);
 	}
 
 }

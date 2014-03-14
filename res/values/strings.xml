@@ -37,6 +37,7 @@
     <string name="ts_days">DAYS</string>
     <string name="ts_years">YEARS</string>
     <string name="ts_hours">HOURS</string>
+    <string name="ts_time">CURRENT TIME</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.

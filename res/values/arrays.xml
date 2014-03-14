@@ -2,6 +2,7 @@
 <resources>
 
     <array name="timescales">
+        <item>@string/ts_time</item>
         <item>@string/ts_day</item>
         <item>@string/ts_debug</item>
         <item>@string/ts_days</item>
