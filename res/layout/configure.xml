@@ -103,16 +103,22 @@
 
             <RadioButton
                 android:id="@+id/no_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/no_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/default_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/default_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/mm_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/mm_sound_label" >
             </RadioButton>
         </RadioGroup>
@@ -123,16 +129,16 @@
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/help_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/help_label" />
-
-            <Button
                 android:id="@+id/cancel_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel_label" />
+
+            <Button
+                android:id="@+id/help_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_label" />
 
             <Button
                 android:id="@+id/ok_button"

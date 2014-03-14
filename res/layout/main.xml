@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:padding="8dp"
-            android:text="@string/app_name"
+            android:text="@string/initial_label"
             android:textColor="@android:color/white"
             android:textSize="14sp" />
     </LinearLayout>

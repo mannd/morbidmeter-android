@@ -7,10 +7,7 @@
     <!-- minimum installed SDK version in my user base is 10 -->
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="14" />
-
-    <!-- Permissions -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -22,13 +19,13 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget" />
         </receiver>
-        <receiver android:name=".AlarmManagerBroadcastReceiver" />
 
         <activity android:name=".MmConfigure" >
             <intent-filter>

@@ -1,5 +1,5 @@
 /*  MorbidMeter - Lifetime in perspective 
-    Copyright (C) 2011 EP Studios, Inc.
+    Copyright (C) 2011, 2014 EP Studios, Inc.
     www.epstudiossoftware.com
 
     This program is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 
 package org.epstudios.morbidmeter;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -27,209 +28,249 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 public class MorbidMeter extends AppWidgetProvider {
-	static final String ACTION_WIDGET_REFRESH = "ActionReceiverRefresh";
-	static boolean notificationOngoing = false;
-	// set false for production
-	static final boolean MM_DEBUG = true;
+	private static final String LOG_TAG = "MM";
+	private static final DateFormat df = new SimpleDateFormat("hh:mm:ss");
+	public static final String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
+	private static boolean notificationOngoing = false;
+	static boolean firstRun = true;
+
+	private Configuration configuration;
 
 	@Override
-	public void onDeleted(Context context, int[] appWidgetIds) {
-		if (MM_DEBUG)
-			Toast.makeText(context, "MM WidgetRemoved id(s):" + appWidgetIds,
-					Toast.LENGTH_SHORT).show();
-		super.onDeleted(context, appWidgetIds);
+	public void onReceive(Context context, Intent intent) {
+		super.onReceive(context, intent);
+
+		if (MM_CLOCK_WIDGET_UPDATE.equals(intent.getAction())) {
+			// Log.d(LOG_TAG, "Clock update");
+			ComponentName thisAppWidget = new ComponentName(
+					context.getPackageName(), getClass().getName());
+			AppWidgetManager appWidgetManager = AppWidgetManager
+					.getInstance(context);
+			int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
+			for (int appWidgetID : ids) {
+				updateAppWidget(context, appWidgetManager, appWidgetID);
+			}
+		}
+	}
+
+	private PendingIntent createClockTickIntent(Context context) {
+		Intent intent = new Intent(MM_CLOCK_WIDGET_UPDATE);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		return pendingIntent;
 	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		if (MM_DEBUG)
-			Toast.makeText(context, "onUpdate()", Toast.LENGTH_SHORT).show();
 
-		ComponentName thisWidget = new ComponentName(context, MorbidMeter.class);
+		Log.d(LOG_TAG, "Updating MM Widgets.");
 
-		for (int widgetId : appWidgetManager.getAppWidgetIds(thisWidget)) {
-			RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+		for (int i = 0; i < appWidgetIds.length; ++i) {
+			int appWidgetId = appWidgetIds[i];
+
+			Intent intent = new Intent(context, MmConfigure.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			// flag is needed or extra is null in configuration activity
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+					intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
-			Configuration configuration = MmConfigure.loadPrefs(context,
-					widgetId);
-			String label = getLabel(configuration);
-			if (label != null) {
-				Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
-				// String time = getTime(context, configuration);
-				String time = MorbidMeterClock.getFormattedTime();
-				remoteViews.setTextViewText(R.id.text, label);
-				remoteViews.setTextViewText(R.id.time, time);
-				appWidgetManager.updateAppWidget(widgetId, remoteViews);
+			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+			// don't configure until skull button pushed
+			if (firstRun) {
+				firstRun = false;
+			} else {
+				MorbidMeterClock.resetConfiguration(context, appWidgetId);
+				String label = MorbidMeterClock.getLabel();
+				if (label != null) {
+					views.setTextViewText(R.id.text, label);
+				}
 			}
+
+			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 
-		// final int count = appWidgetIds.length;
-
-		// for (int i = 0; i < count; i++) {
-		// int appWidgetId = appWidgetIds[i];
+		// ComponentName thisWidget = new ComponentName(context,
+		// MorbidMeter.class);
+		//
+		// for (int widgetId : appWidgetManager.getAppWidgetIds(thisWidget)) {
+		// RemoteViews remoteViews = new RemoteViews(context.getPackageName(),
+		// R.layout.main);
 		// Configuration configuration = MmConfigure.loadPrefs(context,
-		// appWidgetId);
-		// updateAppWidget(context, appWidgetManager, appWidgetId,
+		// widgetId);
+		// MorbidMeterClock morbidMeterClock = new MorbidMeterClock(
 		// configuration);
+		// String label = morbidMeterClock.getLabel();
+		// if (label != null) {
+		// Toast.makeText(context, label, Toast.LENGTH_SHORT).show();
+		// // String time = getTime(context, configuration);
+		// String time = MorbidMeterClock.getFormattedTime();
+		// remoteViews.setTextViewText(R.id.text, label);
+		// remoteViews.setTextViewText(R.id.time, time);
+		// appWidgetManager.updateAppWidget(widgetId, remoteViews);
 		// }
-		// super.onUpdate(context, appWidgetManager, appWidgetIds);
+		// }
+		//
+		// // final int count = appWidgetIds.length;
+		//
+		// // for (int i = 0; i < count; i++) {
+		// // int appWidgetId = appWidgetIds[i];
+		// // Configuration configuration = MmConfigure.loadPrefs(context,
+		// // appWidgetId);
+		// // updateAppWidget(context, appWidgetManager, appWidgetId,
+		// // configuration);
+		// // }
+		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
 	@Override
 	public void onDisabled(Context context) {
-		if (MM_DEBUG)
-			Toast.makeText(context,
-					"onDisabled():last widget instance removed",
-					Toast.LENGTH_SHORT).show();
-		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
-		PendingIntent sender = PendingIntent
-				.getBroadcast(context, 0, intent, 0);
+		super.onDisabled(context);
+		Log.d(LOG_TAG, "MM Widget disabled.  Turning off timer.");
 		AlarmManager alarmManager = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.cancel(sender);
-		super.onDisabled(context);
+		alarmManager.cancel(createClockTickIntent(context));
+	}
+
+	@Override
+	public void onDeleted(Context context, int[] appWidgetIds) {
+		super.onDeleted(context, appWidgetIds);
+		Log.d(LOG_TAG, "MM Widget deleted.");
 	}
 
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
+		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
+
 		AlarmManager am = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
-		Intent intent = new Intent(context, AlarmManagerBroadcastReceiver.class);
-		// can place stuff here, but not specific to each widget
-		// I think this means we can have multiple widgets, but no longer
-		// multiple
-		// configurations, i.e. they will all look the same.
-		intent.putExtra("Test", "test");
-		PendingIntent pi = PendingIntent.getBroadcast(context, 0, intent,
-				PendingIntent.FLAG_UPDATE_CURRENT);
-		// After after 3 seconds
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.SECOND, 1);
 		// using RTC instead of RTC_WAKEUP prevents waking of system
-		am.setRepeating(AlarmManager.RTC,
-				System.currentTimeMillis() + 1000 * 3, 20000, pi);
-		if (MM_DEBUG)
-			Toast.makeText(context, "onEnabled()", Toast.LENGTH_SHORT).show();
+		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000,
+				createClockTickIntent(context));
 
 	}
 
-	private String getLabel(Configuration configuration) {
-		String timeScaleName = "Timescale: ";
-		if (configuration.reverseTime)
-			timeScaleName += "REVERSE ";
-		timeScaleName += configuration.timeScaleName + "\n";
-		String userName = configuration.user.getName();
-		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
-				userName += "'";
-			else
-				userName += "'s";
-		}
-		String label = userName + " MorbidMeter\n" + timeScaleName;
-		return label;
-	}
+	public static void updateAppWidget(Context context,
+			AppWidgetManager appWidgetManager, int appWidgetId) {
 
-	static void updateAppWidget(Context context,
-			AppWidgetManager appWidgetManager, int appWidgetId,
-			Configuration configuration) {
-		Intent intent = new Intent(context, MorbidMeter.class);
-		intent.setAction(ACTION_WIDGET_REFRESH);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-				intent, 0);
+		MorbidMeterClock.loadConfiguration(context, appWidgetId);
+
+		// String currentTime = df.format(new Date());
+		String currentTime = MorbidMeterClock.getFormattedTime();
 
 		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
 				R.layout.main);
-		updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
-		String time = getTime(context, configuration);
-		String timeScaleName = "Timescale: ";
-		if (configuration.reverseTime)
-			timeScaleName += "REVERSE ";
-		timeScaleName += configuration.timeScaleName + "\n";
-		String userName = configuration.user.getName();
-		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
-				userName += "'";
-			else
-				userName += "'s";
-		}
-		String label = userName + " MorbidMeter\n" + timeScaleName;
-		if (configuration.user.isDead())
-			label += context.getString(R.string.user_dead_message);
-		else
-			label += time;
-		updateViews.setTextViewText(R.id.text, label);
-		Boolean isMilestone = isMilestone(context, configuration, time);
-		// being dead is a milestone too!
-		isMilestone = isMilestone || configuration.user.isDead();
-		// if below true will ignore milestones and send notification with each
-		// update
-		if (notificationOngoing)
-			if (!isMilestone)
-				notificationOngoing = false;
-		Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
-		Boolean debugNotifications = false;
-		if (debugNotifications
-				|| (configuration.showNotifications && isMilestone && !notificationOngoing)) {
-			NotificationManager notificationManager = (NotificationManager) context
-					.getSystemService(Context.NOTIFICATION_SERVICE);
-			Notification notification = new Notification(
-					R.drawable.notificationskull, "MorbidMeter Milestone",
-					System.currentTimeMillis());
-			notification.flags |= Notification.FLAG_AUTO_CANCEL;
-			Intent notificationIntent = new Intent(context, MorbidMeter.class);
-			PendingIntent notyPendingIntent = PendingIntent.getActivity(
-					context, 0, notificationIntent, 0);
-			notification.setLatestEventInfo(context, "MorbidMeter", time,
-					notyPendingIntent);
-			if (configuration.notificationSound == R.id.default_sound)
-				notification.defaults |= Notification.DEFAULT_SOUND;
-			else if (configuration.notificationSound == R.id.mm_sound)
-				notification.sound = Uri
-						.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-			notificationManager.notify(1, notification);
-			notificationOngoing = true;
-		}
+		updateViews.setTextViewText(R.id.time, currentTime);
 		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	}
 
-	// is public for testing
-	public static Boolean isMilestone(Context context,
-			Configuration configuration, String time) {
-		if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_year)))
-			// return isTestTime(time); // for testing
-			// return isEvenMinute(time); // for testing
-			return isEvenHour(time);
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_month))
-				|| configuration.timeScaleName.equals(context
-						.getString(R.string.ts_day)))
-			return isEvenMinute(time);
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_age))
-				|| configuration.timeScaleName.equals(context
-						.getString(R.string.ts_percent)))
-			return isEvenPercentage(time);
-		else if (configuration.timeScaleName.equals(context
-				.getString(R.string.ts_universe)))
-			return isEvenMillion(time);
-		else
-			return false;
-	}
+	// static void updateAppWidget(Context context,
+	// AppWidgetManager appWidgetManager, int appWidgetId,
+	// Configuration configuration) {
+	// Intent intent = new Intent(context, MorbidMeter.class);
+	// intent.setAction(ACTION_WIDGET_REFRESH);
+	// PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+	// intent, 0);
+	//
+	// RemoteViews updateViews = new RemoteViews(context.getPackageName(),
+	// R.layout.main);
+	// updateViews.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+	// String time = "Test";
+	// // String time = getTime(context, configuration);
+	// String timeScaleName = "Timescale: ";
+	// if (configuration.reverseTime)
+	// timeScaleName += "REVERSE ";
+	// timeScaleName += configuration.timeScaleName + "\n";
+	// String userName = configuration.user.getName();
+	// if (userName.length() > 0) {
+	// if (userName.toUpperCase(Locale.getDefault()).charAt(
+	// userName.length() - 1) == 'S')
+	// userName += "'";
+	// else
+	// userName += "'s";
+	// }
+	// String label = userName + " MorbidMeter\n" + timeScaleName;
+	// if (configuration.user.isDead())
+	// label += context.getString(R.string.user_dead_message);
+	// else
+	// label += time;
+	// updateViews.setTextViewText(R.id.text, label);
+	// Boolean isMilestone = isMilestone(context, configuration, time);
+	// // being dead is a milestone too!
+	// isMilestone = isMilestone || configuration.user.isDead();
+	// // if below true will ignore milestones and send notification with each
+	// // update
+	// if (notificationOngoing)
+	// if (!isMilestone)
+	// notificationOngoing = false;
+	// Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
+	// Boolean debugNotifications = false;
+	// if (debugNotifications
+	// || (configuration.showNotifications && isMilestone &&
+	// !notificationOngoing)) {
+	// NotificationManager notificationManager = (NotificationManager) context
+	// .getSystemService(Context.NOTIFICATION_SERVICE);
+	// Notification notification = new Notification(
+	// R.drawable.notificationskull, "MorbidMeter Milestone",
+	// System.currentTimeMillis());
+	// notification.flags |= Notification.FLAG_AUTO_CANCEL;
+	// Intent notificationIntent = new Intent(context, MorbidMeter.class);
+	// PendingIntent notyPendingIntent = PendingIntent.getActivity(
+	// context, 0, notificationIntent, 0);
+	// notification.setLatestEventInfo(context, "MorbidMeter", time,
+	// notyPendingIntent);
+	// if (configuration.notificationSound == R.id.default_sound)
+	// notification.defaults |= Notification.DEFAULT_SOUND;
+	// else if (configuration.notificationSound == R.id.mm_sound)
+	// notification.sound = Uri
+	// .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+	// notificationManager.notify(1, notification);
+	// notificationOngoing = true;
+	// }
+	// appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+	// }
+	//
+	// // is public for testing
+	// public static Boolean isMilestone(Context context,
+	// Configuration configuration, String time) {
+	// if (configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_year)))
+	// // return isTestTime(time); // for testing
+	// // return isEvenMinute(time); // for testing
+	// return isEvenHour(time);
+	// else if (configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_month))
+	// || configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_day)))
+	// return isEvenMinute(time);
+	// else if (configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_age))
+	// || configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_percent)))
+	// return isEvenPercentage(time);
+	// else if (configuration.timeScaleName.equals(context
+	// .getString(R.string.ts_universe)))
+	// return isEvenMillion(time);
+	// else
+	// return false;
+	// }
 
 	public static Boolean isEvenHour(String time) {
 		return time.contains(":00:");

@@ -20,15 +20,19 @@ package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
@@ -37,10 +41,11 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.RemoteViews;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
+	private static final String LOG_TAG = "MM";
+
 	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
 	public static final String USER_NAME_KEY = "user_name";
@@ -82,6 +87,7 @@ public class MmConfigure extends Activity {
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
 		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
+		// setting the focus is kinda annoying
 		userNameEditText.requestFocus();
 
 		Intent launchIntent = this.getIntent();
@@ -95,6 +101,7 @@ public class MmConfigure extends Activity {
 		setAdapters();
 
 		final Context context = MmConfigure.this;
+
 		configuration = loadPrefs(context, loadLastAppWidgetId(context));
 
 		userNameEditText.setText(configuration.user.getName());
@@ -104,8 +111,8 @@ public class MmConfigure extends Activity {
 		birthDayDatePicker.updateDate(year, month, day);
 		longevityEditText.setText(Double.toString(configuration.user
 				.getLongevity()));
-		@SuppressWarnings("unchecked")
 		// best way to do this is below, so suppress warning
+		@SuppressWarnings("unchecked")
 		ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) timeScaleSpinner
 				.getAdapter();
 		int position = arrayAdapter.getPosition(configuration.timeScaleName);
@@ -141,12 +148,19 @@ public class MmConfigure extends Activity {
 					savePrefs(context, appWidgetId, configuration);
 					AppWidgetManager appWidgetManager = AppWidgetManager
 							.getInstance(context);
-					RemoteViews views = new RemoteViews(context
-							.getPackageName(), R.layout.main);
+					ComponentName thisAppWidget = new ComponentName(context
+							.getPackageName(), MorbidMeter.class.getName());
+					Intent updateMmIntent = new Intent(context,
+							MorbidMeter.class);
+					int[] appWidgetIds = appWidgetManager
+							.getAppWidgetIds(thisAppWidget);
+					updateMmIntent
+							.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+					updateMmIntent.putExtra(
+							AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+					context.sendBroadcast(updateMmIntent);
+					Log.d(LOG_TAG, "onUpdate broadcast sent");
 
-					views.setTextViewText(R.id.text, getLabel(configuration));
-
-					appWidgetManager.updateAppWidget(appWidgetId, views);
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);
@@ -192,7 +206,8 @@ public class MmConfigure extends Activity {
 		timeScaleName += configuration.timeScaleName + "\n";
 		String userName = configuration.user.getName();
 		if (userName.length() > 0) {
-			if (userName.toUpperCase().charAt(userName.length() - 1) == 'S')
+			if (userName.toUpperCase(Locale.getDefault()).charAt(
+					userName.length() - 1) == 'S')
 				userName += "'";
 			else
 				userName += "'s";
@@ -215,11 +230,13 @@ public class MmConfigure extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeScaleSpinner.setAdapter(adapter);
 		itemListener = new OnItemSelectedListener() {
+			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
 				;
 			}
 
+			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// do nothing
 			}
@@ -268,8 +285,7 @@ public class MmConfigure extends Activity {
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY + appWidgetId,
-				79.0f);
+		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, "YEAR");
