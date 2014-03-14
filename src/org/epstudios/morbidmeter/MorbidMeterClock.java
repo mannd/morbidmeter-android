@@ -22,7 +22,6 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import android.content.Context;
 
@@ -63,14 +62,7 @@ public class MorbidMeterClock {
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName + "\n";
-		String userName = configuration.user.getName();
-		if (userName.length() > 0) {
-			if (userName.toUpperCase(Locale.getDefault()).charAt(
-					userName.length() - 1) == 'S')
-				userName += "'";
-			else
-				userName += "'s";
-		}
+		String userName = configuration.user.getApostrophedName();
 		String label = userName + " MorbidMeter\n" + timeScaleName;
 		return label;
 	}

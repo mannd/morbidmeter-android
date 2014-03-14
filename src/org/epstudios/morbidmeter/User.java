@@ -20,6 +20,7 @@ package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class User {
 	final private double daysPerYear = 365.25;
@@ -121,6 +122,16 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getApostrophedName() {
+		if (name.length() > 0) {
+			if (name.toUpperCase(Locale.getDefault()).charAt(name.length() - 1) == 'S')
+				name += "'";
+			else
+				name += "'s";
+		}
+		return name;
 	}
 
 	public Calendar getBirthDay() {
