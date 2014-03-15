@@ -48,7 +48,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		super.onReceive(context, intent);
 
 		if (MM_CLOCK_WIDGET_UPDATE.equals(intent.getAction())) {
-			// Log.d(LOG_TAG, "Clock update");
+			Log.d(LOG_TAG, "Clock update");
 			ComponentName thisAppWidget = new ComponentName(
 					context.getPackageName(), getClass().getName());
 			AppWidgetManager appWidgetManager = AppWidgetManager
@@ -87,14 +87,14 @@ public class MorbidMeter extends AppWidgetProvider {
 					R.layout.main);
 			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 			// don't configure until skull button pushed
-			if (firstRun) {
-				firstRun = false;
-			} else {
-				MorbidMeterClock.resetConfiguration(context, appWidgetId);
-				String label = MorbidMeterClock.getLabel();
-				if (label != null) {
-					views.setTextViewText(R.id.text, label);
-				}
+			MorbidMeterClock.resetConfiguration(context, appWidgetId);
+			String label = MorbidMeterClock.getLabel();
+			if (label != null) {
+				views.setTextViewText(R.id.text, label);
+			}
+			String currentTime = MorbidMeterClock.getFormattedTime(context);
+			if (currentTime != null) {
+				views.setTextViewText(R.id.time, currentTime);
 			}
 
 			appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -128,15 +128,19 @@ public class MorbidMeter extends AppWidgetProvider {
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.add(Calendar.SECOND, 1);
 		// using RTC instead of RTC_WAKEUP prevents waking of system
-		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 1000,
-				createClockTickIntent(context));
+		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+				1000 * 60 * 15, createClockTickIntent(context));
+		// / TODO reload config from before
+		// MorbidMeterClock.getLastConfiguration(context);
+		int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
+				new ComponentName(context, MorbidMeter.class));
+		onUpdate(context, AppWidgetManager.getInstance(context), allIds);
 
 	}
 
 	public static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
 
-		// below necessary?
 		MorbidMeterClock.loadConfiguration(context, appWidgetId);
 
 		// String currentTime = df.format(new Date());

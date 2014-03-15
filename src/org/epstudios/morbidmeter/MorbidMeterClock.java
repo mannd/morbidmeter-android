@@ -43,6 +43,11 @@ public class MorbidMeterClock {
 
 	}
 
+	public static void getLastConfiguration(Context context) {
+		configuration = MmConfigure.loadPrefs(context,
+				MmConfigure.loadLastAppWidgetId(context));
+	}
+
 	public static String getLabel() {
 		String timeScaleName = "Timescale:\n";
 		if (configuration.reverseTime)
