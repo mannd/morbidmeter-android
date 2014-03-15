@@ -64,15 +64,24 @@ public class User {
 	}
 
 	public long reverseMsecAlive() {
-		return deathDayMsec() - msecAlive();
+		// return deathDayMsec() - msecAlive();
+		return lifeDurationMsec() - msecAlive();
 	}
 
 	public long secAlive() {
-		return msecAlive() / 60;
+		return msecAlive() / 1000;
 	}
 
 	public double daysAlive() {
 		return secAlive() / 60 * 60 * 24.0;
+	}
+
+	public double minutesAlive() {
+		return secAlive() / 60;
+	}
+
+	public double reverseMinutesAlive() {
+		return reverseSecAlive() / 60;
 	}
 
 	public double reverseDaysAlive() {

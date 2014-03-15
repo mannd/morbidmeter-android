@@ -30,24 +30,7 @@ import android.content.Context;
 
 public class MorbidMeterClock {
 
-	private String userName;
-	private String timeScaleName;
-	private Calendar birthday;
-	private double longevity;
 	private static Configuration configuration = null;
-
-	// public MorbidMeterClock(String userName, String timeScaleName,
-	// Calendar birthday, double longevity) {
-	// this.userName = userName;
-	// this.timeScaleName = timeScaleName;
-	// this.birthday = birthday;
-	// this.longevity = longevity;
-	//
-	// }
-	//
-	// public MorbidMeterClock(Configuration configuration) {
-	// this.configuration = configuration;
-	// }
 
 	public static void loadConfiguration(Context context, int appWidgetId) {
 		if (configuration == null) {
@@ -61,22 +44,19 @@ public class MorbidMeterClock {
 	}
 
 	public static String getLabel() {
-		String timeScaleName = "Timescale: ";
+		String timeScaleName = "Timescale:\n";
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
-		timeScaleName += configuration.timeScaleName + "\n";
+		timeScaleName += configuration.timeScaleName;
 		String userName = configuration.user.getApostrophedName();
 		String label = userName + " MorbidMeter\n" + timeScaleName;
 		return label;
 	}
 
-	// public static Calendar getBirthday() {
-	// return birthday;
-	// }
-
 	static public String getFormattedTime(Context context) {
 
 		final String DECIMAL_FORMAT_STRING = "#.000000";
+		final String SHORT_DECIMAL_FORMAT_STRING = "#.0000";
 		String formatString = "";
 		String timeString = "";
 		String units = "";
@@ -102,16 +82,13 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_debug))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 0);
-			long currentCalendarTime = Calendar.getInstance().getTimeInMillis();
 			long currentSystemTime = System.currentTimeMillis();
-			timeString = "SystemMsec = " + currentSystemTime + " msec";
-			timeString += "\nCalendarTime = " + currentCalendarTime + " msec";
-			timeString += "\nBDMsec = " + configuration.user.birthDayMsec()
-					+ " msec";
-			timeString += "\nDDMsec = " + configuration.user.deathDayMsec()
-					+ " msec";
-			timeString += "\n%Alive = " + configuration.user.percentAlive()
-					+ "%";
+			timeString = "System Time " + currentSystemTime + " ms";
+			timeString += "\nBirth " + configuration.user.birthDayMsec()
+					+ " ms";
+			timeString += "\nDeath " + configuration.user.deathDayMsec()
+					+ " ms";
+			timeString += "\n%Alive " + configuration.user.percentAlive() + "%";
 			return timeString;
 		}
 		if (configuration.timeScaleName.equals(context
@@ -139,7 +116,7 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
-			formatString += "mm:ss";
+			formatString += "hh:mm:ss";
 			if (configuration.useMsec)
 				formatString += " S";
 			formatter = new SimpleDateFormat(formatString);
@@ -162,7 +139,7 @@ public class MorbidMeterClock {
 			if (configuration.reverseTime)
 				units = " years left";
 			else
-				units = " years from Big Bang";
+				units = " yrs from Big Bang";
 		}
 		// deal with raw time scales, i.e. real time
 		if (configuration.timeScaleName.equals(context
@@ -185,7 +162,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_days))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
+			formatString += SHORT_DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -219,7 +196,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_hours))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
+			formatString += SHORT_DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -231,6 +208,23 @@ public class MorbidMeterClock {
 				timeString = formatter.format(numHours(ts
 						.proportionalTime(configuration.user.percentAlive())));
 				units = " hours old";
+			}
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_minutes))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString += SHORT_DECIMAL_FORMAT_STRING;
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numMinutes(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " mins left";
+			} else {
+				timeString = formatter.format(numMinutes(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " mins old";
 			}
 
 		} else {
@@ -260,5 +254,9 @@ public class MorbidMeterClock {
 
 	public static double numHours(double timeInMsecs) {
 		return timeInMsecs / (60 * 60 * 1000);
+	}
+
+	public static double numMinutes(double timeInMsecs) {
+		return timeInMsecs / (60 * 1000);
 	}
 }

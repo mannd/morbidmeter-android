@@ -18,9 +18,11 @@
 
 package org.epstudios.morbidmeter;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -120,10 +122,13 @@ public class MmConfigure extends Activity {
 				.getAdapter();
 		int position = arrayAdapter.getPosition(configuration.timeScaleName);
 		timeScaleSpinner.setSelection(position);
+		// timeScaleSpinner.set
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
 		notificationSoundRadioGroup.check(configuration.notificationSound);
+
+		setEnabledOptions(configuration.timeScaleName);
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -202,23 +207,6 @@ public class MmConfigure extends Activity {
 		});
 	}
 
-	private final String getLabel(Configuration configuration) {
-		String timeScaleName = "Timescale: ";
-		if (configuration.reverseTime)
-			timeScaleName += "REVERSE ";
-		timeScaleName += configuration.timeScaleName + "\n";
-		String userName = configuration.user.getName();
-		if (userName.length() > 0) {
-			if (userName.toUpperCase(Locale.getDefault()).charAt(
-					userName.length() - 1) == 'S')
-				userName += "'";
-			else
-				userName += "'s";
-		}
-		String label = userName + " MorbidMeter\n" + timeScaleName;
-		return label;
-	}
-
 	private void displayHelpMessage() {
 		AlertDialog dialog = new AlertDialog.Builder(this).create();
 		String message = getString(R.string.help_message);
@@ -236,7 +224,8 @@ public class MmConfigure extends Activity {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
-				;
+				setEnabledOptions((String) timeScaleSpinner.getSelectedItem());
+
 			}
 
 			@Override
@@ -248,6 +237,19 @@ public class MmConfigure extends Activity {
 
 		timeScaleSpinner.setOnItemSelectedListener(itemListener);
 
+	}
+
+	private void setEnabledOptions(String timeScaleName) {
+		// change to hasMsec and implement
+		// Also need same for notifications, reverse time sets
+		// / TODO
+		final Set<String> noMsecSet = new HashSet<String>(Arrays.asList(this
+				.getString(R.string.ts_debug)));
+		boolean noMsec = noMsecSet.contains(timeScaleName);
+		useMsecCheckBox.setEnabled(!noMsec);
+		if (noMsec) {
+			useMsecCheckBox.setChecked(false);
+		}
 	}
 
 	static void savePrefs(Context context, int appWidgetId,
