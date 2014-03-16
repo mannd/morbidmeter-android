@@ -249,6 +249,10 @@ public class MorbidMeterClock {
 		return timeString;
 	}
 
+	public static int percentAlive() {
+		return (int) (configuration.user.percentAlive() * 100);
+	}
+
 	public static double numDays(double timeInMsecs) {
 		return timeInMsecs / (24 * 60 * 60 * 1000.0);
 	}

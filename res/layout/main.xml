@@ -31,6 +31,13 @@
             android:textSize="12sp" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
+
     <TextView
         android:id="@+id/time"
         android:layout_width="match_parent"

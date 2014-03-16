@@ -40,6 +40,7 @@
     <string name="ts_hours">HOURS</string>
     <string name="ts_minutes">MINUTES</string>
     <string name="ts_time">CURRENT TIME</string>
+    <string name="ts_none">NONE</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.

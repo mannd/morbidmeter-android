@@ -15,6 +15,7 @@
         <item>@string/ts_year</item>
         <item>@string/ts_universe</item>
         <item>@string/ts_percent</item>
+        <item>@string/ts_none</item>
         <item>@string/ts_debug</item>
     </array>
 

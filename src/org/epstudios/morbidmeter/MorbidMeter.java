@@ -32,6 +32,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
@@ -42,6 +43,33 @@ public class MorbidMeter extends AppWidgetProvider {
 	static boolean firstRun = true;
 
 	private Configuration configuration;
+
+	@Override
+	public void onEnabled(Context context) {
+		super.onEnabled(context);
+		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
+
+		AlarmManager am = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.SECOND, 1);
+		// using RTC instead of RTC_WAKEUP prevents waking of system
+		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
+				1000 * 60 * 15, createClockTickIntent(context)); // MorbidMeterClock.getLastConfiguration(context);
+		int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
+				new ComponentName(context, MorbidMeter.class));
+		onUpdate(context, AppWidgetManager.getInstance(context), allIds);
+
+	}
+
+	private PendingIntent createClockTickIntent(Context context) {
+		Intent intent = new Intent(MM_CLOCK_WIDGET_UPDATE);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		return pendingIntent;
+	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -58,14 +86,6 @@ public class MorbidMeter extends AppWidgetProvider {
 				updateAppWidget(context, appWidgetManager, appWidgetID);
 			}
 		}
-	}
-
-	private PendingIntent createClockTickIntent(Context context) {
-		Intent intent = new Intent(MM_CLOCK_WIDGET_UPDATE);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		return pendingIntent;
 	}
 
 	@Override
@@ -86,17 +106,14 @@ public class MorbidMeter extends AppWidgetProvider {
 			RemoteViews views = new RemoteViews(context.getPackageName(),
 					R.layout.main);
 			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
-			// don't configure until skull button pushed
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
+			// Label only needs to be changed onUpdate and onEnabled
+			// (which calls onUpdate).
 			String label = MorbidMeterClock.getLabel();
 			if (label != null) {
 				views.setTextViewText(R.id.text, label);
 			}
-			String currentTime = MorbidMeterClock.getFormattedTime(context);
-			if (currentTime != null) {
-				views.setTextViewText(R.id.time, currentTime);
-			}
-
+			updateViews(context, views);
 			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
@@ -117,39 +134,29 @@ public class MorbidMeter extends AppWidgetProvider {
 		Log.d(LOG_TAG, "MM Widget deleted.");
 	}
 
-	@Override
-	public void onEnabled(Context context) {
-		super.onEnabled(context);
-		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
-
-		AlarmManager am = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.add(Calendar.SECOND, 1);
-		// using RTC instead of RTC_WAKEUP prevents waking of system
-		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-				1000 * 60 * 15, createClockTickIntent(context));
-		// / TODO reload config from before
-		// MorbidMeterClock.getLastConfiguration(context);
-		int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
-				new ComponentName(context, MorbidMeter.class));
-		onUpdate(context, AppWidgetManager.getInstance(context), allIds);
-
-	}
-
 	public static void updateAppWidget(Context context,
 			AppWidgetManager appWidgetManager, int appWidgetId) {
 
 		MorbidMeterClock.loadConfiguration(context, appWidgetId);
 
-		// String currentTime = df.format(new Date());
-		String currentTime = MorbidMeterClock.getFormattedTime(context);
-
-		RemoteViews updateViews = new RemoteViews(context.getPackageName(),
+		RemoteViews views = new RemoteViews(context.getPackageName(),
 				R.layout.main);
-		updateViews.setTextViewText(R.id.time, currentTime);
-		appWidgetManager.updateAppWidget(appWidgetId, updateViews);
+		updateViews(context, views);
+		appWidgetManager.updateAppWidget(appWidgetId, views);
+	}
+
+	private static void updateViews(Context context, RemoteViews views) {
+		String currentTime = MorbidMeterClock.getFormattedTime(context);
+		if (currentTime != null) {
+			if (currentTime.equals("0")) {
+				views.setViewVisibility(R.id.time, View.GONE);
+			} else {
+				views.setViewVisibility(R.id.time, View.VISIBLE);
+				views.setTextViewText(R.id.time, currentTime);
+			}
+		}
+		views.setProgressBar(R.id.progressBar, 100,
+				MorbidMeterClock.percentAlive(), false);
 	}
 
 	// static void updateAppWidget(Context context,
