@@ -243,11 +243,14 @@ public class MmConfigure extends Activity {
 		// change to hasMsec and implement
 		// Also need same for notifications, reverse time sets
 		// / TODO
-		final Set<String> noMsecSet = new HashSet<String>(Arrays.asList(this
-				.getString(R.string.ts_debug)));
-		boolean noMsec = noMsecSet.contains(timeScaleName);
-		useMsecCheckBox.setEnabled(!noMsec);
-		if (noMsec) {
+		final Set<String> okMsecSet = new HashSet<String>(Arrays.asList(
+				this.getString(R.string.ts_day),
+				this.getString(R.string.ts_hour),
+				this.getString(R.string.ts_month),
+				this.getString(R.string.ts_year)));
+		boolean okMsec = okMsecSet.contains(timeScaleName);
+		useMsecCheckBox.setEnabled(okMsec);
+		if (!okMsec) {
 			useMsecCheckBox.setChecked(false);
 		}
 	}

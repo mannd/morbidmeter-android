@@ -27,6 +27,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import android.content.Context;
+import android.util.Log;
 
 public class MorbidMeterClock {
 
@@ -65,8 +66,14 @@ public class MorbidMeterClock {
 		String formatString = "";
 		String timeString = "";
 		String units = "";
+		Log.d("MM", "percent alive = " + configuration.user.percentAlive());
+		Log.d("MM", "birthday msec = " + configuration.user.birthDayMsec());
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_none))) {
+			return "0";
+		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_percent))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);

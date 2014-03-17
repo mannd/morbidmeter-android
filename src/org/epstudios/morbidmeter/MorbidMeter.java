@@ -148,6 +148,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	private static void updateViews(Context context, RemoteViews views) {
 		String currentTime = MorbidMeterClock.getFormattedTime(context);
 		if (currentTime != null) {
+			Log.d(LOG_TAG, "Current time = " + currentTime);
 			if (currentTime.equals("0")) {
 				views.setViewVisibility(R.id.time, View.GONE);
 			} else {
