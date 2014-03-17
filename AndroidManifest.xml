@@ -30,12 +30,11 @@
         <activity android:name=".MmConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.MAIN" />
-                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
-
-                <category android:name="android.intent.category.LAUNCHER" >
-                </category>
             </intent-filter>
         </activity>
+
+        <service android:name=".MmService" >
+        </service>
     </application>
 
 </manifest>

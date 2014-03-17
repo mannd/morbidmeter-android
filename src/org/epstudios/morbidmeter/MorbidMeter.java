@@ -18,9 +18,6 @@
 
 package org.epstudios.morbidmeter;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,110 +25,97 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private static final String LOG_TAG = "MM";
-	private static final DateFormat df = new SimpleDateFormat("hh:mm:ss");
 	public static final String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
 	private static boolean notificationOngoing = false;
-	static boolean firstRun = true;
+	// static boolean firstRun = true;
 
 	private Configuration configuration;
 
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
-		Log.d(LOG_TAG, "MM Widget enabled.  Starting timer.");
-
-		AlarmManager am = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.add(Calendar.SECOND, 1);
-		// using RTC instead of RTC_WAKEUP prevents waking of system
-		am.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(),
-				1000 * 60 * 15, createClockTickIntent(context)); // MorbidMeterClock.getLastConfiguration(context);
-		int[] allIds = AppWidgetManager.getInstance(context).getAppWidgetIds(
-				new ComponentName(context, MorbidMeter.class));
-		onUpdate(context, AppWidgetManager.getInstance(context), allIds);
-
-	}
-
-	private PendingIntent createClockTickIntent(Context context) {
-		Intent intent = new Intent(MM_CLOCK_WIDGET_UPDATE);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-		return pendingIntent;
+		Log.d(LOG_TAG, "MM Widget enabled.");
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		super.onReceive(context, intent);
-
-		if (MM_CLOCK_WIDGET_UPDATE.equals(intent.getAction())) {
-			Log.d(LOG_TAG, "Clock update");
-			ComponentName thisAppWidget = new ComponentName(
-					context.getPackageName(), getClass().getName());
-			AppWidgetManager appWidgetManager = AppWidgetManager
-					.getInstance(context);
-			int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
-			for (int appWidgetID : ids) {
-				updateAppWidget(context, appWidgetManager, appWidgetID);
-			}
-		}
+		Log.d(LOG_TAG, "onReceive");
 	}
 
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-
 		Log.d(LOG_TAG, "Updating MM Widgets.");
 
-		for (int i = 0; i < appWidgetIds.length; ++i) {
-			int appWidgetId = appWidgetIds[i];
-
-			Intent intent = new Intent(context, MmConfigure.class);
-			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-			// flag is needed or extra is null in configuration activity
-			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-					intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-			RemoteViews views = new RemoteViews(context.getPackageName(),
-					R.layout.main);
-			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+		for (int appWidgetId : appWidgetIds) {
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
-			// Label only needs to be changed onUpdate and onEnabled
-			// (which calls onUpdate).
-			String label = MorbidMeterClock.getLabel();
-			if (label != null) {
-				views.setTextViewText(R.id.text, label);
+			if (MorbidMeterClock.configurationIsComplete()) {
+				setAlarm(context, appWidgetId, 1000);
+				Log.d(LOG_TAG, "Alarm started");
 			}
-			updateViews(context, views);
-			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
 
+	public static void setAlarm(Context context, int appWidgetId, int updateRate) {
+		PendingIntent newPending = makeControlPendingIntent(context,
+				MmService.UPDATE, appWidgetId);
+		AlarmManager alarms = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		if (updateRate >= 0) {
+			alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
+					SystemClock.elapsedRealtime(), updateRate, newPending);
+		} else {
+			// on a negative updateRate stop the refreshing
+			alarms.cancel(newPending);
+		}
+	}
+
+	public static PendingIntent makeControlPendingIntent(Context context,
+			String command, int appWidgetId) {
+		Intent active = new Intent(context, MmService.class);
+		active.setAction(command);
+		active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		// this Uri data is to make the PendingIntent unique, so it wont be
+		// updated by FLAG_UPDATE_CURRENT
+		// so if there are multiple widget instances they wont override each
+		// other
+		Uri data = Uri.withAppendedPath(
+				Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
+				String.valueOf(appWidgetId));
+		active.setData(data);
+		return (PendingIntent.getService(context, 0, active,
+				PendingIntent.FLAG_UPDATE_CURRENT));
+	}
+
 	@Override
 	public void onDisabled(Context context) {
+		Log.d(LOG_TAG, "MM Widget disabled.");
+		context.stopService(new Intent(context, MmService.class));
 		super.onDisabled(context);
-		Log.d(LOG_TAG, "MM Widget disabled.  Turning off timer.");
-		AlarmManager alarmManager = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.cancel(createClockTickIntent(context));
 	}
 
 	@Override
 	public void onDeleted(Context context, int[] appWidgetIds) {
-		super.onDeleted(context, appWidgetIds);
 		Log.d(LOG_TAG, "MM Widget deleted.");
+		for (int appWidgetId : appWidgetIds) {
+			MorbidMeterClock.resetConfiguration(context, appWidgetId);
+			if (MorbidMeterClock.configurationIsComplete()) {
+				setAlarm(context, appWidgetId, -1);
+			}
+		}
+		super.onDeleted(context, appWidgetIds);
 	}
 
 	public static void updateAppWidget(Context context,

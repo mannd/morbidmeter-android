@@ -25,13 +25,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.PendingIntent.CanceledException;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -62,6 +67,7 @@ public class MmConfigure extends Activity {
 	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
 	public static final String SHOW_NOTIFICATIONS_KEY = "show_notifications";
 	public static final String NOTIFICATION_SOUND_KEY = "notification_sound";
+	public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
 
 	private EditText userNameEditText;
 	private DatePicker birthDayDatePicker;
@@ -78,7 +84,15 @@ public class MmConfigure extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setResult(RESULT_CANCELED); // in case user hits back button
+		Intent launchIntent = getIntent();
+		Bundle extras = launchIntent.getExtras();
+		appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				AppWidgetManager.INVALID_APPWIDGET_ID);
+		Intent cancelResultValue = new Intent();
+		cancelResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				appWidgetId);
+		setResult(RESULT_CANCELED, cancelResultValue); // in case user hits back
+														// button
 		setContentView(R.layout.configure);
 
 		userNameEditText = (EditText) findViewById(R.id.user_name);
@@ -95,13 +109,13 @@ public class MmConfigure extends Activity {
 		this.getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-		Intent launchIntent = this.getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null)
-			appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-					AppWidgetManager.INVALID_APPWIDGET_ID);
-		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-			finish();
+		// Intent launchIntent = this.getIntent();
+		// Bundle extras = launchIntent.getExtras();
+		// if (extras != null)
+		// appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+		// AppWidgetManager.INVALID_APPWIDGET_ID);
+		// if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
+		// finish();
 
 		setAdapters();
 
@@ -153,7 +167,17 @@ public class MmConfigure extends Activity {
 						.getCheckedRadioButtonId();
 
 				if (configuration.user.isSane()) {
+					configuration.configurationComplete = true;
 					savePrefs(context, appWidgetId, configuration);
+
+					PendingIntent updatePending = MorbidMeter
+							.makeControlPendingIntent(context,
+									MmService.UPDATE, appWidgetId);
+					try {
+						updatePending.send();
+					} catch (CanceledException e) {
+						e.printStackTrace();
+					}
 					AppWidgetManager appWidgetManager = AppWidgetManager
 							.getInstance(context);
 					ComponentName thisAppWidget = new ComponentName(context
@@ -198,10 +222,10 @@ public class MmConfigure extends Activity {
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent resultValue = new Intent();
-				resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-						appWidgetId);
-				setResult(RESULT_CANCELED, resultValue);
+				// Intent resultValue = new Intent();
+				// resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				// appWidgetId);
+				// setResult(RESULT_CANCELED, resultValue);
 				finish();
 			}
 		});
@@ -280,6 +304,8 @@ public class MmConfigure extends Activity {
 				configuration.showNotifications);
 		prefs.putInt(NOTIFICATION_SOUND_KEY + appWidgetId,
 				configuration.notificationSound);
+		prefs.putBoolean(CONFIGURATION_COMPLETE_KEY + appWidgetId,
+				configuration.configurationComplete);
 		prefs.commit();
 	}
 
@@ -305,11 +331,44 @@ public class MmConfigure extends Activity {
 				SHOW_NOTIFICATIONS_KEY + appWidgetId, false);
 		configuration.notificationSound = prefs.getInt(NOTIFICATION_SOUND_KEY
 				+ appWidgetId, R.id.no_sound);
+		configuration.configurationComplete = prefs.getBoolean(
+				CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
 		return configuration;
 	}
 
 	static int loadLastAppWidgetId(Context context) {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
+	}
+
+	public static PendingIntent makeControlPendingIntent(Context context,
+			String command, int appWidgetId) {
+		Intent active = new Intent(context, MmService.class);
+		active.setAction(command);
+		active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		// this Uri data is to make the PendingIntent unique, so it wont be
+		// updated by FLAG_UPDATE_CURRENT
+		// so if there are multiple widget instances they wont override each
+		// other
+		Uri data = Uri.withAppendedPath(
+				Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
+				String.valueOf(appWidgetId));
+		active.setData(data);
+		return (PendingIntent.getService(context, 0, active,
+				PendingIntent.FLAG_UPDATE_CURRENT));
+	}
+
+	public static void setAlarm(Context context, int appWidgetId, int updateRate) {
+		PendingIntent newPending = makeControlPendingIntent(context,
+				MmService.UPDATE, appWidgetId);
+		AlarmManager alarms = (AlarmManager) context
+				.getSystemService(Context.ALARM_SERVICE);
+		if (updateRate >= 0) {
+			alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
+					SystemClock.elapsedRealtime(), updateRate, newPending);
+		} else {
+			// on a negative updateRate stop the refreshing
+			alarms.cancel(newPending);
+		}
 	}
 }
