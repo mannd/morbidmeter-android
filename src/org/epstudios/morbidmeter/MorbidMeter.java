@@ -59,10 +59,25 @@ public class MorbidMeter extends AppWidgetProvider {
 		Log.d(LOG_TAG, "Updating MM Widgets.");
 
 		for (int appWidgetId : appWidgetIds) {
+			// due to bug in Android (?documentation) onUpdate actually is
+			// called before configuration complete. We must suppress this
+			// initial onUpdate or the alarm starts and can't be stopped if
+			// widget creation is cancelled.
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
 			if (MorbidMeterClock.configurationIsComplete()) {
 				setAlarm(context, appWidgetId, 1000);
 				Log.d(LOG_TAG, "Alarm started");
+				Intent intent = new Intent(context, MmConfigure.class);
+				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+						appWidgetId);
+				PendingIntent pendingIntent = PendingIntent.getActivity(
+						context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+				RemoteViews views = new RemoteViews(context.getPackageName(),
+						R.layout.main);
+				views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+				appWidgetManager.updateAppWidget(appWidgetId, views);
+
 			}
 		}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);

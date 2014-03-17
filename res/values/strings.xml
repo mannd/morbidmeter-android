@@ -16,13 +16,13 @@
     <string name="mm_sound_label">Use MorbidMeter sound (Bells)</string>
     <string name="load_user_label">Load</string>
     <string name="save_user_label">Save</string>
-    <string name="ok_label">Update Widget</string>
+    <string name="ok_label">Launch MorbidMeter</string>
     <string name="help_label">Help</string>
     <string name="cancel_label">Cancel</string>
     <string name="user_name_label">User Name</string>
     <string name="default_user_name">Default User</string>
     <string name="hello">Summary</string>
-    <string name="initial_label">MorbidMeter\nClick skull to configure</string>
+    <string name="initial_label">MorbidMeter\nClick skull for summary</string>
     <string name="loading_label">MorbidMeter Loading</string>
     <!-- TimeScales -->
     <string name="ts_age">AGE - deprecated</string>
