@@ -44,6 +44,30 @@ public class MorbidMeterClock {
 
 	}
 
+	public static int getFrequency(Context context) {
+		String frequencyString = configuration.updateFrequency;
+		int frequency = -1; // shut off clock for error
+		if (frequencyString.equals(context.getString(R.string.one_sec)))
+			frequency = 1000;
+		else if (frequencyString.equals(context.getString(R.string.five_sec)))
+			frequency = 1000 * 5;
+		else if (frequencyString
+				.equals(context.getString(R.string.fifteen_sec)))
+			frequency = 1000 * 15;
+		else if (frequencyString.equals(context.getString(R.string.thirty_sec)))
+			frequency = 1000 * 30;
+		else if (frequencyString.equals(context.getString(R.string.one_min)))
+			frequency = 1000 * 60;
+		else if (frequencyString
+				.equals(context.getString(R.string.fifteen_min)))
+			frequency = 1000 * 60 * 15;
+		else if (frequencyString.equals(context.getString(R.string.thirty_min)))
+			frequency = 1000 * 60 * 30;
+		else if (frequencyString.equals(context.getString(R.string.one_hour)))
+			frequency = 1000 * 60 * 60;
+		return frequency;
+	}
+
 	public static void getLastConfiguration(Context context) {
 		configuration = MmConfigure.loadPrefs(context,
 				MmConfigure.loadLastAppWidgetId(context));

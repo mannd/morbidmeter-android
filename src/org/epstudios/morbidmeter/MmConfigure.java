@@ -62,6 +62,7 @@ public class MmConfigure extends Activity {
 	public static final String BIRTHDAY_DAY_KEY = "birthday_day";
 	public static final String LONGEVITY_KEY = "longevity";
 	public static final String TIMESCALE_KEY = "timescale";
+	public static final String FREQUENCY_KEY = "frequency";
 	public static final String REVERSE_TIME_KEY = "reverse_time";
 	public static final String USE_MSEC_KEY = "use_msec";
 	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
@@ -73,13 +74,19 @@ public class MmConfigure extends Activity {
 	private DatePicker birthDayDatePicker;
 	private EditText longevityEditText;
 	private Spinner timeScaleSpinner;
+	private Spinner frequencySpinner;
 	private OnItemSelectedListener itemListener;
+	private OnItemSelectedListener frequencyItemListener;
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 	private CheckBox showNotificationsCheckBox;
 	private RadioGroup notificationSoundRadioGroup;
 
 	private Configuration configuration;
+
+	private final int[] frequencyArray = { 1000, 1000 * 5, 1000 * 15,
+			1000 * 30, 1000 * 60, 1000 * 60 * 15, 1000 * 60 * 30,
+			1000 * 60 * 60 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +106,7 @@ public class MmConfigure extends Activity {
 		birthDayDatePicker = (DatePicker) findViewById(R.id.birthday);
 		longevityEditText = (EditText) findViewById(R.id.longevity);
 		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
+		frequencySpinner = (Spinner) findViewById(R.id.update_frequency);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
@@ -108,14 +116,6 @@ public class MmConfigure extends Activity {
 		// userNameEditText.requestFocus();
 		this.getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-		// Intent launchIntent = this.getIntent();
-		// Bundle extras = launchIntent.getExtras();
-		// if (extras != null)
-		// appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-		// AppWidgetManager.INVALID_APPWIDGET_ID);
-		// if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-		// finish();
 
 		setAdapters();
 
@@ -136,7 +136,13 @@ public class MmConfigure extends Activity {
 				.getAdapter();
 		int position = arrayAdapter.getPosition(configuration.timeScaleName);
 		timeScaleSpinner.setSelection(position);
-		// timeScaleSpinner.set
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner
+				.getAdapter();
+		int frequencyPosition = frequencyArrayAdapter
+				.getPosition(configuration.updateFrequency);
+		frequencySpinner.setSelection(frequencyPosition);
+
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
@@ -159,6 +165,10 @@ public class MmConfigure extends Activity {
 						.parseDouble(longevityEditText.getText().toString()));
 				configuration.timeScaleName = (String) timeScaleSpinner
 						.getSelectedItem();
+
+				configuration.updateFrequency = (String) frequencySpinner
+						.getSelectedItem();
+
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
 				configuration.showNotifications = showNotificationsCheckBox
@@ -222,10 +232,6 @@ public class MmConfigure extends Activity {
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Intent resultValue = new Intent();
-				// resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				// appWidgetId);
-				// setResult(RESULT_CANCELED, resultValue);
 				finish();
 			}
 		});
@@ -260,6 +266,28 @@ public class MmConfigure extends Activity {
 		};
 
 		timeScaleSpinner.setOnItemSelectedListener(itemListener);
+
+		ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
+				.createFromResource(this, R.array.frequencies,
+						android.R.layout.simple_spinner_item);
+		adapterFrequency
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		frequencySpinner.setAdapter(adapterFrequency);
+		frequencyItemListener = new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// do nothing
+			}
+
+		};
+
+		frequencySpinner.setOnItemSelectedListener(frequencyItemListener);
 
 	}
 
@@ -296,6 +324,8 @@ public class MmConfigure extends Activity {
 				(float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
 				configuration.timeScaleName);
+		prefs.putString(FREQUENCY_KEY + appWidgetId,
+				configuration.updateFrequency);
 		prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
 				configuration.reverseTime);
 		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
@@ -323,6 +353,8 @@ public class MmConfigure extends Activity {
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
+		configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
+				+ appWidgetId, context.getString(R.string.one_min));
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
 				+ appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,

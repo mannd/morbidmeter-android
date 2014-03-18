@@ -27,5 +27,6 @@ public class Configuration {
 	public boolean showNotifications;
 	public int notificationSound;
 	public boolean configurationComplete;
+	public String updateFrequency;
 
 }

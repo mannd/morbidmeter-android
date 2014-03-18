@@ -65,7 +65,8 @@ public class MorbidMeter extends AppWidgetProvider {
 			// widget creation is cancelled.
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
 			if (MorbidMeterClock.configurationIsComplete()) {
-				setAlarm(context, appWidgetId, 1000);
+				setAlarm(context, appWidgetId,
+						MorbidMeterClock.getFrequency(context));
 				Log.d(LOG_TAG, "Alarm started");
 				Intent intent = new Intent(context, MmConfigure.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
