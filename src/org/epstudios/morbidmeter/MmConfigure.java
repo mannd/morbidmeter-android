@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
@@ -34,9 +33,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,8 +43,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -62,6 +61,7 @@ public class MmConfigure extends Activity {
 	public static final String BIRTHDAY_DAY_KEY = "birthday_day";
 	public static final String LONGEVITY_KEY = "longevity";
 	public static final String TIMESCALE_KEY = "timescale";
+	public static final String FREQUENCY_KEY = "frequency";
 	public static final String REVERSE_TIME_KEY = "reverse_time";
 	public static final String USE_MSEC_KEY = "use_msec";
 	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
@@ -73,13 +73,19 @@ public class MmConfigure extends Activity {
 	private DatePicker birthDayDatePicker;
 	private EditText longevityEditText;
 	private Spinner timeScaleSpinner;
+	private Spinner frequencySpinner;
 	private OnItemSelectedListener itemListener;
+	private OnItemSelectedListener frequencyItemListener;
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 	private CheckBox showNotificationsCheckBox;
 	private RadioGroup notificationSoundRadioGroup;
 
 	private Configuration configuration;
+
+	private final int[] frequencyArray = { 1000, 1000 * 5, 1000 * 15,
+			1000 * 30, 1000 * 60, 1000 * 60 * 15, 1000 * 60 * 30,
+			1000 * 60 * 60 };
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +105,7 @@ public class MmConfigure extends Activity {
 		birthDayDatePicker = (DatePicker) findViewById(R.id.birthday);
 		longevityEditText = (EditText) findViewById(R.id.longevity);
 		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
+		frequencySpinner = (Spinner) findViewById(R.id.update_frequency);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
@@ -108,14 +115,6 @@ public class MmConfigure extends Activity {
 		// userNameEditText.requestFocus();
 		this.getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-		// Intent launchIntent = this.getIntent();
-		// Bundle extras = launchIntent.getExtras();
-		// if (extras != null)
-		// appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-		// AppWidgetManager.INVALID_APPWIDGET_ID);
-		// if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-		// finish();
 
 		setAdapters();
 
@@ -136,13 +135,38 @@ public class MmConfigure extends Activity {
 				.getAdapter();
 		int position = arrayAdapter.getPosition(configuration.timeScaleName);
 		timeScaleSpinner.setSelection(position);
-		// timeScaleSpinner.set
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner
+				.getAdapter();
+		int frequencyPosition = frequencyArrayAdapter
+				.getPosition(configuration.updateFrequency);
+		frequencySpinner.setSelection(frequencyPosition);
+
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
-		notificationSoundRadioGroup.check(configuration.notificationSound);
 
 		setEnabledOptions(configuration.timeScaleName);
+		showNotificationsCheckBox
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						for (int i = 0; i < notificationSoundRadioGroup
+								.getChildCount(); ++i) {
+							((RadioButton) notificationSoundRadioGroup
+									.getChildAt(i)).setEnabled(isChecked);
+						}
+					}
+				});
+		notificationSoundRadioGroup.check(configuration.notificationSound);
+		if (!showNotificationsCheckBox.isChecked()) {
+			for (int i = 0; i < notificationSoundRadioGroup.getChildCount(); ++i) {
+				((RadioButton) notificationSoundRadioGroup.getChildAt(i))
+						.setEnabled(false);
+			}
+		}
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -159,6 +183,10 @@ public class MmConfigure extends Activity {
 						.parseDouble(longevityEditText.getText().toString()));
 				configuration.timeScaleName = (String) timeScaleSpinner
 						.getSelectedItem();
+
+				configuration.updateFrequency = (String) frequencySpinner
+						.getSelectedItem();
+
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
 				configuration.showNotifications = showNotificationsCheckBox
@@ -222,10 +250,6 @@ public class MmConfigure extends Activity {
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// Intent resultValue = new Intent();
-				// resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-				// appWidgetId);
-				// setResult(RESULT_CANCELED, resultValue);
 				finish();
 			}
 		});
@@ -261,12 +285,31 @@ public class MmConfigure extends Activity {
 
 		timeScaleSpinner.setOnItemSelectedListener(itemListener);
 
+		ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
+				.createFromResource(this, R.array.frequencies,
+						android.R.layout.simple_spinner_item);
+		adapterFrequency
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		frequencySpinner.setAdapter(adapterFrequency);
+		frequencyItemListener = new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// do nothing
+			}
+
+		};
+
+		frequencySpinner.setOnItemSelectedListener(frequencyItemListener);
+
 	}
 
 	private void setEnabledOptions(String timeScaleName) {
-		// change to hasMsec and implement
-		// Also need same for notifications, reverse time sets
-		// / TODO
 		final Set<String> okMsecSet = new HashSet<String>(Arrays.asList(
 				this.getString(R.string.ts_day),
 				this.getString(R.string.ts_hour),
@@ -277,6 +320,27 @@ public class MmConfigure extends Activity {
 		if (!okMsec) {
 			useMsecCheckBox.setChecked(false);
 		}
+		final Set<String> reverseTimeNotOkSet = new HashSet<String>(
+				Arrays.asList(this.getString(R.string.ts_time),
+						this.getString(R.string.ts_none),
+						this.getString(R.string.ts_debug)));
+		boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleName);
+		reverseTimeCheckBox.setEnabled(!noReverseTime);
+		if (noReverseTime) {
+			reverseTimeCheckBox.setChecked(false);
+		}
+		final Set<String> notificationSet = new HashSet<String>(Arrays.asList(
+				this.getString(R.string.ts_year),
+				this.getString(R.string.ts_month),
+				this.getString(R.string.ts_day),
+				this.getString(R.string.ts_percent),
+				this.getString(R.string.ts_universe)));
+		boolean notificationOk = notificationSet.contains(timeScaleName);
+		showNotificationsCheckBox.setEnabled(notificationOk);
+		if (!notificationOk) {
+			showNotificationsCheckBox.setChecked(false);
+		}
+
 	}
 
 	static void savePrefs(Context context, int appWidgetId,
@@ -296,6 +360,8 @@ public class MmConfigure extends Activity {
 				(float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
 				configuration.timeScaleName);
+		prefs.putString(FREQUENCY_KEY + appWidgetId,
+				configuration.updateFrequency);
 		prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
 				configuration.reverseTime);
 		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
@@ -323,6 +389,8 @@ public class MmConfigure extends Activity {
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
+		configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
+				+ appWidgetId, context.getString(R.string.one_min));
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
 				+ appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
@@ -341,34 +409,4 @@ public class MmConfigure extends Activity {
 		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
 	}
 
-	public static PendingIntent makeControlPendingIntent(Context context,
-			String command, int appWidgetId) {
-		Intent active = new Intent(context, MmService.class);
-		active.setAction(command);
-		active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		// this Uri data is to make the PendingIntent unique, so it wont be
-		// updated by FLAG_UPDATE_CURRENT
-		// so if there are multiple widget instances they wont override each
-		// other
-		Uri data = Uri.withAppendedPath(
-				Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
-				String.valueOf(appWidgetId));
-		active.setData(data);
-		return (PendingIntent.getService(context, 0, active,
-				PendingIntent.FLAG_UPDATE_CURRENT));
-	}
-
-	public static void setAlarm(Context context, int appWidgetId, int updateRate) {
-		PendingIntent newPending = makeControlPendingIntent(context,
-				MmService.UPDATE, appWidgetId);
-		AlarmManager alarms = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		if (updateRate >= 0) {
-			alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
-					SystemClock.elapsedRealtime(), updateRate, newPending);
-		} else {
-			// on a negative updateRate stop the refreshing
-			alarms.cancel(newPending);
-		}
-	}
 }

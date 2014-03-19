@@ -25,6 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.util.Log;
@@ -42,6 +44,30 @@ public class MorbidMeterClock {
 	public static void resetConfiguration(Context context, int appWidgetId) {
 		configuration = MmConfigure.loadPrefs(context, appWidgetId);
 
+	}
+
+	public static int getFrequency(Context context) {
+		String frequencyString = configuration.updateFrequency;
+		int frequency = -1; // shut off clock for error
+		if (frequencyString.equals(context.getString(R.string.one_sec)))
+			frequency = 1000;
+		else if (frequencyString.equals(context.getString(R.string.five_sec)))
+			frequency = 1000 * 5;
+		else if (frequencyString
+				.equals(context.getString(R.string.fifteen_sec)))
+			frequency = 1000 * 15;
+		else if (frequencyString.equals(context.getString(R.string.thirty_sec)))
+			frequency = 1000 * 30;
+		else if (frequencyString.equals(context.getString(R.string.one_min)))
+			frequency = 1000 * 60;
+		else if (frequencyString
+				.equals(context.getString(R.string.fifteen_min)))
+			frequency = 1000 * 60 * 15;
+		else if (frequencyString.equals(context.getString(R.string.thirty_min)))
+			frequency = 1000 * 60 * 30;
+		else if (frequencyString.equals(context.getString(R.string.one_hour)))
+			frequency = 1000 * 60 * 60;
+		return frequency;
 	}
 
 	public static void getLastConfiguration(Context context) {
@@ -279,4 +305,86 @@ public class MorbidMeterClock {
 	public static double numMinutes(double timeInMsecs) {
 		return timeInMsecs / (60 * 1000);
 	}
+
+	// Boolean isMilestone = isMilestone(context, configuration, time);
+	// // being dead is a milestone too!
+	// isMilestone = isMilestone || configuration.user.isDead();
+	// // if below true will ignore milestones and send notification with each
+	// // update
+	// if (notificationOngoing)
+	// if (!isMilestone)
+	// notificationOngoing = false;
+	// Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
+	// Boolean debugNotifications = false;
+	// if (debugNotifications
+	// || (configuration.showNotifications && isMilestone &&
+	// !notificationOngoing)) {
+	// NotificationManager notificationManager = (NotificationManager) context
+	// .getSystemService(Context.NOTIFICATION_SERVICE);
+	// Notification notification = new Notification(
+	// R.drawable.notificationskull, "MorbidMeter Milestone",
+	// System.currentTimeMillis());
+	// notification.flags |= Notification.FLAG_AUTO_CANCEL;
+	// Intent notificationIntent = new Intent(context, MorbidMeter.class);
+	// PendingIntent notyPendingIntent = PendingIntent.getActivity(
+	// context, 0, notificationIntent, 0);
+	// notification.setLatestEventInfo(context, "MorbidMeter", time,
+	// notyPendingIntent);
+	// if (configuration.notificationSound == R.id.default_sound)
+	// notification.defaults |= Notification.DEFAULT_SOUND;
+	// else if (configuration.notificationSound == R.id.mm_sound)
+	// notification.sound = Uri
+	// .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+	// notificationManager.notify(1, notification);
+	// notificationOngoing = true;
+	// }
+
+	// // is public for testing
+	public static Boolean isMilestone(Context context,
+			Configuration configuration, String time) {
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_year))) {
+			// return isTestTime(time); // for testing
+			// return isEvenMinute(time); // for testing
+			return isEvenHour(time);
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_month))
+				|| configuration.timeScaleName.equals(context
+						.getString(R.string.ts_day))) {
+			return isEvenMinute(time);
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_percent))) {
+			return isEvenPercentage(time);
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_universe))) {
+			return isEvenMillion(time);
+		} else
+			return false;
+	}
+
+	public static Boolean isEvenHour(String time) {
+		return time.contains(":00:");
+	}
+
+	public static Boolean isEvenMinute(String time) {
+		return time.contains(":00 ");
+	}
+
+	public static Boolean isEvenPercentage(String time) {
+		return time.contains(".000");
+	}
+
+	public static Boolean isEvenMillion(String time) {
+		Pattern p = Pattern.compile(".*,000,... y.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
+	}
+
+	// for testing, allows quicker notifications than usual
+	public static Boolean isTestTime(String time) {
+		Pattern p = Pattern.compile(".*[1369] [AP]M.*", Pattern.DOTALL);
+		Matcher m = p.matcher(time);
+		return m.find();
+	}
+
 }

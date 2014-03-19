@@ -35,8 +35,6 @@
                 </category>
             </intent-filter>
         </activity>
-        <activity android:name=".Summary" >
-        </activity>
 
         <service android:name=".MmService" >
         </service>

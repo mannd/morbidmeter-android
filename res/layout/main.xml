@@ -28,7 +28,7 @@
             android:padding="8dp"
             android:text="@string/initial_label"
             android:textColor="@android:color/white"
-            android:textSize="12sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <ProgressBar

@@ -18,5 +18,15 @@
         <item>@string/ts_none</item>
         <item>@string/ts_debug</item>
     </array>
+    <array name="frequencies">
+        <item>@string/one_sec</item>
+        <item>@string/five_sec</item>
+        <item>@string/fifteen_sec</item>
+        <item>@string/thirty_sec</item>
+        <item>@string/one_min</item>
+        <item>@string/fifteen_min</item>
+        <item>@string/thirty_min</item>
+        <item>@string/one_hour</item>
+    </array>
 
 </resources>

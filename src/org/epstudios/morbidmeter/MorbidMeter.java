@@ -18,9 +18,6 @@
 
 package org.epstudios.morbidmeter;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -35,11 +32,7 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private static final String LOG_TAG = "MM";
-	public static final String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
 	private static boolean notificationOngoing = false;
-	// static boolean firstRun = true;
-
-	private Configuration configuration;
 
 	@Override
 	public void onEnabled(Context context) {
@@ -65,7 +58,8 @@ public class MorbidMeter extends AppWidgetProvider {
 			// widget creation is cancelled.
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
 			if (MorbidMeterClock.configurationIsComplete()) {
-				setAlarm(context, appWidgetId, 1000);
+				setAlarm(context, appWidgetId,
+						MorbidMeterClock.getFrequency(context));
 				Log.d(LOG_TAG, "Alarm started");
 				Intent intent = new Intent(context, MmConfigure.class);
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -76,6 +70,11 @@ public class MorbidMeter extends AppWidgetProvider {
 				RemoteViews views = new RemoteViews(context.getPackageName(),
 						R.layout.main);
 				views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+				// only need to change label onUpdate, not by MmService
+				String label = MorbidMeterClock.getLabel();
+				if (label != null) {
+					views.setTextViewText(R.id.text, label);
+				}
 				appWidgetManager.updateAppWidget(appWidgetId, views);
 
 			}
@@ -225,54 +224,5 @@ public class MorbidMeter extends AppWidgetProvider {
 	// appWidgetManager.updateAppWidget(appWidgetId, updateViews);
 	// }
 	//
-	// // is public for testing
-	// public static Boolean isMilestone(Context context,
-	// Configuration configuration, String time) {
-	// if (configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_year)))
-	// // return isTestTime(time); // for testing
-	// // return isEvenMinute(time); // for testing
-	// return isEvenHour(time);
-	// else if (configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_month))
-	// || configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_day)))
-	// return isEvenMinute(time);
-	// else if (configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_age))
-	// || configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_percent)))
-	// return isEvenPercentage(time);
-	// else if (configuration.timeScaleName.equals(context
-	// .getString(R.string.ts_universe)))
-	// return isEvenMillion(time);
-	// else
-	// return false;
-	// }
-
-	public static Boolean isEvenHour(String time) {
-		return time.contains(":00:");
-	}
-
-	public static Boolean isEvenMinute(String time) {
-		return time.contains(":00 ");
-	}
-
-	public static Boolean isEvenPercentage(String time) {
-		return time.contains(".000");
-	}
-
-	public static Boolean isEvenMillion(String time) {
-		Pattern p = Pattern.compile(".*,000,... y.*", Pattern.DOTALL);
-		Matcher m = p.matcher(time);
-		return m.find();
-	}
-
-	// for testing, allows quicker notifications than usual
-	public static Boolean isTestTime(String time) {
-		Pattern p = Pattern.compile(".*[1369] [AP]M.*", Pattern.DOTALL);
-		Matcher m = p.matcher(time);
-		return m.find();
-	}
 
 }
