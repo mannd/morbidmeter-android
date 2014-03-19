@@ -303,4 +303,5 @@ public class MorbidMeterClock {
 	public static double numMinutes(double timeInMsecs) {
 		return timeInMsecs / (60 * 1000);
 	}
+
 }

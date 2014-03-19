@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.PendingIntent.CanceledException;
@@ -34,9 +33,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,8 +43,10 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
@@ -146,9 +145,28 @@ public class MmConfigure extends Activity {
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
-		notificationSoundRadioGroup.check(configuration.notificationSound);
 
 		setEnabledOptions(configuration.timeScaleName);
+		showNotificationsCheckBox
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						for (int i = 0; i < notificationSoundRadioGroup
+								.getChildCount(); ++i) {
+							((RadioButton) notificationSoundRadioGroup
+									.getChildAt(i)).setEnabled(isChecked);
+						}
+					}
+				});
+		notificationSoundRadioGroup.check(configuration.notificationSound);
+		if (!showNotificationsCheckBox.isChecked()) {
+			for (int i = 0; i < notificationSoundRadioGroup.getChildCount(); ++i) {
+				((RadioButton) notificationSoundRadioGroup.getChildAt(i))
+						.setEnabled(false);
+			}
+		}
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -305,6 +323,16 @@ public class MmConfigure extends Activity {
 		if (!okMsec) {
 			useMsecCheckBox.setChecked(false);
 		}
+		final Set<String> reverseTimeNotOkSet = new HashSet<String>(
+				Arrays.asList(this.getString(R.string.ts_time),
+						this.getString(R.string.ts_none),
+						this.getString(R.string.ts_debug)));
+		boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleName);
+		reverseTimeCheckBox.setEnabled(!noReverseTime);
+		if (noReverseTime) {
+			reverseTimeCheckBox.setChecked(false);
+		}
+
 	}
 
 	static void savePrefs(Context context, int appWidgetId,
@@ -373,34 +401,4 @@ public class MmConfigure extends Activity {
 		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
 	}
 
-	public static PendingIntent makeControlPendingIntent(Context context,
-			String command, int appWidgetId) {
-		Intent active = new Intent(context, MmService.class);
-		active.setAction(command);
-		active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-		// this Uri data is to make the PendingIntent unique, so it wont be
-		// updated by FLAG_UPDATE_CURRENT
-		// so if there are multiple widget instances they wont override each
-		// other
-		Uri data = Uri.withAppendedPath(
-				Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
-				String.valueOf(appWidgetId));
-		active.setData(data);
-		return (PendingIntent.getService(context, 0, active,
-				PendingIntent.FLAG_UPDATE_CURRENT));
-	}
-
-	public static void setAlarm(Context context, int appWidgetId, int updateRate) {
-		PendingIntent newPending = makeControlPendingIntent(context,
-				MmService.UPDATE, appWidgetId);
-		AlarmManager alarms = (AlarmManager) context
-				.getSystemService(Context.ALARM_SERVICE);
-		if (updateRate >= 0) {
-			alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
-					SystemClock.elapsedRealtime(), updateRate, newPending);
-		} else {
-			// on a negative updateRate stop the refreshing
-			alarms.cancel(newPending);
-		}
-	}
 }

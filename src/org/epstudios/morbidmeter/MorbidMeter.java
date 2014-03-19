@@ -35,11 +35,7 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private static final String LOG_TAG = "MM";
-	public static final String MM_CLOCK_WIDGET_UPDATE = "org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE";
 	private static boolean notificationOngoing = false;
-	// static boolean firstRun = true;
-
-	private Configuration configuration;
 
 	@Override
 	public void onEnabled(Context context) {
