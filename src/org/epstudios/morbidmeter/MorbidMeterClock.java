@@ -28,21 +28,26 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.util.Log;
 
 public class MorbidMeterClock {
 
+	private static final String DEPRECATION = "deprecation";
 	private static Configuration configuration = null;
-
-	public static void loadConfiguration(Context context, int appWidgetId) {
-		if (configuration == null) {
-			resetConfiguration(context, appWidgetId);
-		}
-	}
+	private static int appWidgetId = 0;
+	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
+	private static final String IN_MILESTONE = "in_milestone";
 
 	public static void resetConfiguration(Context context, int appWidgetId) {
 		configuration = MmConfigure.loadPrefs(context, appWidgetId);
+		MorbidMeterClock.appWidgetId = appWidgetId;
 
 	}
 
@@ -100,6 +105,13 @@ public class MorbidMeterClock {
 		Log.d("MM", "birthday msec = " + configuration.user.birthDayMsec());
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
+		if (configuration.user.percentAlive() >= 1.0) {
+			if (configuration.showNotifications) {
+				showNotification(context,
+						context.getString(R.string.user_dead_message));
+				return context.getString(R.string.user_dead_message);
+			}
+		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_none))) {
 			return "0";
@@ -141,7 +153,7 @@ public class MorbidMeterClock {
 			formatString += "MMMM d\nh:mm:ss a";
 			if (configuration.useMsec)
 				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
+			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_day))) {
@@ -151,7 +163,7 @@ public class MorbidMeterClock {
 			formatString += "h:mm:ss a";
 			if (configuration.useMsec)
 				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
+			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_hour))) {
@@ -161,7 +173,7 @@ public class MorbidMeterClock {
 			formatString += "hh:mm:ss";
 			if (configuration.useMsec)
 				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
+			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_month))) {
@@ -171,7 +183,7 @@ public class MorbidMeterClock {
 			formatString += "MMMM d\nh:mm:ss a";
 			if (configuration.useMsec)
 				formatString += " S";
-			formatter = new SimpleDateFormat(formatString);
+			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_universe))) {
@@ -183,6 +195,16 @@ public class MorbidMeterClock {
 			else
 				units = " yrs from Big Bang";
 		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_x_universe))) {
+			ts = new CalendarTimeScale(configuration.timeScaleName,
+					new GregorianCalendar(-4000, Calendar.JANUARY, 1),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+			formatString += "yyyy MMMM d\nh:mm:ss a";
+			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
+
+		}
+
 		// deal with raw time scales, i.e. real time
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_raw))) {
@@ -283,6 +305,10 @@ public class MorbidMeterClock {
 			timeString += " msec";
 		timeString += units;
 
+		if (configuration.showNotifications) {
+			showNotification(context, timeString);
+		}
+
 		return timeString;
 	}
 
@@ -306,46 +332,51 @@ public class MorbidMeterClock {
 		return timeInMsecs / (60 * 1000);
 	}
 
-	// Boolean isMilestone = isMilestone(context, configuration, time);
-	// // being dead is a milestone too!
-	// isMilestone = isMilestone || configuration.user.isDead();
-	// // if below true will ignore milestones and send notification with each
-	// // update
-	// if (notificationOngoing)
-	// if (!isMilestone)
-	// notificationOngoing = false;
-	// Log.d("DEBUG", "notificationOngoing = " + notificationOngoing);
-	// Boolean debugNotifications = false;
-	// if (debugNotifications
-	// || (configuration.showNotifications && isMilestone &&
-	// !notificationOngoing)) {
-	// NotificationManager notificationManager = (NotificationManager) context
-	// .getSystemService(Context.NOTIFICATION_SERVICE);
-	// Notification notification = new Notification(
-	// R.drawable.notificationskull, "MorbidMeter Milestone",
-	// System.currentTimeMillis());
-	// notification.flags |= Notification.FLAG_AUTO_CANCEL;
-	// Intent notificationIntent = new Intent(context, MorbidMeter.class);
-	// PendingIntent notyPendingIntent = PendingIntent.getActivity(
-	// context, 0, notificationIntent, 0);
-	// notification.setLatestEventInfo(context, "MorbidMeter", time,
-	// notyPendingIntent);
-	// if (configuration.notificationSound == R.id.default_sound)
-	// notification.defaults |= Notification.DEFAULT_SOUND;
-	// else if (configuration.notificationSound == R.id.mm_sound)
-	// notification.sound = Uri
-	// .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-	// notificationManager.notify(1, notification);
-	// notificationOngoing = true;
-	// }
+	@SuppressWarnings(DEPRECATION)
+	public static void showNotification(Context context, String time) {
 
-	// // is public for testing
-	public static Boolean isMilestone(Context context,
-			Configuration configuration, String time) {
+		Boolean userDead = time.equals(context
+				.getString(R.string.user_dead_message));
+		Boolean atMilestone = isMilestone(context, time);
+		Boolean inMilestone;
+		if ((atMilestone || userDead)) {
+			SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,
+					0);
+			inMilestone = prefs.getBoolean(IN_MILESTONE + appWidgetId, false);
+			if (!inMilestone) {
+				NotificationManager notificationManager = (NotificationManager) context
+						.getSystemService(Context.NOTIFICATION_SERVICE);
+				Notification notification = new Notification(
+						R.drawable.notificationskull, "MorbidMeter Milestone",
+						System.currentTimeMillis());
+				notification.flags |= Notification.FLAG_AUTO_CANCEL;
+				Intent notificationIntent = new Intent(context,
+						MorbidMeter.class);
+				PendingIntent notificationPendingIntent = PendingIntent
+						.getActivity(context, 0, notificationIntent, 0);
+				notification.setLatestEventInfo(context, "MorbidMeter", time,
+						notificationPendingIntent);
+				if (configuration.notificationSound == R.id.default_sound)
+					notification.defaults |= Notification.DEFAULT_SOUND;
+				else if (configuration.notificationSound == R.id.mm_sound)
+					notification.sound = Uri
+							.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
+				notificationManager.notify(1, notification);
+				inMilestone = true;
+			}
+		} else {
+			inMilestone = false;
+		}
+		SharedPreferences.Editor prefsEditor = context.getSharedPreferences(
+				PREFS_NAME, 0).edit();
+		prefsEditor.putBoolean(IN_MILESTONE + appWidgetId, inMilestone);
+		prefsEditor.commit();
+
+	}
+
+	public static Boolean isMilestone(Context context, String time) {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year))) {
-			// return isTestTime(time); // for testing
-			// return isEvenMinute(time); // for testing
 			return isEvenHour(time);
 		} else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_month))

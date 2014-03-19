@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
@@ -132,31 +131,31 @@ public class MorbidMeter extends AppWidgetProvider {
 		super.onDeleted(context, appWidgetIds);
 	}
 
-	public static void updateAppWidget(Context context,
-			AppWidgetManager appWidgetManager, int appWidgetId) {
-
-		MorbidMeterClock.loadConfiguration(context, appWidgetId);
-
-		RemoteViews views = new RemoteViews(context.getPackageName(),
-				R.layout.main);
-		updateViews(context, views);
-		appWidgetManager.updateAppWidget(appWidgetId, views);
-	}
-
-	private static void updateViews(Context context, RemoteViews views) {
-		String currentTime = MorbidMeterClock.getFormattedTime(context);
-		if (currentTime != null) {
-			Log.d(LOG_TAG, "Current time = " + currentTime);
-			if (currentTime.equals("0")) {
-				views.setViewVisibility(R.id.time, View.GONE);
-			} else {
-				views.setViewVisibility(R.id.time, View.VISIBLE);
-				views.setTextViewText(R.id.time, currentTime);
-			}
-		}
-		views.setProgressBar(R.id.progressBar, 100,
-				MorbidMeterClock.percentAlive(), false);
-	}
+	// public static void updateAppWidget(Context context,
+	// AppWidgetManager appWidgetManager, int appWidgetId) {
+	//
+	// MorbidMeterClock.loadConfiguration(context, appWidgetId);
+	//
+	// RemoteViews views = new RemoteViews(context.getPackageName(),
+	// R.layout.main);
+	// updateViews(context, views);
+	// appWidgetManager.updateAppWidget(appWidgetId, views);
+	// }
+	//
+	// private static void updateViews(Context context, RemoteViews views) {
+	// String currentTime = MorbidMeterClock.getFormattedTime(context);
+	// if (currentTime != null) {
+	// Log.d(LOG_TAG, "Current time = " + currentTime);
+	// if (currentTime.equals("0")) {
+	// views.setViewVisibility(R.id.time, View.GONE);
+	// } else {
+	// views.setViewVisibility(R.id.time, View.VISIBLE);
+	// views.setTextViewText(R.id.time, currentTime);
+	// }
+	// }
+	// views.setProgressBar(R.id.progressBar, 100,
+	// MorbidMeterClock.percentAlive(), false);
+	// }
 
 	// static void updateAppWidget(Context context,
 	// AppWidgetManager appWidgetManager, int appWidgetId,

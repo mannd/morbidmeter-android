@@ -33,6 +33,7 @@
     <string name="ts_percent">PERCENT</string>
     <string name="ts_year">YEAR</string>
     <string name="ts_universe">UNIVERSE</string>
+    <string name="ts_x_universe">X-UNIVERSE</string>
     <string name="ts_raw">MILLISECONDS</string>
     <string name="ts_seconds">SECONDS</string>
     <string name="ts_debug">DEBUG</string>

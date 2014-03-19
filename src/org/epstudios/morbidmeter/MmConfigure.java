@@ -329,23 +329,12 @@ public class MmConfigure extends Activity {
 		if (noReverseTime) {
 			reverseTimeCheckBox.setChecked(false);
 		}
-		final Set<String> notificationSet = new HashSet<String>(Arrays.asList(
-				this.getString(R.string.ts_year),
-				this.getString(R.string.ts_month),
-				this.getString(R.string.ts_day),
-				this.getString(R.string.ts_percent),
-				this.getString(R.string.ts_universe)));
-		boolean notificationOk = notificationSet.contains(timeScaleName);
-		showNotificationsCheckBox.setEnabled(notificationOk);
-		if (!notificationOk) {
-			showNotificationsCheckBox.setChecked(false);
-		}
+		// note that all timescales have at least notifications for death.
 
 	}
 
 	static void savePrefs(Context context, int appWidgetId,
 			Configuration configuration) {
-		// testing with just longevity first
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
 				PREFS_NAME, 0).edit();
 		prefs.putString(USER_NAME_KEY + appWidgetId,
@@ -386,6 +375,8 @@ public class MmConfigure extends Activity {
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
+		// round to 2 decimal places
+		longevity = Math.round(longevity * 100.00) / 100.00;
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
