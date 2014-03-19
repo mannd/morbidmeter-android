@@ -24,10 +24,6 @@ public class MmService extends Service {
 		AppWidgetManager appWidgetManager = AppWidgetManager
 				.getInstance(context);
 		MorbidMeterClock.resetConfiguration(context, appWidgetId);
-		String label = MorbidMeterClock.getLabel();
-		if (label != null) {
-			views.setTextViewText(R.id.text, label);
-		}
 		String currentTime = MorbidMeterClock.getFormattedTime(context);
 		if (currentTime != null) {
 			Log.d(LOG_TAG, "Current time = " + currentTime);
@@ -47,7 +43,6 @@ public class MmService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

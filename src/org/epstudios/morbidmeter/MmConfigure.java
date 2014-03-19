@@ -310,9 +310,6 @@ public class MmConfigure extends Activity {
 	}
 
 	private void setEnabledOptions(String timeScaleName) {
-		// change to hasMsec and implement
-		// Also need same for notifications, reverse time sets
-		// / TODO
 		final Set<String> okMsecSet = new HashSet<String>(Arrays.asList(
 				this.getString(R.string.ts_day),
 				this.getString(R.string.ts_hour),
@@ -331,6 +328,17 @@ public class MmConfigure extends Activity {
 		reverseTimeCheckBox.setEnabled(!noReverseTime);
 		if (noReverseTime) {
 			reverseTimeCheckBox.setChecked(false);
+		}
+		final Set<String> notificationSet = new HashSet<String>(Arrays.asList(
+				this.getString(R.string.ts_year),
+				this.getString(R.string.ts_month),
+				this.getString(R.string.ts_day),
+				this.getString(R.string.ts_percent),
+				this.getString(R.string.ts_universe)));
+		boolean notificationOk = notificationSet.contains(timeScaleName);
+		showNotificationsCheckBox.setEnabled(notificationOk);
+		if (!notificationOk) {
+			showNotificationsCheckBox.setChecked(false);
 		}
 
 	}
