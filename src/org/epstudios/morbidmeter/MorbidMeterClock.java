@@ -191,16 +191,26 @@ public class MorbidMeterClock {
 			formatString += "##,###,###,###";
 			formatter = new DecimalFormat(formatString);
 			if (configuration.reverseTime)
-				units = " years left";
+				units = " yrs to Present";
 			else
 				units = " yrs from Big Bang";
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_x_universe_2))) {
+			ts = new TimeScale(configuration.timeScaleName, 0, 6000L);
+			formatString += "##,###,###,###.0000";
+			formatter = new DecimalFormat(formatString);
+			if (configuration.reverseTime)
+				units = " yrs to Armageddon";
+			else
+				units = " yrs from Creation";
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_x_universe))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(-4000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2001, Calendar.JANUARY, 1));
-			formatString += "yyyy MMMM d\nh:mm:ss a";
+			formatString += "y G MMMM d\nh:mm:ss a";
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 
 		}

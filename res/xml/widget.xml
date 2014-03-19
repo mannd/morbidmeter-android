@@ -5,6 +5,7 @@
     android:minHeight="294dip"
     android:minWidth="294dip"
     android:previewImage="@drawable/preview"
+    android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0" >
 
 </appwidget-provider>
