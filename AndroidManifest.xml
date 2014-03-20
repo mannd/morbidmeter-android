@@ -20,7 +20,6 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="org.epstudios.morbidmeter.MORBIDMETER_WIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
@@ -31,9 +30,6 @@
         <activity android:name=".MmConfigure" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWDIGET_CONFIGURE" />
-
-                <category android:name="android.intent.category.LAUNCHER" >
-                </category>
             </intent-filter>
         </activity>
 
