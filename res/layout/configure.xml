@@ -103,19 +103,37 @@
 
             <RadioButton
                 android:id="@+id/no_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/no_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/default_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/default_sound_label" >
             </RadioButton>
 
             <RadioButton
                 android:id="@+id/mm_sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/mm_sound_label" >
             </RadioButton>
         </RadioGroup>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/update_frequency_label"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <Spinner
+            android:id="@+id/update_frequency"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/linearLayout2"
@@ -123,11 +141,10 @@
             android:layout_height="wrap_content" >
 
             <Button
-                android:id="@+id/ok_button"
-                android:layout_width="0dip"
+                android:id="@+id/cancel_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/ok_label" />
+                android:text="@string/cancel_label" />
 
             <Button
                 android:id="@+id/help_button"
@@ -136,10 +153,11 @@
                 android:text="@string/help_label" />
 
             <Button
-                android:id="@+id/cancel_button"
-                android:layout_width="wrap_content"
+                android:id="@+id/ok_button"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:text="@string/cancel_label" />
+                android:layout_weight="1"
+                android:text="@string/ok_label" />
         </LinearLayout>
     </TableLayout>
 

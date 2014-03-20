@@ -26,5 +26,7 @@ public class Configuration {
 	public boolean useMsec;
 	public boolean showNotifications;
 	public int notificationSound;
+	public boolean configurationComplete;
+	public String updateFrequency;
 
 }

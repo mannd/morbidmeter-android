@@ -20,8 +20,12 @@ package org.epstudios.morbidmeter;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 public class User {
+	final private double daysPerYear = 365.25;
+	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
+
 	public User(String name, Calendar birthDay, double longevity) {
 		this.name = name;
 		setBirthDay(birthDay);
@@ -55,15 +59,41 @@ public class User {
 	}
 
 	public long msecAlive() {
-		return System.currentTimeMillis() - birthDayMsec();
+		// return System.currentTimeMillis() - birthDayMsec();
+		return Calendar.getInstance().getTimeInMillis() - birthDayMsec();
 	}
 
 	public long reverseMsecAlive() {
-		return deathDayMsec() - msecAlive();
+		// return deathDayMsec() - msecAlive();
+		return lifeDurationMsec() - msecAlive();
 	}
 
 	public long secAlive() {
-		return msecAlive() / 60;
+		return msecAlive() / 1000;
+	}
+
+	public double daysAlive() {
+		return secAlive() / 60 * 60 * 24.0;
+	}
+
+	public double minutesAlive() {
+		return secAlive() / 60;
+	}
+
+	public double reverseMinutesAlive() {
+		return reverseSecAlive() / 60;
+	}
+
+	public double reverseDaysAlive() {
+		return reverseSecAlive() / 60 * 60 * 24.0;
+	}
+
+	public double yearsAlive() {
+		return daysAlive() / daysPerYear;
+	}
+
+	public double reverseYearsAlive() {
+		return reverseDaysAlive() / daysPerYear;
 	}
 
 	public long reverseSecAlive() {
@@ -95,15 +125,22 @@ public class User {
 		return sane;
 	}
 
-	final private double daysPerYear = 365.25;
-	final private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getApostrophedName() {
+		if (name.length() > 0) {
+			if (name.toUpperCase(Locale.getDefault()).charAt(name.length() - 1) == 'S')
+				name += "'";
+			else
+				name += "'s";
+		}
+		return name;
 	}
 
 	public Calendar getBirthDay() {

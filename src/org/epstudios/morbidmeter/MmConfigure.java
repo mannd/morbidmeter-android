@@ -18,28 +18,41 @@
 
 package org.epstudios.morbidmeter;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.app.PendingIntent.CanceledException;
 import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 public class MmConfigure extends Activity {
+	private static final String LOG_TAG = "MM";
+
 	private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
 	public static final String USER_NAME_KEY = "user_name";
@@ -48,17 +61,21 @@ public class MmConfigure extends Activity {
 	public static final String BIRTHDAY_DAY_KEY = "birthday_day";
 	public static final String LONGEVITY_KEY = "longevity";
 	public static final String TIMESCALE_KEY = "timescale";
+	public static final String FREQUENCY_KEY = "frequency";
 	public static final String REVERSE_TIME_KEY = "reverse_time";
 	public static final String USE_MSEC_KEY = "use_msec";
 	public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
 	public static final String SHOW_NOTIFICATIONS_KEY = "show_notifications";
 	public static final String NOTIFICATION_SOUND_KEY = "notification_sound";
+	public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
 
 	private EditText userNameEditText;
 	private DatePicker birthDayDatePicker;
 	private EditText longevityEditText;
 	private Spinner timeScaleSpinner;
+	private Spinner frequencySpinner;
 	private OnItemSelectedListener itemListener;
+	private OnItemSelectedListener frequencyItemListener;
 	private CheckBox reverseTimeCheckBox;
 	private CheckBox useMsecCheckBox;
 	private CheckBox showNotificationsCheckBox;
@@ -66,34 +83,43 @@ public class MmConfigure extends Activity {
 
 	private Configuration configuration;
 
+	private final int[] frequencyArray = { 1000, 1000 * 5, 1000 * 15,
+			1000 * 30, 1000 * 60, 1000 * 60 * 15, 1000 * 60 * 30,
+			1000 * 60 * 60 };
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setResult(RESULT_CANCELED); // in case user hits back button
+		Intent launchIntent = getIntent();
+		Bundle extras = launchIntent.getExtras();
+		appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				AppWidgetManager.INVALID_APPWIDGET_ID);
+		Intent cancelResultValue = new Intent();
+		cancelResultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				appWidgetId);
+		setResult(RESULT_CANCELED, cancelResultValue); // in case user hits back
+														// button
 		setContentView(R.layout.configure);
 
 		userNameEditText = (EditText) findViewById(R.id.user_name);
 		birthDayDatePicker = (DatePicker) findViewById(R.id.birthday);
 		longevityEditText = (EditText) findViewById(R.id.longevity);
 		timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
+		frequencySpinner = (Spinner) findViewById(R.id.update_frequency);
 		reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
 		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
 
-		userNameEditText.requestFocus();
-
-		Intent launchIntent = getIntent();
-		Bundle extras = launchIntent.getExtras();
-		if (extras != null)
-			appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
-					AppWidgetManager.INVALID_APPWIDGET_ID);
-		if (appWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID)
-			finish();
+		// setting the focus is kinda annoying
+		// userNameEditText.requestFocus();
+		this.getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		setAdapters();
 
 		final Context context = MmConfigure.this;
+
 		configuration = loadPrefs(context, loadLastAppWidgetId(context));
 
 		userNameEditText.setText(configuration.user.getName());
@@ -103,16 +129,44 @@ public class MmConfigure extends Activity {
 		birthDayDatePicker.updateDate(year, month, day);
 		longevityEditText.setText(Double.toString(configuration.user
 				.getLongevity()));
-		@SuppressWarnings("unchecked")
 		// best way to do this is below, so suppress warning
+		@SuppressWarnings("unchecked")
 		ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) timeScaleSpinner
 				.getAdapter();
 		int position = arrayAdapter.getPosition(configuration.timeScaleName);
 		timeScaleSpinner.setSelection(position);
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner
+				.getAdapter();
+		int frequencyPosition = frequencyArrayAdapter
+				.getPosition(configuration.updateFrequency);
+		frequencySpinner.setSelection(frequencyPosition);
+
 		reverseTimeCheckBox.setChecked(configuration.reverseTime);
 		useMsecCheckBox.setChecked(configuration.useMsec);
 		showNotificationsCheckBox.setChecked(configuration.showNotifications);
+
+		setEnabledOptions(configuration.timeScaleName);
+		showNotificationsCheckBox
+				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView,
+							boolean isChecked) {
+						for (int i = 0; i < notificationSoundRadioGroup
+								.getChildCount(); ++i) {
+							((RadioButton) notificationSoundRadioGroup
+									.getChildAt(i)).setEnabled(isChecked);
+						}
+					}
+				});
 		notificationSoundRadioGroup.check(configuration.notificationSound);
+		if (!showNotificationsCheckBox.isChecked()) {
+			for (int i = 0; i < notificationSoundRadioGroup.getChildCount(); ++i) {
+				((RadioButton) notificationSoundRadioGroup.getChildAt(i))
+						.setEnabled(false);
+			}
+		}
 
 		Button ok = (Button) findViewById(R.id.ok_button);
 		ok.setOnClickListener(new OnClickListener() {
@@ -129,6 +183,10 @@ public class MmConfigure extends Activity {
 						.parseDouble(longevityEditText.getText().toString()));
 				configuration.timeScaleName = (String) timeScaleSpinner
 						.getSelectedItem();
+
+				configuration.updateFrequency = (String) frequencySpinner
+						.getSelectedItem();
+
 				configuration.reverseTime = reverseTimeCheckBox.isChecked();
 				configuration.useMsec = useMsecCheckBox.isChecked();
 				configuration.showNotifications = showNotificationsCheckBox
@@ -137,11 +195,32 @@ public class MmConfigure extends Activity {
 						.getCheckedRadioButtonId();
 
 				if (configuration.user.isSane()) {
+					configuration.configurationComplete = true;
 					savePrefs(context, appWidgetId, configuration);
+
+					PendingIntent updatePending = MorbidMeter
+							.makeControlPendingIntent(context,
+									MmService.UPDATE, appWidgetId);
+					try {
+						updatePending.send();
+					} catch (CanceledException e) {
+						e.printStackTrace();
+					}
 					AppWidgetManager appWidgetManager = AppWidgetManager
 							.getInstance(context);
-					MorbidMeter.updateAppWidget(context, appWidgetManager,
-							appWidgetId, configuration);
+					ComponentName thisAppWidget = new ComponentName(context
+							.getPackageName(), MorbidMeter.class.getName());
+					Intent updateMmIntent = new Intent(context,
+							MorbidMeter.class);
+					int[] appWidgetIds = appWidgetManager
+							.getAppWidgetIds(thisAppWidget);
+					updateMmIntent
+							.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+					updateMmIntent.putExtra(
+							AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+					context.sendBroadcast(updateMmIntent);
+					Log.d(LOG_TAG, "onUpdate broadcast sent");
+
 					Intent resultValue = new Intent();
 					resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 							appWidgetId);
@@ -149,7 +228,12 @@ public class MmConfigure extends Activity {
 					finish();
 				} else {
 					// dialog saying user not sane
-					finish();
+					AlertDialog alert = new AlertDialog.Builder(context)
+							.create();
+					String message = getString(R.string.sanity_message);
+					alert.setMessage(message);
+					alert.setTitle(getString(R.string.sanity_title));
+					alert.show();
 				}
 			}
 		});
@@ -166,10 +250,6 @@ public class MmConfigure extends Activity {
 		cancel.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent resultValue = new Intent();
-				resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-						appWidgetId);
-				setResult(RESULT_CANCELED, resultValue);
 				finish();
 			}
 		});
@@ -189,11 +269,14 @@ public class MmConfigure extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		timeScaleSpinner.setAdapter(adapter);
 		itemListener = new OnItemSelectedListener() {
+			@Override
 			public void onItemSelected(AdapterView<?> parent, View v,
 					int position, long id) {
-				;
+				setEnabledOptions((String) timeScaleSpinner.getSelectedItem());
+
 			}
 
+			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
 				// do nothing
 			}
@@ -202,11 +285,56 @@ public class MmConfigure extends Activity {
 
 		timeScaleSpinner.setOnItemSelectedListener(itemListener);
 
+		ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
+				.createFromResource(this, R.array.frequencies,
+						android.R.layout.simple_spinner_item);
+		adapterFrequency
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		frequencySpinner.setAdapter(adapterFrequency);
+		frequencyItemListener = new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View v,
+					int position, long id) {
+				;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				// do nothing
+			}
+
+		};
+
+		frequencySpinner.setOnItemSelectedListener(frequencyItemListener);
+
+	}
+
+	private void setEnabledOptions(String timeScaleName) {
+		final Set<String> okMsecSet = new HashSet<String>(Arrays.asList(
+				this.getString(R.string.ts_day),
+				this.getString(R.string.ts_hour),
+				this.getString(R.string.ts_month),
+				this.getString(R.string.ts_year)));
+		boolean okMsec = okMsecSet.contains(timeScaleName);
+		useMsecCheckBox.setEnabled(okMsec);
+		if (!okMsec) {
+			useMsecCheckBox.setChecked(false);
+		}
+		final Set<String> reverseTimeNotOkSet = new HashSet<String>(
+				Arrays.asList(this.getString(R.string.ts_time),
+						this.getString(R.string.ts_none),
+						this.getString(R.string.ts_debug)));
+		boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleName);
+		reverseTimeCheckBox.setEnabled(!noReverseTime);
+		if (noReverseTime) {
+			reverseTimeCheckBox.setChecked(false);
+		}
+		// note that all timescales have at least notifications for death.
+
 	}
 
 	static void savePrefs(Context context, int appWidgetId,
 			Configuration configuration) {
-		// testing with just longevity first
 		SharedPreferences.Editor prefs = context.getSharedPreferences(
 				PREFS_NAME, 0).edit();
 		prefs.putString(USER_NAME_KEY + appWidgetId,
@@ -221,6 +349,8 @@ public class MmConfigure extends Activity {
 				(float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
 				configuration.timeScaleName);
+		prefs.putString(FREQUENCY_KEY + appWidgetId,
+				configuration.updateFrequency);
 		prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
 				configuration.reverseTime);
 		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
@@ -229,6 +359,8 @@ public class MmConfigure extends Activity {
 				configuration.showNotifications);
 		prefs.putInt(NOTIFICATION_SOUND_KEY + appWidgetId,
 				configuration.notificationSound);
+		prefs.putBoolean(CONFIGURATION_COMPLETE_KEY + appWidgetId,
+				configuration.configurationComplete);
 		prefs.commit();
 	}
 
@@ -242,11 +374,14 @@ public class MmConfigure extends Activity {
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
-		double longevity = (double) prefs.getFloat(LONGEVITY_KEY + appWidgetId,
-				79.0f);
+		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
+		// round to 2 decimal places
+		longevity = Math.round(longevity * 100.00) / 100.00;
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
-				+ appWidgetId, "YEAR");
+				+ appWidgetId, context.getString(R.string.ts_time));
+		configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
+				+ appWidgetId, context.getString(R.string.one_min));
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
 				+ appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
@@ -255,6 +390,8 @@ public class MmConfigure extends Activity {
 				SHOW_NOTIFICATIONS_KEY + appWidgetId, false);
 		configuration.notificationSound = prefs.getInt(NOTIFICATION_SOUND_KEY
 				+ appWidgetId, R.id.no_sound);
+		configuration.configurationComplete = prefs.getBoolean(
+				CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
 		return configuration;
 	}
 
@@ -262,4 +399,5 @@ public class MmConfigure extends Activity {
 		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
 		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
 	}
+
 }
