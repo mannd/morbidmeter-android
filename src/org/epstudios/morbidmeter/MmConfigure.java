@@ -119,7 +119,8 @@ public class MmConfigure extends Activity {
 		setAdapters();
 
 		final Context context = MmConfigure.this;
-
+		// Base configuration on last configuration. If no
+		// last widget ID, default configuration will load.
 		configuration = loadPrefs(context, loadLastAppWidgetId(context));
 
 		userNameEditText.setText(configuration.user.getName());
