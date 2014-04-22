@@ -48,6 +48,7 @@ public class MorbidMeterClock {
 	public static void resetConfiguration(Context context, int appWidgetId) {
 		configuration = MmConfigure.loadPrefs(context, appWidgetId);
 		MorbidMeterClock.appWidgetId = appWidgetId;
+		Log.d("MM", "resetConfiguration, appWidgetId = " + appWidgetId);
 
 	}
 
@@ -101,8 +102,8 @@ public class MorbidMeterClock {
 		String formatString = "";
 		String timeString = "";
 		String units = "";
-		Log.d("MM", "percent alive = " + configuration.user.percentAlive());
-		Log.d("MM", "birthday msec = " + configuration.user.birthDayMsec());
+		// Log.d("MM", "percent alive = " + configuration.user.percentAlive());
+		// Log.d("MM", "birthday msec = " + configuration.user.birthDayMsec());
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
 		if (configuration.user.percentAlive() >= 1.0) {

@@ -15,7 +15,7 @@ public class MmService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		String command = intent.getAction();
+		// String command = intent.getAction();
 		Context context = getApplicationContext();
 		int appWidgetId = intent.getExtras().getInt(
 				AppWidgetManager.EXTRA_APPWIDGET_ID);
@@ -34,6 +34,10 @@ public class MmService extends Service {
 				views.setTextViewText(R.id.time, currentTime);
 			}
 		}
+		// String label = MorbidMeterClock.getLabel();
+		// if (label != null) {
+		// views.setTextViewText(R.id.text, label);
+		// }
 		views.setProgressBar(R.id.progressBar, 100,
 				MorbidMeterClock.percentAlive(), false);
 		appWidgetManager.updateAppWidget(appWidgetId, views);
