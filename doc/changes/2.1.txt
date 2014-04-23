@@ -1,0 +1,6 @@
+MorbidMeter v2.1 Release Notes
+
+Changes since v2.0
+
+* Fixed bug that would often make widget unresponsive
+
