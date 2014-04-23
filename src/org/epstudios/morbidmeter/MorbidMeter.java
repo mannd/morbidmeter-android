@@ -48,14 +48,13 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		Log.d(LOG_TAG, "Updating MM Widgets.");
-
 		for (int appWidgetId : appWidgetIds) {
 			// due to bug in Android (?documentation) onUpdate actually is
-			// called before configuration complete. We must suppress this
-			// initial onUpdate or the alarm starts and can't be stopped if
-			// widget creation is cancelled.
+			// called before configuration complete. However, if startup is
+			// cancelled,
+			// widget is deleted appropriately and alarm is shut down. So it is
+			// not necessary to test for completed configuration.
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
-			// if (MorbidMeterClock.configurationIsComplete()) {
 			setAlarm(context, appWidgetId,
 					MorbidMeterClock.getFrequency(context));
 			Log.d(LOG_TAG, "Alarm started");
@@ -74,8 +73,6 @@ public class MorbidMeter extends AppWidgetProvider {
 				Log.d(LOG_TAG, "Label updated.");
 			}
 			appWidgetManager.updateAppWidget(appWidgetId, views);
-
-			// }
 		}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
@@ -123,10 +120,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		Log.d(LOG_TAG, "MM Widget deleted.");
 		for (int appWidgetId : appWidgetIds) {
-			// MorbidMeterClock.resetConfiguration(context, appWidgetId);
-			// if (MorbidMeterClock.configurationIsComplete()) {
 			setAlarm(context, appWidgetId, -1);
-			// }
 		}
 		super.onDeleted(context, appWidgetIds);
 	}
