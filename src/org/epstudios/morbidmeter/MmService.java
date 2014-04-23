@@ -15,7 +15,7 @@ public class MmService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		String command = intent.getAction();
+		// String command = intent.getAction();
 		Context context = getApplicationContext();
 		int appWidgetId = intent.getExtras().getInt(
 				AppWidgetManager.EXTRA_APPWIDGET_ID);

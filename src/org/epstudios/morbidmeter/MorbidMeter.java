@@ -31,7 +31,6 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
 	private static final String LOG_TAG = "MM";
-	private static boolean notificationOngoing = false;
 
 	@Override
 	public void onEnabled(Context context) {
@@ -49,34 +48,31 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
 		Log.d(LOG_TAG, "Updating MM Widgets.");
-
 		for (int appWidgetId : appWidgetIds) {
 			// due to bug in Android (?documentation) onUpdate actually is
-			// called before configuration complete. We must suppress this
-			// initial onUpdate or the alarm starts and can't be stopped if
-			// widget creation is cancelled.
+			// called before configuration complete. However, if startup is
+			// cancelled,
+			// widget is deleted appropriately and alarm is shut down. So it is
+			// not necessary to test for completed configuration.
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
-			if (MorbidMeterClock.configurationIsComplete()) {
-				setAlarm(context, appWidgetId,
-						MorbidMeterClock.getFrequency(context));
-				Log.d(LOG_TAG, "Alarm started");
-				Intent intent = new Intent(context, MmConfigure.class);
-				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-						appWidgetId);
-				PendingIntent pendingIntent = PendingIntent.getActivity(
-						context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			setAlarm(context, appWidgetId,
+					MorbidMeterClock.getFrequency(context));
+			Log.d(LOG_TAG, "Alarm started");
+			Intent intent = new Intent(context, MmConfigure.class);
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+			PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+					intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-				RemoteViews views = new RemoteViews(context.getPackageName(),
-						R.layout.main);
-				views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
-				// only need to change label onUpdate, not by MmService
-				String label = MorbidMeterClock.getLabel();
-				if (label != null) {
-					views.setTextViewText(R.id.text, label);
-				}
-				appWidgetManager.updateAppWidget(appWidgetId, views);
-
+			RemoteViews views = new RemoteViews(context.getPackageName(),
+					R.layout.main);
+			views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+			// only need to change label onUpdate, not by MmService
+			String label = MorbidMeterClock.getLabel();
+			if (label != null) {
+				views.setTextViewText(R.id.text, label);
+				Log.d(LOG_TAG, "Label updated.");
 			}
+			appWidgetManager.updateAppWidget(appWidgetId, views);
 		}
 		super.onUpdate(context, appWidgetManager, appWidgetIds);
 	}
@@ -92,6 +88,7 @@ public class MorbidMeter extends AppWidgetProvider {
 		} else {
 			// on a negative updateRate stop the refreshing
 			alarms.cancel(newPending);
+			Log.d(LOG_TAG, "Alarm stopped.");
 		}
 	}
 
@@ -123,10 +120,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	public void onDeleted(Context context, int[] appWidgetIds) {
 		Log.d(LOG_TAG, "MM Widget deleted.");
 		for (int appWidgetId : appWidgetIds) {
-			MorbidMeterClock.resetConfiguration(context, appWidgetId);
-			if (MorbidMeterClock.configurationIsComplete()) {
-				setAlarm(context, appWidgetId, -1);
-			}
+			setAlarm(context, appWidgetId, -1);
 		}
 		super.onDeleted(context, appWidgetIds);
 	}
