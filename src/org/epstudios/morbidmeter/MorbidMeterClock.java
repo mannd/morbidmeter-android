@@ -40,6 +40,7 @@ import android.util.Log;
 public class MorbidMeterClock {
 
 	private static final String DEPRECATION = "deprecation";
+	private static final String LOG_TAG = "MM";
 	private static Configuration configuration = null;
 	private static int appWidgetId = 0;
 	private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
@@ -48,6 +49,7 @@ public class MorbidMeterClock {
 	public static void resetConfiguration(Context context, int appWidgetId) {
 		configuration = MmConfigure.loadPrefs(context, appWidgetId);
 		MorbidMeterClock.appWidgetId = appWidgetId;
+		Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
 
 	}
 
@@ -101,8 +103,10 @@ public class MorbidMeterClock {
 		String formatString = "";
 		String timeString = "";
 		String units = "";
-		Log.d("MM", "percent alive = " + configuration.user.percentAlive());
-		Log.d("MM", "birthday msec = " + configuration.user.birthDayMsec());
+		// Log.d(LOG_TAG, "percent alive = " +
+		// configuration.user.percentAlive());
+		// Log.d(LOG_TAG, "birthday msec = " +
+		// configuration.user.birthDayMsec());
 		Format formatter = new DecimalFormat(formatString);
 		TimeScale ts = new TimeScale();
 		if (configuration.user.percentAlive() >= 1.0) {
