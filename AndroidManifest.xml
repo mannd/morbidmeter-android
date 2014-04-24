@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.epstudios.morbidmeter"
     android:allowBackup="true"
-    android:versionCode="6"
-    android:versionName="2.1" >
+    android:versionCode="7"
+    android:versionName="2.1.1" >
 
     <!-- minimum installed SDK version in my user base is 10 -->
     <uses-sdk
