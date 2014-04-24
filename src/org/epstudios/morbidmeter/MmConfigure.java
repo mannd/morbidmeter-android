@@ -83,10 +83,6 @@ public class MmConfigure extends Activity {
 
 	private Configuration configuration;
 
-	private final int[] frequencyArray = { 1000, 1000 * 5, 1000 * 15,
-			1000 * 30, 1000 * 60, 1000 * 60 * 15, 1000 * 60 * 30,
-			1000 * 60 * 60 };
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
