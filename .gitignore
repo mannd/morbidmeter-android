@@ -21,3 +21,6 @@ local.properties
 
 # other temp files
 *~
+
+# Apple files
+.DS_Store

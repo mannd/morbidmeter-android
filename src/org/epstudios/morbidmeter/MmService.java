@@ -1,5 +1,6 @@
 package org.epstudios.morbidmeter;
 
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -36,6 +37,17 @@ public class MmService extends Service {
 		}
 		views.setProgressBar(R.id.progressBar, 100,
 				MorbidMeterClock.percentAlive(), false);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
+		// only need to change label onUpdate, not by MmService
+		String label = MorbidMeterClock.getLabel();
+		if (label != null) {
+			views.setTextViewText(R.id.text, label);
+			Log.d(LOG_TAG, "Label updated.");
+		}
+
 		appWidgetManager.updateAppWidget(appWidgetId, views);
 		return START_STICKY;
 
