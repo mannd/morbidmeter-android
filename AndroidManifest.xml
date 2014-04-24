@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.epstudios.morbidmeter"
+    android:allowBackup="true"
     android:versionCode="6"
     android:versionName="2.1" >
 
@@ -29,7 +30,7 @@
 
         <activity android:name=".MmConfigure" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWDIGET_CONFIGURE" />
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
         </activity>
 

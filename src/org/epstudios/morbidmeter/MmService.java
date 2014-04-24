@@ -37,9 +37,11 @@ public class MmService extends Service {
 		}
 		views.setProgressBar(R.id.progressBar, 100,
 				MorbidMeterClock.percentAlive(), false);
-		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		Intent configureIntent = new Intent(context, MmConfigure.class);
+		configureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+				appWidgetId);
 		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+				configureIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 		// only need to change label onUpdate, not by MmService
 		String label = MorbidMeterClock.getLabel();
