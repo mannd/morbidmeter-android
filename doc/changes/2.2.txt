@@ -1,0 +1,6 @@
+MorbidMeter v2.2 Release Notes
+
+Changes since v2.1.1
+
+* Can now set specific end date, or use longevity to set end date.
+
