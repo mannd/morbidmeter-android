@@ -176,8 +176,6 @@
   - upload apk, deactivate old one
   - Tweet It! (after confirming it's on the Market)
   - DONE!
-    
-
 * AlarmManager version
 ** Power locking
    there is an option to allow CPU to be awakened with each alarm
