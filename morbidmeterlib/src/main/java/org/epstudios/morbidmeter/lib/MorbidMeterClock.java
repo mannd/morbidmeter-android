@@ -123,7 +123,7 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_percent))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 100);
-			formatString += DECIMAL_FORMAT_STRING;
+			formatString = DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 			units = "%";
 			if (configuration.reverseTime)
@@ -154,9 +154,7 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2001, Calendar.JANUARY, 1));
-			formatString += "MMMM d\nh:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
+			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
@@ -164,9 +162,7 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2000, Calendar.JANUARY, 2));
-			formatString += "h:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
+			formatString = "h:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
@@ -174,9 +170,7 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
 					new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
-			formatString += "hh:mm:ss";
-			if (configuration.useMsec)
-				formatString += " S";
+			formatString = "hh:mm:ss" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
@@ -184,15 +178,13 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(2000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2000, Calendar.FEBRUARY, 1));
-			formatString += "MMMM d\nh:mm:ss a";
-			if (configuration.useMsec)
-				formatString += " S";
+			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_universe))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
-			formatString += "##,###,###,###";
+			formatString = "##,###,###,###";
 			formatter = new DecimalFormat(formatString);
 			if (configuration.reverseTime)
 				units = " yrs to Present";
@@ -202,7 +194,7 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_x_universe_2))) {
 			ts = new TimeScale(configuration.timeScaleName, 0, 6000L);
-			formatString += "##,###,###,###.0000";
+			formatString = "##,###,###,###.0000";
 			formatter = new DecimalFormat(formatString);
 			if (configuration.reverseTime)
 				units = " yrs to Armageddon";
@@ -214,7 +206,7 @@ public class MorbidMeterClock {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
 					new GregorianCalendar(-4000, Calendar.JANUARY, 1),
 					new GregorianCalendar(2001, Calendar.JANUARY, 1));
-			formatString += "y G MMMM d\nh:mm:ss a";
+			formatString = "y G MMMM d\nh:mm:ss a";
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 
 		}
@@ -222,7 +214,7 @@ public class MorbidMeterClock {
 		// deal with raw time scales, i.e. real time
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_raw))) {
-			formatString += "#,###";
+			formatString = "#,###";
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime)
@@ -233,7 +225,7 @@ public class MorbidMeterClock {
 						+ " msec alive";
 		} else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_seconds))) {
-			formatString += "#,###";
+			formatString = "#,###";
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime)
@@ -248,7 +240,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_days))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += SHORT_DECIMAL_FORMAT_STRING;
+			formatString = SHORT_DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -265,7 +257,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_years))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += DECIMAL_FORMAT_STRING;
+			formatString = DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -282,7 +274,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_hours))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += SHORT_DECIMAL_FORMAT_STRING;
+			formatString = SHORT_DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -299,7 +291,7 @@ public class MorbidMeterClock {
 				.getString(R.string.ts_minutes))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString += SHORT_DECIMAL_FORMAT_STRING;
+			formatString = SHORT_DECIMAL_FORMAT_STRING;
 			formatter = new DecimalFormat(formatString);
 
 			if (configuration.reverseTime) {
@@ -333,6 +325,20 @@ public class MorbidMeterClock {
 
 		return timeString;
 	}
+
+    private static Format getSimpleDateFormat(String formatString, Boolean useMsec) {
+        formatString += msecSuffix(useMsec);
+        return new SimpleDateFormat(formatString, Locale.getDefault());
+    }
+
+    private static String msecSuffix(Boolean useMsec) {
+        return (useMsec ? " S" : "");
+        // TODO the above should return 1-3 digits of msec and does except in
+        // Android 5 emulator it rounds to 1 digit (hundreds).  Code below
+        // always returns 3 digits with leading zeros as needed.
+        // Bug report submitted to Google.
+        // return (useMsec ? " SSS" : "");
+    }
 
 	public static int percentAlive() {
 		return (int) (configuration.user.percentAlive() * 100);
