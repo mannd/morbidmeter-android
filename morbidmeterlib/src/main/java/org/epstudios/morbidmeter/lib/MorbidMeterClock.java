@@ -332,12 +332,13 @@ public class MorbidMeterClock {
     }
 
     private static String msecSuffix(Boolean useMsec) {
-        return (useMsec ? " S" : "");
-        // TODO the above should return 1-3 digits of msec and does except in
+        // return (useMsec ? " S" : "");
+        // the above should return 1-3 digits of msec and does except in
         // Android 5 emulator it rounds to 1 digit (hundreds).  Code below
         // always returns 3 digits with leading zeros as needed.
         // Bug report submitted to Google.
-        // return (useMsec ? " SSS" : "");
+        // Update: Google going with new behavior, thus changed to below:
+        return (useMsec ? " SSS" : "");
     }
 
 	public static int percentAlive() {
