@@ -1,0 +1,3 @@
+MorbidMeter v2.2.2 Release Notes
+Changes since v2.2.1
+* Millisecond format changed to fix changes in Android 5.0
