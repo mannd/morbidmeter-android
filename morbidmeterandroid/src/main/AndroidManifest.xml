@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.epstudios.morbidmeter"
     android:allowBackup="true"
-    android:versionCode="10"
-    android:versionName="2.2.1" >
+    android:versionCode="11"
+    android:versionName="2.2.2" >
 
     <application
         android:allowBackup="true"
