@@ -1,0 +1,3 @@
+include ':morbidmeterlib'
+include ':morbidmeterandroid'
+include ':morbidmeterlite'

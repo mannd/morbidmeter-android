@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="timescales">
+        <item>@string/ts_time</item>
+        <item>@string/ts_raw</item>
+        <item>@string/ts_seconds</item>
+        <item>@string/ts_minutes</item>
+        <item>@string/ts_hours</item>
+        <item>@string/ts_days</item>
+        <item>@string/ts_years</item>
+        <item>@string/ts_day</item>
+        <item>@string/ts_hour</item>
+        <item>@string/ts_month</item>
+        <item>@string/ts_year</item>
+        <item>@string/ts_universe</item>
+        <item>@string/ts_x_universe</item>
+        <item>@string/ts_x_universe_2</item>
+        <item>@string/ts_percent</item>
+        <item>@string/ts_none</item>
+        <item>@string/ts_debug</item>
+    </array>
+    <array name="frequencies">
+        <item>@string/one_sec</item>
+        <item>@string/five_sec</item>
+        <item>@string/fifteen_sec</item>
+        <item>@string/thirty_sec</item>
+        <item>@string/one_min</item>
+        <item>@string/fifteen_min</item>
+        <item>@string/thirty_min</item>
+        <item>@string/one_hour</item>
+    </array>
+
+</resources>
