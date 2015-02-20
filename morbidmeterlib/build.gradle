@@ -9,15 +9,6 @@ android {
         targetSdkVersion 21
     }
 
-    dependencies {
-        compile 'com.getpebble:pebblekit:2.6.0'
-    }
-
-    repositories {
-        mavenCentral()
-        maven { url "https://oss.sonatype.org/content/groups/public/" }
-    }
-
     buildTypes {
         release {
             minifyEnabled false

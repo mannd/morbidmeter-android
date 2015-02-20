@@ -19,6 +19,17 @@ android {
     }
 }
 
+
+
+dependencies {
+    compile 'com.getpebble:pebblekit:2.6.0'
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/groups/public/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'

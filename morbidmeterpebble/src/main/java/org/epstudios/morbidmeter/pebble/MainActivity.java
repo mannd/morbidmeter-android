@@ -2,8 +2,12 @@ package org.epstudios.morbidmeter.pebble;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.getpebble.android.kit.PebbleKit;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +16,14 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        boolean connected = PebbleKit.isWatchConnected(getApplicationContext());
+
+        String message =  "Pebble is " + (connected ? "connected" : "not connected") + ".";
+        TextView mainTextView = (TextView) findViewById(R.id.main_textview);
+        Log.i(getLocalClassName(), message);
+        mainTextView.setText(message);
+
     }
 
 
