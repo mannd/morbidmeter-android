@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="6dp"
@@ -33,7 +34,8 @@
             android:id="@+id/birthday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
+            android:calendarViewShown="false"
+            tools:ignore="UnusedAttribute" />
 
         <TextView
             android:id="@+id/longevityTextView"
@@ -63,7 +65,8 @@
             android:id="@+id/deathday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:calendarViewShown="false" />
+            android:calendarViewShown="false"
+            tools:ignore="UnusedAttribute" />
 
         <LinearLayout
             android:id="@+id/linearLayout1"

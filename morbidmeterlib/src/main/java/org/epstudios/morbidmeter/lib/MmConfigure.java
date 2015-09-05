@@ -148,7 +148,7 @@ public class MmConfigure extends Activity {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				if (!hasFocus) {
-					double longevity = 0.0;
+					double longevity;
 					try {
 						longevity = Double.parseDouble(longevityEditText
 								.getText().toString());
@@ -197,15 +197,15 @@ public class MmConfigure extends Activity {
 							boolean isChecked) {
 						for (int i = 0; i < notificationSoundRadioGroup
 								.getChildCount(); ++i) {
-							((RadioButton) notificationSoundRadioGroup
-									.getChildAt(i)).setEnabled(isChecked);
+							notificationSoundRadioGroup
+									.getChildAt(i).setEnabled(isChecked);
 						}
 					}
 				});
 		notificationSoundRadioGroup.check(configuration.notificationSound);
 		if (!showNotificationsCheckBox.isChecked()) {
 			for (int i = 0; i < notificationSoundRadioGroup.getChildCount(); ++i) {
-				((RadioButton) notificationSoundRadioGroup.getChildAt(i))
+				notificationSoundRadioGroup.getChildAt(i)
 						.setEnabled(false);
 			}
 		}
@@ -327,7 +327,7 @@ public class MmConfigure extends Activity {
 			longevityEditText.setText(Double.toString(longevity));
 			longevityTextView.setText(getLongevityText(longevity));
 		}
-	};
+	}
 
 	private String getLongevityText(double longevity) {
 		return getString(R.string.longevity_label) + " "
@@ -401,7 +401,7 @@ public class MmConfigure extends Activity {
 			reverseTimeCheckBox.setChecked(false);
 			return;
 		}
-		final Set<String> okMsecSet = new HashSet<String>(Arrays.asList(
+		final Set<String> okMsecSet = new HashSet<>(Arrays.asList(
 				this.getString(R.string.ts_day),
 				this.getString(R.string.ts_hour),
 				this.getString(R.string.ts_month),
@@ -484,10 +484,10 @@ public class MmConfigure extends Activity {
 		return configuration;
 	}
 
-	static int loadLastAppWidgetId(Context context) {
-		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
-	}
+//	static int loadLastAppWidgetId(Context context) {
+//		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
+//		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
+//	}
 
 	@SuppressLint("DefaultLocale")
 	public boolean isLite() {
