@@ -5,14 +5,13 @@ android {
     buildToolsVersion "21.0.2"
 
     defaultConfig {
-        applicationId "org.epstudios.morbidmeter.lib"
         minSdkVersion 10
         targetSdkVersion 21
     }
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
