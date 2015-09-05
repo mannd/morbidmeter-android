@@ -40,7 +40,7 @@ public class MmService extends Service {
 		Intent configureIntent = new Intent(context, MmConfigure.class);
 		configureIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 				appWidgetId);
-		PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId,
 				configureIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 		// only need to change label onUpdate, not by MmService

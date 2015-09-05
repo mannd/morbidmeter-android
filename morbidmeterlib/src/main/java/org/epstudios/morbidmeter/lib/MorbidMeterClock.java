@@ -77,10 +77,12 @@ public class MorbidMeterClock {
 		return frequency;
 	}
 
-	public static void getLastConfiguration(Context context) {
-		configuration = MmConfigure.loadPrefs(context,
-				MmConfigure.loadLastAppWidgetId(context));
-	}
+// --Commented out by Inspection START (9/5/15, 2:45 PM):
+//	public static void getLastConfiguration(Context context) {
+//		configuration = MmConfigure.loadPrefs(context,
+//				MmConfigure.loadLastAppWidgetId(context));
+//	}
+// --Commented out by Inspection STOP (9/5/15, 2:45 PM)
 
 	public static boolean configurationIsComplete() {
 		return configuration.configurationComplete;
@@ -92,8 +94,7 @@ public class MorbidMeterClock {
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName;
 		String userName = configuration.user.getApostrophedName();
-		String label = userName + " MorbidMeter\n" + timeScaleName;
-		return label;
+		return userName + " MorbidMeter\n" + timeScaleName;
 	}
 
 	static public String getFormattedTime(Context context) {
@@ -139,7 +140,6 @@ public class MorbidMeterClock {
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_debug))) {
-			ts = new TimeScale(configuration.timeScaleName, 0, 0);
 			long currentSystemTime = System.currentTimeMillis();
 			timeString = "System Time " + currentSystemTime + " ms";
 			timeString += "\nBirth " + configuration.user.birthDayMsec()
@@ -326,10 +326,12 @@ public class MorbidMeterClock {
 		return timeString;
 	}
 
-    private static Format getSimpleDateFormat(String formatString, Boolean useMsec) {
-        formatString += msecSuffix(useMsec);
-        return new SimpleDateFormat(formatString, Locale.getDefault());
-    }
+// --Commented out by Inspection START (9/5/15, 2:45 PM):
+//    private static Format getSimpleDateFormat(String formatString, Boolean useMsec) {
+//        formatString += msecSuffix(useMsec);
+//        return new SimpleDateFormat(formatString, Locale.getDefault());
+//    }
+// --Commented out by Inspection STOP (9/5/15, 2:45 PM)
 
     private static String msecSuffix(Boolean useMsec) {
         // return (useMsec ? " S" : "");
