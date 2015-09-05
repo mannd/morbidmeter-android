@@ -69,7 +69,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
 						appWidgetId);
 				PendingIntent pendingIntent = PendingIntent.getActivity(
-						context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+						context, appWidgetId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 				// we'll update everything here to avoid a delay if clock
 				// frequency is long
 				RemoteViews views = new RemoteViews(context.getPackageName(),

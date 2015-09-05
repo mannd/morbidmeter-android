@@ -125,7 +125,8 @@ public class MmConfigure extends Activity {
 		final Context context = MmConfigure.this;
 		// Base configuration on last configuration. If no
 		// last widget ID, default configuration will load.
-		configuration = loadPrefs(context, loadLastAppWidgetId(context));
+		//configuration = loadPrefs(context, loadLastAppWidgetId(context));
+        configuration = loadPrefs(context, appWidgetId);
 
 		userNameEditText.setText(configuration.user.getName());
 		int year = configuration.user.getBirthDay().get(Calendar.YEAR);
