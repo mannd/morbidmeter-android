@@ -467,11 +467,6 @@ public class MmConfigure extends Activity {
 		Calendar birthDay = new GregorianCalendar();
 		birthDay.set(year, month, day);
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
-		// round to 3 decimal places
-		//Log.d("MMlog", "rounding longevity");
-        //Log.d("MM", "longevity prior to rounding = " + longevity);
-		//longevity = Math.round(longevity * 10000.000) / 10000.000;
-        //Log.d("MM", "longevity after rounding = " + longevity);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
@@ -489,11 +484,6 @@ public class MmConfigure extends Activity {
 				CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
 		return configuration;
 	}
-
-//	static int loadLastAppWidgetId(Context context) {
-//		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-//		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
-//	}
 
 	@SuppressLint("DefaultLocale")
 	public boolean isLite() {
