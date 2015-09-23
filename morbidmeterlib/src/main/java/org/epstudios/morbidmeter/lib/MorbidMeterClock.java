@@ -77,13 +77,6 @@ public class MorbidMeterClock {
 		return frequency;
 	}
 
-// --Commented out by Inspection START (9/5/15, 2:45 PM):
-//	public static void getLastConfiguration(Context context) {
-//		configuration = MmConfigure.loadPrefs(context,
-//				MmConfigure.loadLastAppWidgetId(context));
-//	}
-// --Commented out by Inspection STOP (9/5/15, 2:45 PM)
-
 	public static boolean configurationIsComplete() {
 		return configuration.configurationComplete;
 	}
