@@ -18,6 +18,7 @@
 
 package org.epstudios.morbidmeter.lib;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -140,9 +141,8 @@ public class MmConfigure extends Activity {
 		deathDayDatePicker.init(deathYear, deathMonth, deathDay,
 				new MyOnDateChangedListener());
 		longevityTextView.setText(getLongevityText(configuration.user
-				.getLongevity()));
-		longevityEditText.setText(Double.toString(configuration.user
-				.getLongevity()));
+                .getLongevity()));
+        longevityEditText.setText(formattedLongevity(configuration.user.getLongevity()));
 		longevityEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
@@ -322,18 +322,21 @@ public class MmConfigure extends Activity {
 					deathDayDatePicker.getYear(),
 					deathDayDatePicker.getMonth(),
 					deathDayDatePicker.getDayOfMonth());
-			// round to 3 places
-			longevity = Math.round(longevity * 10000.000) / 10000.000;
-			longevityEditText.setText(Double.toString(longevity));
+			longevityEditText.setText(formattedLongevity(longevity));
 			longevityTextView.setText(getLongevityText(longevity));
 		}
 	}
 
 	private String getLongevityText(double longevity) {
-		return getString(R.string.longevity_label) + " "
-				+ Double.toString(longevity) + " "
+        return getString(R.string.longevity_label) + " "
+				+ formattedLongevity(longevity) + " "
 				+ getString(R.string.longevity_label_completion);
 	}
+
+    private String formattedLongevity(double longevity) {
+        DecimalFormat format = new DecimalFormat("###.0000");
+        return format.format(longevity);
+    }
 
 	private void displayHelpMessage() {
 		AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -435,7 +438,7 @@ public class MmConfigure extends Activity {
 		prefs.putInt(BIRTHDAY_DAY_KEY + appWidgetId, configuration.user
 				.getBirthDay().get(Calendar.DAY_OF_MONTH));
 		prefs.putFloat(LONGEVITY_KEY + appWidgetId,
-				(float) configuration.user.getLongevity());
+                (float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
 				configuration.timeScaleName);
 		prefs.putString(FREQUENCY_KEY + appWidgetId,
@@ -465,7 +468,10 @@ public class MmConfigure extends Activity {
 		birthDay.set(year, month, day);
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
 		// round to 3 decimal places
-		longevity = Math.round(longevity * 10000.000) / 10000.000;
+		//Log.d("MMlog", "rounding longevity");
+        //Log.d("MM", "longevity prior to rounding = " + longevity);
+		//longevity = Math.round(longevity * 10000.000) / 10000.000;
+        //Log.d("MM", "longevity after rounding = " + longevity);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
