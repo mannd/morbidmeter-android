@@ -107,8 +107,8 @@ public class MorbidMeterClock {
 			if (configuration.showNotifications) {
 				showNotification(context,
 						context.getString(R.string.user_dead_message));
-				return context.getString(R.string.user_dead_message);
 			}
+			return context.getString(R.string.user_dead_message);
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_none))) {
