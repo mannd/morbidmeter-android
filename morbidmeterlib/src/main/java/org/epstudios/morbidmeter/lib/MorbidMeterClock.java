@@ -145,16 +145,16 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
 			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_day))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.JANUARY, 2));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0));
 			formatString = "h:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
@@ -169,8 +169,8 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_month))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.FEBRUARY, 1));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2000, Calendar.FEBRUARY, 1, 0, 0, 0));
 			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
@@ -197,8 +197,8 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_x_universe))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(-4000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+					new GregorianCalendar(-4000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
 			formatString = "y G MMMM d\nh:mm:ss a";
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 

@@ -17,6 +17,14 @@ public class MmService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// String command = intent.getAction();
+        // For some reason a null intent is sometimes passed,
+        // this check eliminated java exception and message
+        // the morbidmeter has stopped.
+        // Not sure if START_REDELIVER_INTENT is necessary
+		if (intent == null) {
+            Log.d(LOG_TAG, "null intent passed to onStartCommand");
+            return START_REDELIVER_INTENT;
+        }
 		Context context = getApplicationContext();
 		int appWidgetId = intent.getExtras().getInt(
 				AppWidgetManager.EXTRA_APPWIDGET_ID);
