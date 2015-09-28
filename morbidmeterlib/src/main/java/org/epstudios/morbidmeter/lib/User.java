@@ -54,14 +54,14 @@ public class User {
 		Calendar deathDate = GregorianCalendar.getInstance();
 		deathDate.set(deathYear, deathMonth, deathDayOfMonth);
 		// normalize all deathdays to the stroke of midnight
-		deathDate.set(Calendar.HOUR, 0);
+		deathDate.set(Calendar.HOUR_OF_DAY, 0);
 		deathDate.set(Calendar.MINUTE, 0);
 		deathDate.set(Calendar.SECOND, 0);
 		deathDate.set(Calendar.MILLISECOND, 0);
 		Calendar birthDate = GregorianCalendar.getInstance();
 		birthDate.set(birthYear, birthMonth, birthDayOfMonth);
 		// normalize all birthdays to the stroke of midnight
-		birthDate.set(Calendar.HOUR, 0);
+		birthDate.set(Calendar.HOUR_OF_DAY, 0);
 		birthDate.set(Calendar.MINUTE, 0);
 		birthDate.set(Calendar.SECOND, 0);
 		birthDate.set(Calendar.MILLISECOND, 0);
@@ -79,7 +79,7 @@ public class User {
 		Calendar birthDate = GregorianCalendar.getInstance();
 		birthDate.set(birthYear, birthMonth, birthDayOfMonth);
 		// normalize all birthdays to the stroke of midnight
-		birthDate.set(Calendar.HOUR, 0);
+		birthDate.set(Calendar.HOUR_OF_DAY, 0);
 		birthDate.set(Calendar.MINUTE, 0);
 		birthDate.set(Calendar.SECOND, 0);
 		birthDate.set(Calendar.MILLISECOND, 0);
@@ -198,7 +198,7 @@ public class User {
 	public void setBirthDay(GregorianCalendar birthDay) {
 		this.birthDay = birthDay;
 		// normalize all birthdays to the stroke of midnight
-		this.birthDay.set(Calendar.HOUR, 0);
+		this.birthDay.set(Calendar.HOUR_OF_DAY, 0);
 		this.birthDay.set(Calendar.MINUTE, 0);
 		this.birthDay.set(Calendar.SECOND, 0);
 		this.birthDay.set(Calendar.MILLISECOND, 0);

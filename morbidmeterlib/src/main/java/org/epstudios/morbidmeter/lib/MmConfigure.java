@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -467,6 +468,7 @@ public class MmConfigure extends Activity {
 		GregorianCalendar birthDay = new GregorianCalendar();
 		// make sure birthday is normalized to midnight
 		birthDay.set(year, month, day, 0, 0, 0);
+		//birthDay.setTimeZone(TimeZone.getTimeZone("UTC"));
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
