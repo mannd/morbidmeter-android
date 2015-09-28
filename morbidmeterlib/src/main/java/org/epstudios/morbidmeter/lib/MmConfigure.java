@@ -464,7 +464,7 @@ public class MmConfigure extends Activity {
 		int year = prefs.getInt(BIRTHDAY_YEAR_KEY + appWidgetId, 1970);
 		int month = prefs.getInt(BIRTHDAY_MONTH_KEY + appWidgetId, 1);
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
-		Calendar birthDay = new GregorianCalendar();
+		GregorianCalendar birthDay = new GregorianCalendar();
 		// make sure birthday is normalized to midnight
 		birthDay.set(year, month, day, 0, 0, 0);
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);

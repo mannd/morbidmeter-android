@@ -26,18 +26,18 @@ public class User {
 	final static private double daysPerYear = 365.25;
 	final static private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
 
-	public User(String name, Calendar birthDay, double longevity) {
+	public User(String name, GregorianCalendar birthDay, double longevity) {
 		this.name = name;
 		setBirthDay(birthDay);
 		this.longevity = longevity;
 	}
 
-	public Calendar birthDay() {
+	public GregorianCalendar birthDay() {
 		return this.birthDay;
 	}
 
-	public Calendar deathDay() {
-		Calendar deathDay = new GregorianCalendar();
+	public GregorianCalendar deathDay() {
+		GregorianCalendar deathDay = new GregorianCalendar();
 		deathDay.setTimeInMillis(deathDayMsec());
 		return deathDay;
 	}
@@ -195,7 +195,7 @@ public class User {
 		return birthDay;
 	}
 
-	public void setBirthDay(Calendar birthDay) {
+	public void setBirthDay(GregorianCalendar birthDay) {
 		this.birthDay = birthDay;
 		// normalize all birthdays to the stroke of midnight
 		this.birthDay.set(Calendar.HOUR, 0);
@@ -221,7 +221,7 @@ public class User {
 	}
 
 	private String name;
-	private Calendar birthDay;
+	private GregorianCalendar birthDay;
 	private double longevity;
 
 }
