@@ -92,6 +92,8 @@ public class MorbidMeterClock {
 
 	static public String getFormattedTime(Context context) {
 
+        final Boolean fullDebug = true;
+
 		final String DECIMAL_FORMAT_STRING = "#.000000";
 		final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
 		String formatString = "";
@@ -300,18 +302,27 @@ public class MorbidMeterClock {
 
 		} else {
 			if (configuration.reverseTime) {
-				timeString = formatter.format(ts
+				timeString = formatter.format(new Date(ts
 						.reverseProportionalTime(configuration.user
-								.percentAlive()));
+								.percentAlive())));
 			} else {
-				timeString = formatter.format(ts
-						.proportionalTime(configuration.user.percentAlive()));
+				timeString = formatter.format(new Date(ts
+						.proportionalTime(configuration.user.percentAlive())));
 			}
 		}
 		if (configuration.useMsec && ts.okToUseMsec())
 			timeString += " msec";
 		timeString += units;
-
+        if (fullDebug){
+            long currentSystemTime = System.currentTimeMillis();
+            timeString += "\nSystem Time " + currentSystemTime + " ms";
+            timeString += "\nBirth " + configuration.user.birthDayMsec()
+                    + " ms";
+            timeString += "\nDeath " + configuration.user.deathDayMsec()
+                    + " ms";
+            timeString += "\n%Alive " + configuration.user.percentAlive() + "%";
+            timeString += "\nPropTime " + ts.proportionalTime(configuration.user.percentAlive());
+        }
 		if (configuration.showNotifications) {
 			showNotification(context, timeString);
 		}
