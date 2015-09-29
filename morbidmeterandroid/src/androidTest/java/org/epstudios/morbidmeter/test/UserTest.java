@@ -68,7 +68,7 @@ public class UserTest extends TestCase {
 	}
 
 	public void testIsDead() {
-		Calendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
+		GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
 		User user = new User("", bd, 60.0); // should die in 2010
 		assertTrue(user.isDead());
 		user.setLongevity(90.0); // should die in 2040, if MM still around this
@@ -77,7 +77,7 @@ public class UserTest extends TestCase {
 	}
 
 	public void testGetApostophedName() {
-		Calendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
+		GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
 		User user = new User("David", bd, 70.0);
 		assertEquals(user.getApostrophedName(), "David's");
 		User user1 = new User("Semis", bd, 70.0);
