@@ -77,13 +77,6 @@ public class MorbidMeterClock {
 		return frequency;
 	}
 
-// --Commented out by Inspection START (9/5/15, 2:45 PM):
-//	public static void getLastConfiguration(Context context) {
-//		configuration = MmConfigure.loadPrefs(context,
-//				MmConfigure.loadLastAppWidgetId(context));
-//	}
-// --Commented out by Inspection STOP (9/5/15, 2:45 PM)
-
 	public static boolean configurationIsComplete() {
 		return configuration.configurationComplete;
 	}
@@ -98,6 +91,8 @@ public class MorbidMeterClock {
 	}
 
 	static public String getFormattedTime(Context context) {
+
+        final Boolean fullDebug = false;
 
 		final String DECIMAL_FORMAT_STRING = "#.000000";
 		final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
@@ -114,8 +109,8 @@ public class MorbidMeterClock {
 			if (configuration.showNotifications) {
 				showNotification(context,
 						context.getString(R.string.user_dead_message));
-				return context.getString(R.string.user_dead_message);
 			}
+			return context.getString(R.string.user_dead_message);
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_none))) {
@@ -152,16 +147,16 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_year))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
 			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_day))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.JANUARY, 2));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0));
 			formatString = "h:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
@@ -176,8 +171,8 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_month))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(2000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2000, Calendar.FEBRUARY, 1));
+					new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2000, Calendar.FEBRUARY, 1, 0, 0, 0));
 			formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 		}
@@ -204,8 +199,8 @@ public class MorbidMeterClock {
 		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_x_universe))) {
 			ts = new CalendarTimeScale(configuration.timeScaleName,
-					new GregorianCalendar(-4000, Calendar.JANUARY, 1),
-					new GregorianCalendar(2001, Calendar.JANUARY, 1));
+					new GregorianCalendar(-4000, Calendar.JANUARY, 1, 0, 0, 0),
+					new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
 			formatString = "y G MMMM d\nh:mm:ss a";
 			formatter = new SimpleDateFormat(formatString, Locale.getDefault());
 
@@ -307,18 +302,27 @@ public class MorbidMeterClock {
 
 		} else {
 			if (configuration.reverseTime) {
-				timeString = formatter.format(ts
+				timeString = formatter.format(new Date(ts
 						.reverseProportionalTime(configuration.user
-								.percentAlive()));
+								.percentAlive())));
 			} else {
-				timeString = formatter.format(ts
-						.proportionalTime(configuration.user.percentAlive()));
+				timeString = formatter.format(new Date(ts
+						.proportionalTime(configuration.user.percentAlive())));
 			}
 		}
 		if (configuration.useMsec && ts.okToUseMsec())
 			timeString += " msec";
 		timeString += units;
-
+        if (fullDebug){
+            long currentSystemTime = System.currentTimeMillis();
+            timeString += "\nSystem Time " + currentSystemTime + " ms";
+            timeString += "\nBirth " + configuration.user.birthDayMsec()
+                    + " ms";
+            timeString += "\nDeath " + configuration.user.deathDayMsec()
+                    + " ms";
+            timeString += "\n%Alive " + configuration.user.percentAlive() + "%";
+            timeString += "\nPropTime " + ts.proportionalTime(configuration.user.percentAlive());
+        }
 		if (configuration.showNotifications) {
 			showNotification(context, timeString);
 		}

@@ -48,7 +48,9 @@
         For example, using a single year as a timescale and an estimated longevity of 80 years,
         a person in their 40s would have a MorbidMeter date sometime in the summer. 
         Using a day-long
-        timescale, the MorbidMeter time would be around noon.
+        timescale, the MorbidMeter time would be around noon.  Alternatively
+        you can use MorbidMeter as a countdown widget, but with much more entertaining
+        options than your average countdown widget!
         \n\nUse the configuration screen shown when you start the
         widget or touch the Skull button to set the timescale as well as other widget
         parameters.  Fill in your name, birth date, and

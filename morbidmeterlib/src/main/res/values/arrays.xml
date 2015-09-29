@@ -18,7 +18,7 @@
         <item>@string/ts_x_universe_2</item>
         <item>@string/ts_percent</item>
         <item>@string/ts_none</item>
-        <item>@string/ts_debug</item>
+        <!--<item>@string/ts_debug</item>-->
     </array>
     <array name="frequencies">
         <item>@string/one_sec</item>

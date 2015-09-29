@@ -18,11 +18,13 @@
 
 package org.epstudios.morbidmeter.lib;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TimeZone;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -140,9 +142,8 @@ public class MmConfigure extends Activity {
 		deathDayDatePicker.init(deathYear, deathMonth, deathDay,
 				new MyOnDateChangedListener());
 		longevityTextView.setText(getLongevityText(configuration.user
-				.getLongevity()));
-		longevityEditText.setText(Double.toString(configuration.user
-				.getLongevity()));
+                .getLongevity()));
+        longevityEditText.setText(formattedLongevity(configuration.user.getLongevity()));
 		longevityEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
 
 			@Override
@@ -322,18 +323,21 @@ public class MmConfigure extends Activity {
 					deathDayDatePicker.getYear(),
 					deathDayDatePicker.getMonth(),
 					deathDayDatePicker.getDayOfMonth());
-			// round to 3 places
-			longevity = Math.round(longevity * 10000.000) / 10000.000;
-			longevityEditText.setText(Double.toString(longevity));
+			longevityEditText.setText(formattedLongevity(longevity));
 			longevityTextView.setText(getLongevityText(longevity));
 		}
 	}
 
 	private String getLongevityText(double longevity) {
-		return getString(R.string.longevity_label) + " "
-				+ Double.toString(longevity) + " "
+        return getString(R.string.longevity_label) + " "
+				+ formattedLongevity(longevity) + " "
 				+ getString(R.string.longevity_label_completion);
 	}
+
+    private String formattedLongevity(double longevity) {
+        DecimalFormat format = new DecimalFormat("###.0000");
+        return format.format(longevity);
+    }
 
 	private void displayHelpMessage() {
 		AlertDialog dialog = new AlertDialog.Builder(this).create();
@@ -435,7 +439,7 @@ public class MmConfigure extends Activity {
 		prefs.putInt(BIRTHDAY_DAY_KEY + appWidgetId, configuration.user
 				.getBirthDay().get(Calendar.DAY_OF_MONTH));
 		prefs.putFloat(LONGEVITY_KEY + appWidgetId,
-				(float) configuration.user.getLongevity());
+                (float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
 				configuration.timeScaleName);
 		prefs.putString(FREQUENCY_KEY + appWidgetId,
@@ -461,11 +465,11 @@ public class MmConfigure extends Activity {
 		int year = prefs.getInt(BIRTHDAY_YEAR_KEY + appWidgetId, 1970);
 		int month = prefs.getInt(BIRTHDAY_MONTH_KEY + appWidgetId, 1);
 		int day = prefs.getInt(BIRTHDAY_DAY_KEY + appWidgetId, 1);
-		Calendar birthDay = new GregorianCalendar();
-		birthDay.set(year, month, day);
+		GregorianCalendar birthDay = new GregorianCalendar();
+		// make sure birthday is normalized to midnight
+		birthDay.set(year, month, day, 0, 0, 0);
+		//birthDay.setTimeZone(TimeZone.getTimeZone("UTC"));
 		double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
-		// round to 3 decimal places
-		longevity = Math.round(longevity * 10000.000) / 10000.000;
 		configuration.user = new User(name, birthDay, longevity);
 		configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
 				+ appWidgetId, context.getString(R.string.ts_time));
@@ -483,11 +487,6 @@ public class MmConfigure extends Activity {
 				CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
 		return configuration;
 	}
-
-//	static int loadLastAppWidgetId(Context context) {
-//		SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-//		return prefs.getInt(LAST_APP_WIDGET_ID, 0);
-//	}
 
 	@SuppressLint("DefaultLocale")
 	public boolean isLite() {

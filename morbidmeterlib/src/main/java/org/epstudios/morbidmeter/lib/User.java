@@ -26,18 +26,18 @@ public class User {
 	final static private double daysPerYear = 365.25;
 	final static private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
 
-	public User(String name, Calendar birthDay, double longevity) {
+	public User(String name, GregorianCalendar birthDay, double longevity) {
 		this.name = name;
 		setBirthDay(birthDay);
 		this.longevity = longevity;
 	}
 
-	public Calendar birthDay() {
+	public GregorianCalendar birthDay() {
 		return this.birthDay;
 	}
 
-	public Calendar deathDay() {
-		Calendar deathDay = new GregorianCalendar();
+	public GregorianCalendar deathDay() {
+		GregorianCalendar deathDay = new GregorianCalendar();
 		deathDay.setTimeInMillis(deathDayMsec());
 		return deathDay;
 	}
@@ -54,14 +54,14 @@ public class User {
 		Calendar deathDate = GregorianCalendar.getInstance();
 		deathDate.set(deathYear, deathMonth, deathDayOfMonth);
 		// normalize all deathdays to the stroke of midnight
-		deathDate.set(Calendar.HOUR, 0);
+		deathDate.set(Calendar.HOUR_OF_DAY, 0);
 		deathDate.set(Calendar.MINUTE, 0);
 		deathDate.set(Calendar.SECOND, 0);
 		deathDate.set(Calendar.MILLISECOND, 0);
 		Calendar birthDate = GregorianCalendar.getInstance();
 		birthDate.set(birthYear, birthMonth, birthDayOfMonth);
 		// normalize all birthdays to the stroke of midnight
-		birthDate.set(Calendar.HOUR, 0);
+		birthDate.set(Calendar.HOUR_OF_DAY, 0);
 		birthDate.set(Calendar.MINUTE, 0);
 		birthDate.set(Calendar.SECOND, 0);
 		birthDate.set(Calendar.MILLISECOND, 0);
@@ -79,7 +79,7 @@ public class User {
 		Calendar birthDate = GregorianCalendar.getInstance();
 		birthDate.set(birthYear, birthMonth, birthDayOfMonth);
 		// normalize all birthdays to the stroke of midnight
-		birthDate.set(Calendar.HOUR, 0);
+		birthDate.set(Calendar.HOUR_OF_DAY, 0);
 		birthDate.set(Calendar.MINUTE, 0);
 		birthDate.set(Calendar.SECOND, 0);
 		birthDate.set(Calendar.MILLISECOND, 0);
@@ -107,8 +107,8 @@ public class User {
 	}
 
 	public long msecAlive() {
-		// return System.currentTimeMillis() - birthDayMsec();
-		return Calendar.getInstance().getTimeInMillis() - birthDayMsec();
+		return System.currentTimeMillis() - birthDayMsec();
+		//return Calendar.getInstance().getTimeInMillis() - birthDayMsec();
 	}
 
 	public long reverseMsecAlive() {
@@ -195,10 +195,10 @@ public class User {
 		return birthDay;
 	}
 
-	public void setBirthDay(Calendar birthDay) {
+	public void setBirthDay(GregorianCalendar birthDay) {
 		this.birthDay = birthDay;
 		// normalize all birthdays to the stroke of midnight
-		this.birthDay.set(Calendar.HOUR, 0);
+		this.birthDay.set(Calendar.HOUR_OF_DAY, 0);
 		this.birthDay.set(Calendar.MINUTE, 0);
 		this.birthDay.set(Calendar.SECOND, 0);
 		this.birthDay.set(Calendar.MILLISECOND, 0);
@@ -221,7 +221,7 @@ public class User {
 	}
 
 	private String name;
-	private Calendar birthDay;
+	private GregorianCalendar birthDay;
 	private double longevity;
 
 }

@@ -18,7 +18,10 @@
 
 package org.epstudios.morbidmeter.lib;
 
+import android.util.Log;
+
 import java.util.Calendar;
+
 
 public class CalendarTimeScale extends TimeScale {
 	public CalendarTimeScale(String name, Calendar minTime, Calendar maxTime) {
@@ -38,13 +41,13 @@ public class CalendarTimeScale extends TimeScale {
 	}
 
 	@Override
-	public double proportionalTime(double percent) {
-		return minTime.getTimeInMillis() + percent * duration();
+	public long proportionalTime(double percent) {
+		return minTime.getTimeInMillis() + (long)(percent * duration());
 	}
 
 	@Override
-	public double reverseProportionalTime(double percent) {
-		return maxTime.getTimeInMillis() - percent * duration();
+	public long reverseProportionalTime(double percent) {
+		return maxTime.getTimeInMillis() - (long) (percent * duration());
 	}
 
 	private final Calendar minTime;
