@@ -92,7 +92,7 @@ public class MorbidMeterClock {
 
 	static public String getFormattedTime(Context context) {
 
-        final Boolean fullDebug = true;
+        final Boolean fullDebug = false;
 
 		final String DECIMAL_FORMAT_STRING = "#.000000";
 		final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
