@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.epstudios.morbidmeter"
     android:allowBackup="true"
-    android:versionCode="12"
-    android:versionName="2.3" >
+    android:versionCode="13"
+    android:versionName="2.4" >
 
     <application
         android:allowBackup="true"
