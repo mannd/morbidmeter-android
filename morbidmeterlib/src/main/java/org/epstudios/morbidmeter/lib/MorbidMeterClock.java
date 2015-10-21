@@ -86,8 +86,11 @@ public class MorbidMeterClock {
 		if (configuration.reverseTime)
 			timeScaleName += "REVERSE ";
 		timeScaleName += configuration.timeScaleName;
-		String userName = configuration.user.getApostrophedName();
-		return userName + " MorbidMeter\n" + timeScaleName;
+		String userName = (configuration.doNotModifyName ? configuration.user.getName()
+			: configuration.user.getApostrophedName() + " MorbidMeter");
+
+		//String userName = configuration.user.getApostrophedName();
+		return userName + "\n" + timeScaleName;
 	}
 
 	static public String getFormattedTime(Context context) {
@@ -302,12 +305,12 @@ public class MorbidMeterClock {
 
 		} else {
 			if (configuration.reverseTime) {
-				timeString = formatter.format(new Date(ts
+				timeString = formatter.format(ts
 						.reverseProportionalTime(configuration.user
-								.percentAlive())));
+								.percentAlive()));
 			} else {
-				timeString = formatter.format(new Date(ts
-						.proportionalTime(configuration.user.percentAlive())));
+				timeString = formatter.format(ts
+						.proportionalTime(configuration.user.percentAlive()));
 			}
 		}
 		if (configuration.useMsec && ts.okToUseMsec())

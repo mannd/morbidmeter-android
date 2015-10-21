@@ -5,7 +5,7 @@
     <string name="birthday_label">Birthday or Start Date</string>
     <string name="longevity_label">Longevity or duration is</string>
     <string name="longevity_label_completion">years</string>
-    <string name="longevity_hint">Manually enter longevity or duration (yrs) here</string>
+    <string name="longevity_hint">Enter longevity or duration (yrs)</string>
     <string name="deathday_label">Deathday or End Date</string>
     <string name="timescale_label">Time Scale</string>
     <string name="reverse_time_label">Reverse time</string>
@@ -20,8 +20,9 @@
     <string name="ok_label">Start</string>
     <string name="help_label">Help</string>
     <string name="cancel_label">Cancel</string>
-    <string name="user_name_label">User Name</string>
+    <string name="user_name_label">User Name or Title</string>
     <string name="default_user_name">Default User</string>
+    <string name="user_name_checkbox_label">Don\'t add \'MorbidMeter\' to title text</string>
     <string name="initial_label">MorbidMeter\nClick skull to configure</string>
     <string name="loading_label">MorbidMeter Loading</string>
     <!-- TimeScales -->

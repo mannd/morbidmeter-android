@@ -41,13 +41,13 @@ public class CalendarTimeScale extends TimeScale {
 	}
 
 	@Override
-	public long proportionalTime(double percent) {
-		return minTime.getTimeInMillis() + (long)(percent * duration());
+	public double proportionalTime(double percent) {
+		return minTime.getTimeInMillis() + (percent * duration());
 	}
 
 	@Override
-	public long reverseProportionalTime(double percent) {
-		return maxTime.getTimeInMillis() - (long) (percent * duration());
+	public double reverseProportionalTime(double percent) {
+		return maxTime.getTimeInMillis() - (percent * duration());
 	}
 
 	private final Calendar minTime;

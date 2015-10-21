@@ -48,12 +48,12 @@ public class TimeScale {
 		return maximum - minimum;
 	}
 
-	public long proportionalTime(double percent) {
-		return minimum + (long) (percent * duration());
+	public double proportionalTime(double percent) {
+		return minimum + (percent * duration());
 	}
 
-	public long reverseProportionalTime(double percent) {
-		return maximum - (long) (percent * duration());
+	public double reverseProportionalTime(double percent) {
+		return maximum - (percent * duration());
 	}
 
 	public String getName() {
