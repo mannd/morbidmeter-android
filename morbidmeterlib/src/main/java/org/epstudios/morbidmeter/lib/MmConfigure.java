@@ -73,6 +73,7 @@ public class MmConfigure extends Activity {
 	public static final String SHOW_NOTIFICATIONS_KEY = "show_notifications";
 	public static final String NOTIFICATION_SOUND_KEY = "notification_sound";
 	public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
+    public static final String DO_NOT_MODIFY_NAME_KEY = "do_not_modify_name";
 
 	private EditText userNameEditText;
 	private DatePicker birthDayDatePicker;
@@ -87,6 +88,7 @@ public class MmConfigure extends Activity {
 	private CheckBox useMsecCheckBox;
 	private CheckBox showNotificationsCheckBox;
 	private RadioGroup notificationSoundRadioGroup;
+	private CheckBox doNotModifyNameCheckBox;
 
 	private Configuration configuration;
 
@@ -116,6 +118,7 @@ public class MmConfigure extends Activity {
 		useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
 		showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
 		notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
+		doNotModifyNameCheckBox = (CheckBox) findViewById(R.id.do_not_modify_name_checkbox);
 
 		// setting the focus is kinda annoying
 		// userNameEditText.requestFocus();
@@ -131,7 +134,8 @@ public class MmConfigure extends Activity {
         configuration = loadPrefs(context, appWidgetId);
 
 		userNameEditText.setText(configuration.user.getName());
-		int year = configuration.user.getBirthDay().get(Calendar.YEAR);
+        doNotModifyNameCheckBox.setChecked(configuration.doNotModifyName);
+        int year = configuration.user.getBirthDay().get(Calendar.YEAR);
 		int month = configuration.user.getBirthDay().get(Calendar.MONTH);
 		int day = configuration.user.getBirthDay().get(Calendar.DAY_OF_MONTH);
 		birthDayDatePicker
@@ -218,6 +222,7 @@ public class MmConfigure extends Activity {
 				// get all variables from the various entry boxes
 				configuration.user.setName(userNameEditText.getText()
 						.toString());
+                configuration.doNotModifyName = doNotModifyNameCheckBox.isChecked();
 				int year = birthDayDatePicker.getYear();
 				int month = birthDayDatePicker.getMonth();
 				int day = birthDayDatePicker.getDayOfMonth();
@@ -251,16 +256,6 @@ public class MmConfigure extends Activity {
 				if (configuration.user.isSane()) {
 					configuration.configurationComplete = true;
 					savePrefs(context, appWidgetId, configuration);
-					// Code below probably can be deleted, as onUpdate in
-					// MorbidMeter updates the clock immediately
-					// PendingIntent updatePending = MorbidMeter
-					// .makeControlPendingIntent(context,
-					// MmService.UPDATE, appWidgetId);
-					// try {
-					// updatePending.send();
-					// } catch (CanceledException e) {
-					// e.printStackTrace();
-					// }
 					AppWidgetManager appWidgetManager = AppWidgetManager
 							.getInstance(context);
 					ComponentName thisAppWidget = new ComponentName(context
@@ -433,7 +428,7 @@ public class MmConfigure extends Activity {
 		prefs.putString(USER_NAME_KEY + appWidgetId,
 				configuration.user.getName());
 		prefs.putInt(BIRTHDAY_YEAR_KEY + appWidgetId, configuration.user
-				.getBirthDay().get(Calendar.YEAR));
+                .getBirthDay().get(Calendar.YEAR));
 		prefs.putInt(BIRTHDAY_MONTH_KEY + appWidgetId, configuration.user
 				.getBirthDay().get(Calendar.MONTH));
 		prefs.putInt(BIRTHDAY_DAY_KEY + appWidgetId, configuration.user
@@ -441,19 +436,21 @@ public class MmConfigure extends Activity {
 		prefs.putFloat(LONGEVITY_KEY + appWidgetId,
                 (float) configuration.user.getLongevity());
 		prefs.putString(TIMESCALE_KEY + appWidgetId,
-				configuration.timeScaleName);
+                configuration.timeScaleName);
 		prefs.putString(FREQUENCY_KEY + appWidgetId,
 				configuration.updateFrequency);
 		prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
-				configuration.reverseTime);
+                configuration.reverseTime);
 		prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
 		prefs.putInt(LAST_APP_WIDGET_ID, appWidgetId);
 		prefs.putBoolean(SHOW_NOTIFICATIONS_KEY + appWidgetId,
-				configuration.showNotifications);
+                configuration.showNotifications);
 		prefs.putInt(NOTIFICATION_SOUND_KEY + appWidgetId,
-				configuration.notificationSound);
+                configuration.notificationSound);
 		prefs.putBoolean(CONFIGURATION_COMPLETE_KEY + appWidgetId,
-				configuration.configurationComplete);
+                configuration.configurationComplete);
+        prefs.putBoolean(DO_NOT_MODIFY_NAME_KEY + appWidgetId,
+                configuration.doNotModifyName);
 		prefs.commit();
 	}
 
@@ -476,16 +473,18 @@ public class MmConfigure extends Activity {
 		configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
 				+ appWidgetId, context.getString(R.string.one_min));
 		configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
-				+ appWidgetId, false);
+                + appWidgetId, false);
 		configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
 				false);
 		configuration.showNotifications = prefs.getBoolean(
 				SHOW_NOTIFICATIONS_KEY + appWidgetId, false);
 		configuration.notificationSound = prefs.getInt(NOTIFICATION_SOUND_KEY
-				+ appWidgetId, R.id.no_sound);
+                + appWidgetId, R.id.no_sound);
 		configuration.configurationComplete = prefs.getBoolean(
-				CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
-		return configuration;
+                CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
+        configuration.doNotModifyName = prefs.getBoolean(
+                DO_NOT_MODIFY_NAME_KEY + appWidgetId, false);
+        return configuration;
 	}
 
 	@SuppressLint("DefaultLocale")
