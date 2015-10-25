@@ -370,9 +370,7 @@ public class MorbidMeterClock {
 		return timeInMsecs / (60 * 1000);
 	}
 
-	@SuppressWarnings(DEPRECATION)
 	public static void showNotification(Context context, String time) {
-
 		Boolean userDead = time.equals(context
 				.getString(R.string.user_dead_message));
 		Boolean atMilestone = isMilestone(context, time);
@@ -402,7 +400,7 @@ public class MorbidMeterClock {
 
                 NotificationManager notificationManager = (NotificationManager) context
                         .getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(1, builder.build());
+                notificationManager.notify(1, builder.getNotification());
 				inMilestone = true;
 			}
 		} else {
