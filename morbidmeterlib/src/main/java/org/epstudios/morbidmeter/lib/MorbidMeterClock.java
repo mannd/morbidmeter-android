@@ -382,24 +382,27 @@ public class MorbidMeterClock {
 					0);
 			inMilestone = prefs.getBoolean(IN_MILESTONE + appWidgetId, false);
 			if (!inMilestone) {
-				NotificationManager notificationManager = (NotificationManager) context
-						.getSystemService(Context.NOTIFICATION_SERVICE);
-				Notification notification = new Notification(
-						R.drawable.notificationskull, "MorbidMeter Milestone",
-						System.currentTimeMillis());
-				notification.flags |= Notification.FLAG_AUTO_CANCEL;
+				Notification.Builder builder = new Notification.Builder(context);
+                builder.setAutoCancel(true);
+                builder.setSmallIcon(R.drawable.notificationskull);
+                builder.setTicker("MorbidMeter Milestone");
+                builder.setWhen(System.currentTimeMillis());
+                builder.setContentTitle("MorbidMeter");
+                builder.setContentText(time);
 				Intent notificationIntent = new Intent(context,
 						MorbidMeter.class);
 				PendingIntent notificationPendingIntent = PendingIntent
-						.getActivity(context, 0, notificationIntent, 0);
-				notification.setLatestEventInfo(context, "MorbidMeter", time,
-						notificationPendingIntent);
+						.getActivity(context, appWidgetId, notificationIntent, 0);
+                builder.setContentIntent(notificationPendingIntent);
 				if (configuration.notificationSound == R.id.default_sound)
-					notification.defaults |= Notification.DEFAULT_SOUND;
+                    builder.setDefaults(Notification.DEFAULT_ALL);
 				else if (configuration.notificationSound == R.id.mm_sound)
-					notification.sound = Uri
-							.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-				notificationManager.notify(1, notification);
+                    builder.setSound(Uri
+							.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"));
+
+                NotificationManager notificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(1, builder.build());
 				inMilestone = true;
 			}
 		} else {
