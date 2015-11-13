@@ -99,6 +99,7 @@ public class MorbidMeterClock {
 
 		final String DECIMAL_FORMAT_STRING = "#.000000";
 		final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
+        final String SHORT_INT_FORMAT_STRING = "#,###";
 		String formatString = "";
 		String timeString = "";
 		String units = "";
@@ -317,7 +318,9 @@ public class MorbidMeterClock {
             long mins = secs / 60;
             long hours = mins / 60;
             long days = hours / 24;
-            timeString = days + "d " + hours % 24 + "h " +
+            formatString = SHORT_INT_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
+            timeString = formatter.format(days) + "d " + hours % 24 + "h " +
                     mins % 60 + "m " + secs % 60 + "s";
         } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m))) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
@@ -334,7 +337,9 @@ public class MorbidMeterClock {
             long mins = secs / 60;
             long hours = mins / 60;
             long days = hours / 24;
-            timeString = days + "d " + hours % 24 + "h " +
+            formatString = SHORT_INT_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
+            timeString = formatter.format(days) + "d " + hours % 24 + "h " +
                     mins % 60 + "m";
 		} else {
 			if (configuration.reverseTime) {
