@@ -396,8 +396,9 @@ public class MmConfigure extends Activity {
 			showNotificationsCheckBox.setChecked(false);
 			useMsecCheckBox.setEnabled(false);
 			useMsecCheckBox.setChecked(false);
-			reverseTimeCheckBox.setEnabled(false);
-			reverseTimeCheckBox.setChecked(false);
+            // we will cut Lite users some slack & let'm reverse time
+		    //reverseTimeCheckBox.setEnabled(false);
+		    //reverseTimeCheckBox.setChecked(false);
 			return;
 		}
 		final Set<String> okMsecSet = new HashSet<>(Arrays.asList(
