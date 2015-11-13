@@ -9,6 +9,8 @@
         <item>@string/ts_hours</item>
         <item>@string/ts_days</item>
         <item>@string/ts_years</item>
+        <item>@string/ts_d_h_m_s</item>
+        <item>@string/ts_d_h_m</item>
         <item>@string/ts_day</item>
         <item>@string/ts_hour</item>
         <item>@string/ts_month</item>

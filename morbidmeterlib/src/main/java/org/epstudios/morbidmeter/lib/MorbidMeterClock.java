@@ -287,22 +287,55 @@ public class MorbidMeterClock {
 			}
 		} else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_minutes))) {
-			long lifeInMsec = configuration.user.lifeDurationMsec();
-			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString = SHORT_DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            formatString = SHORT_DECIMAL_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
 
-			if (configuration.reverseTime) {
-				timeString = formatter.format(numMinutes(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive())));
-				units = " mins left";
-			} else {
-				timeString = formatter.format(numMinutes(ts
-						.proportionalTime(configuration.user.percentAlive())));
-				units = " mins old";
-			}
-
+            if (configuration.reverseTime) {
+                timeString = formatter.format(numMinutes(ts
+                        .reverseProportionalTime(configuration.user
+                                .percentAlive())));
+                units = " mins left";
+            } else {
+                timeString = formatter.format(numMinutes(ts
+                        .proportionalTime(configuration.user.percentAlive())));
+                units = " mins old";
+            }
+        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m_s))) {
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            double proportionalTime;
+            if (configuration.reverseTime) {
+                proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
+                units = " left";
+            } else {
+                proportionalTime = ts.proportionalTime(configuration.user.percentAlive());
+                units = " done";
+            }
+            long secs = (long) proportionalTime / 1000;
+            long mins = secs / 60;
+            long hours = mins / 60;
+            long days = hours / 24;
+            timeString = days + "d " + hours % 24 + "h " +
+                    mins % 60 + "m " + secs % 60 + "s";
+        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m))) {
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            double proportionalTime;
+            if (configuration.reverseTime) {
+                proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
+                units = " left";
+            } else {
+                proportionalTime = ts.proportionalTime(configuration.user.percentAlive());
+                units = " done";
+            }
+            long secs = (long) proportionalTime / 1000;
+            long mins = secs / 60;
+            long hours = mins / 60;
+            long days = hours / 24;
+            timeString = days + "d " + hours % 24 + "h " +
+                    mins % 60 + "m";
 		} else {
 			if (configuration.reverseTime) {
 				timeString = formatter.format(ts
