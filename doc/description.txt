@@ -1,12 +1,14 @@
-MorbidMeter is a perverse little widget that puts your lifespan into perspective using various timescales that are easier (or sometimes harder) to grasp than an actual lifetime.  The program takes your date of birth, your estimated life-span, today's date, and a unit of time (year, hour, minute, month, and others) and generates where (when?) you are right now in that time unit.  For example, if you select year as your timescale, the month, day and time will indicate how far along you are in that year, assuming your life ends at midnight on December 31st.  Use a life expectancy calculator such as this one (http://www.livingto100.com) to figure out how long you should live (or just make up the number).  Per Wikipedia (as of 12/31/2011) the average US lifespan is 78.3 years overall: 75.6 years for men and 80.8 years for women (36th in rank of all countries, tied with Cuba).
+MorbidMeter is a perverse little widget originally designed to put your lifespan into perspective using various timescales that are easier (or sometimes harder) to grasp than an actual lifetime.  The program takes your date of birth, your estimated life-span, today's date, and a unit of time (a year, hour, minute, month, and others) and generates where (when?) you are right now in that time unit.  For example, if you select ONE YEAR as your timescale, the month, day and time will indicate how far along you are in that year, assuming your life ends at midnight on December 31st.  Use a life expectancy calculator such as this one (http://www.livingto100.com) to figure out how long you should live (or just make up the number).  Per Wikipedia (as of 12/31/2011) the average US lifespan is 78.3 years overall: 75.6 years for men and 80.8 years for women (36th in rank of all countries, tied with Cuba).
+
+However many people use MorbidMeter as a countdown widget, though this is a countdown widget that can countdown time using many different timescales, including real-time timescales (such as how many days, hours, and minutes remain).  
 
 Time is running out -- MorbidMeter lets you know how quickly!
 
 Hints:
 
-To setup MorbidMeter, do a long press on your screen, select Widgets, and select MorbidMeter.  For Android 4.0 (Ice Cream Sandwich), press the Apps button, switch to the Widgets tab, then long press on the MorbidMeter widget.
+To install MorbidMeter, press the Apps button, switch to the Widgets tab, then long press on the MorbidMeter widget to place it on one of your home screens.  Makes sure you have at least half a screen (on a phone) blank to allow room to install the widget.
 
-MorbidMeter updates every half-hour automatically.  Press the skull button to get an instant update.
+Press the skull button to configure MorbidMeter.  You can change the label, the start and stop dates, the timescale, whether you are counting down or counting up, and the update frequency of the app.  
 
 Try out different timescales.  You can reverse time and in some timescales can add msecs, which can increase with disturbing rapidity.
 
@@ -14,10 +16,10 @@ Select Show Notifications on the setup screen and get notifications when major M
 
 You can have multiple MorbidMeter widgets showing different timescales simultaneously.
 
-MorbidMeter remembers its startup configuration.  To change the configuration, delete the widget (long press and drag it to the trash) and then restart it.
+Note that the Lite (free) version has fewer timescales, update frequencies and lacks notifications of MorbidMeter milestones.
 
 MorbidMeter is a good way to remind you that nothing lasts forever. Not even you.
 
-If you have any trouble with this update, uninstall MorbidMeter and reinstall it.
+If you have any trouble with this update, press the skull button to reconfigure, or long press the widget and drag it to the trash, and then pull out another MorbidMeter widget onto your home screen.
 
 MorbidMeter is open source, and available under the GNU GPL v3 license (http://http://www.gnu.org/licenses/gpl.html). The source code is available at https://www.github.com/mannd/morbidmeter-android.  The skull icon is in the public domain.  Source and documentation are at http://www.clker.com/clipart-80943.html. 
