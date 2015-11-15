@@ -4,3 +4,4 @@ Changes since v2.5
 * Reverse time now available in MorbidMeter Lite
 * Days-Hours-Mins timescale added to both versions
 * Days-Hours-Mins-Secs timescale added to full version
+* Android 10 no longer supported
