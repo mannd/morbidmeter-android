@@ -140,11 +140,15 @@ public class MmConfigure extends Activity {
 		int day = configuration.user.getBirthDay().get(Calendar.DAY_OF_MONTH);
 		birthDayDatePicker
 				.init(year, month, day, new MyOnDateChangedListener());
+        Calendar maxDate = new GregorianCalendar();
+        maxDate.set(2200, Calendar.JANUARY, 1, 0, 0);
+        final long maxDateTimeInMillis = maxDate.getTimeInMillis();
 		int deathYear = configuration.user.deathDay().get(Calendar.YEAR);
 		int deathMonth = configuration.user.deathDay().get(Calendar.MONTH);
 		int deathDay = configuration.user.deathDay().get(Calendar.DAY_OF_MONTH);
 		deathDayDatePicker.init(deathYear, deathMonth, deathDay,
 				new MyOnDateChangedListener());
+        deathDayDatePicker.setMaxDate(maxDateTimeInMillis);
 		longevityTextView.setText(getLongevityText(configuration.user
                 .getLongevity()));
         longevityEditText.setText(formattedLongevity(configuration.user.getLongevity()));
@@ -396,8 +400,9 @@ public class MmConfigure extends Activity {
 			showNotificationsCheckBox.setChecked(false);
 			useMsecCheckBox.setEnabled(false);
 			useMsecCheckBox.setChecked(false);
-			reverseTimeCheckBox.setEnabled(false);
-			reverseTimeCheckBox.setChecked(false);
+            // we will cut Lite users some slack & let'm reverse time
+		    //reverseTimeCheckBox.setEnabled(false);
+		    //reverseTimeCheckBox.setChecked(false);
 			return;
 		}
 		final Set<String> okMsecSet = new HashSet<>(Arrays.asList(

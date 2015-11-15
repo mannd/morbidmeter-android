@@ -26,11 +26,11 @@
     <string name="initial_label">MorbidMeter\nClick skull to configure</string>
     <string name="loading_label">MorbidMeter Loading</string>
     <!-- TimeScales -->
-    <string name="ts_day">DAY</string>
-    <string name="ts_hour">HOUR</string>
-    <string name="ts_month">MONTH</string>
+    <string name="ts_day">ONE DAY</string>
+    <string name="ts_hour">ONE HOUR</string>
+    <string name="ts_month">ONE MONTH</string>
     <string name="ts_percent">PERCENT</string>
-    <string name="ts_year">YEAR</string>
+    <string name="ts_year">ONE YEAR</string>
     <string name="ts_universe">UNIVERSE</string>
     <string name="ts_x_universe">X-UNIVERSE</string>
     <string name="ts_x_universe_2">X-UNIVERSE 2</string>
@@ -42,6 +42,8 @@
     <string name="ts_hours">HOURS</string>
     <string name="ts_minutes">MINUTES</string>
     <string name="ts_time">CURRENT TIME</string>
+    <string name="ts_d_h_m_s">DAYS HOURS MINS SECS</string>
+    <string name="ts_d_h_m">DAYS HOURS MINS</string>
     <string name="ts_none">NONE</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>

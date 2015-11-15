@@ -99,6 +99,7 @@ public class MorbidMeterClock {
 
 		final String DECIMAL_FORMAT_STRING = "#.000000";
 		final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
+        final String SHORT_INT_FORMAT_STRING = "#,###";
 		String formatString = "";
 		String timeString = "";
 		String units = "";
@@ -287,22 +288,59 @@ public class MorbidMeterClock {
 			}
 		} else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_minutes))) {
-			long lifeInMsec = configuration.user.lifeDurationMsec();
-			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
-			formatString = SHORT_DECIMAL_FORMAT_STRING;
-			formatter = new DecimalFormat(formatString);
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            formatString = SHORT_DECIMAL_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
 
-			if (configuration.reverseTime) {
-				timeString = formatter.format(numMinutes(ts
-						.reverseProportionalTime(configuration.user
-								.percentAlive())));
-				units = " mins left";
-			} else {
-				timeString = formatter.format(numMinutes(ts
-						.proportionalTime(configuration.user.percentAlive())));
-				units = " mins old";
-			}
-
+            if (configuration.reverseTime) {
+                timeString = formatter.format(numMinutes(ts
+                        .reverseProportionalTime(configuration.user
+                                .percentAlive())));
+                units = " mins left";
+            } else {
+                timeString = formatter.format(numMinutes(ts
+                        .proportionalTime(configuration.user.percentAlive())));
+                units = " mins old";
+            }
+        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m_s))) {
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            double proportionalTime;
+            if (configuration.reverseTime) {
+                proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
+                units = " left";
+            } else {
+                proportionalTime = ts.proportionalTime(configuration.user.percentAlive());
+                units = " done";
+            }
+            long secs = (long) proportionalTime / 1000;
+            long mins = secs / 60;
+            long hours = mins / 60;
+            long days = hours / 24;
+            formatString = SHORT_INT_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
+            timeString = formatter.format(days) + "d " + hours % 24 + "h " +
+                    mins % 60 + "m " + secs % 60 + "s";
+        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m))) {
+            long lifeInMsec = configuration.user.lifeDurationMsec();
+            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            double proportionalTime;
+            if (configuration.reverseTime) {
+                proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
+                units = " left";
+            } else {
+                proportionalTime = ts.proportionalTime(configuration.user.percentAlive());
+                units = " done";
+            }
+            long secs = (long) proportionalTime / 1000;
+            long mins = secs / 60;
+            long hours = mins / 60;
+            long days = hours / 24;
+            formatString = SHORT_INT_FORMAT_STRING;
+            formatter = new DecimalFormat(formatString);
+            timeString = formatter.format(days) + "d " + hours % 24 + "h " +
+                    mins % 60 + "m";
 		} else {
 			if (configuration.reverseTime) {
 				timeString = formatter.format(ts
@@ -370,9 +408,7 @@ public class MorbidMeterClock {
 		return timeInMsecs / (60 * 1000);
 	}
 
-	@SuppressWarnings(DEPRECATION)
 	public static void showNotification(Context context, String time) {
-
 		Boolean userDead = time.equals(context
 				.getString(R.string.user_dead_message));
 		Boolean atMilestone = isMilestone(context, time);
@@ -382,24 +418,27 @@ public class MorbidMeterClock {
 					0);
 			inMilestone = prefs.getBoolean(IN_MILESTONE + appWidgetId, false);
 			if (!inMilestone) {
-				NotificationManager notificationManager = (NotificationManager) context
-						.getSystemService(Context.NOTIFICATION_SERVICE);
-				Notification notification = new Notification(
-						R.drawable.notificationskull, "MorbidMeter Milestone",
-						System.currentTimeMillis());
-				notification.flags |= Notification.FLAG_AUTO_CANCEL;
+				Notification.Builder builder = new Notification.Builder(context);
+                builder.setAutoCancel(true);
+                builder.setSmallIcon(R.drawable.notificationskull);
+                builder.setTicker("MorbidMeter Milestone");
+                builder.setWhen(System.currentTimeMillis());
+                builder.setContentTitle("MorbidMeter");
+                builder.setContentText(time);
 				Intent notificationIntent = new Intent(context,
 						MorbidMeter.class);
 				PendingIntent notificationPendingIntent = PendingIntent
-						.getActivity(context, 0, notificationIntent, 0);
-				notification.setLatestEventInfo(context, "MorbidMeter", time,
-						notificationPendingIntent);
+						.getActivity(context, appWidgetId, notificationIntent, 0);
+                builder.setContentIntent(notificationPendingIntent);
 				if (configuration.notificationSound == R.id.default_sound)
-					notification.defaults |= Notification.DEFAULT_SOUND;
+                    builder.setDefaults(Notification.DEFAULT_ALL);
 				else if (configuration.notificationSound == R.id.mm_sound)
-					notification.sound = Uri
-							.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification");
-				notificationManager.notify(1, notification);
+                    builder.setSound(Uri
+							.parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"));
+
+                NotificationManager notificationManager = (NotificationManager) context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(1, builder.getNotification());
 				inMilestone = true;
 			}
 		} else {

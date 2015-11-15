@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 23
     buildToolsVersion "21.1.2"
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter.lite"
-        minSdkVersion 10
-        targetSdkVersion 22
+        minSdkVersion 11
+        targetSdkVersion 23
     }
 
     buildTypes {
