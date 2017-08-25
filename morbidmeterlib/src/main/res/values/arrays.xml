@@ -3,11 +3,16 @@
 
     <array name="timescales">
         <item>@string/ts_time</item>
+        <item>@string/ts_time_no_seconds</item>
+        <item>@string/ts_time_military</item>
+        <item>@string/ts_time_military_no_seconds</item>
         <item>@string/ts_raw</item>
         <item>@string/ts_seconds</item>
         <item>@string/ts_minutes</item>
         <item>@string/ts_hours</item>
         <item>@string/ts_days</item>
+        <item>@string/ts_weeks</item>
+        <item>@string/ts_months</item>
         <item>@string/ts_years</item>
         <item>@string/ts_d_h_m_s</item>
         <item>@string/ts_d_h_m</item>
@@ -27,6 +32,13 @@
         <item>@string/five_sec</item>
         <item>@string/fifteen_sec</item>
         <item>@string/thirty_sec</item>
+        <item>@string/one_min</item>
+        <item>@string/fifteen_min</item>
+        <item>@string/thirty_min</item>
+        <item>@string/one_hour</item>
+    </array>
+
+    <array name="android_o_frequencies">
         <item>@string/one_min</item>
         <item>@string/fifteen_min</item>
         <item>@string/thirty_min</item>
