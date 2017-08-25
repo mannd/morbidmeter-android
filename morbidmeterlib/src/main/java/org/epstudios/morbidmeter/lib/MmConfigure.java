@@ -34,6 +34,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -368,8 +369,20 @@ public class MmConfigure extends Activity {
 
 		timeScaleSpinner.setOnItemSelectedListener(itemListener);
 
+		// In versions higher than 19, AlarmManager.setRepeating is equivalent to
+		// setInexactRepeating and, apparently to save battery life,
+		// repeat intervals < 1 minute are not allowed (they turn out to be
+		// a minute instead).  So, these frequencies aren't offered for Android O
+		// and above.
+		int frequencyArrayInt;
+		if (Build.VERSION.SDK_INT <= 19) {
+			frequencyArrayInt = R.array.frequencies;
+		}
+		else {
+			frequencyArrayInt = R.array.android_o_frequencies;
+		}
 		ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
-				.createFromResource(this, R.array.frequencies,
+				.createFromResource(this, frequencyArrayInt,
 						android.R.layout.simple_spinner_item);
 		adapterFrequency
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
