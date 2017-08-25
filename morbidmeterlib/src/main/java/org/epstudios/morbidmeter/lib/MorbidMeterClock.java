@@ -138,6 +138,27 @@ public class MorbidMeterClock {
 			return timeString; // early exit
 		}
 		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_time_no_seconds))) {
+			formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nhh:mm a z",
+					Locale.getDefault());
+			timeString = formatter.format(new Date());
+			return timeString; // early exit
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_time_military))) {
+			formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm:ss z",
+					Locale.getDefault());
+			timeString = formatter.format(new Date());
+			return timeString; // early exit
+		}
+		if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_time_military_no_seconds))) {
+			formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm z",
+					Locale.getDefault());
+			timeString = formatter.format(new Date());
+			return timeString; // early exit
+		}
+		if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_debug))) {
 			long currentSystemTime = System.currentTimeMillis();
 			timeString = "System Time " + currentSystemTime + " ms";
@@ -270,6 +291,42 @@ public class MorbidMeterClock {
 				units = " years old";
 			}
 		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_weeks))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString = DECIMAL_FORMAT_STRING;
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numWeeks(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " weeks left";
+			} else {
+				timeString = formatter.format(numWeeks(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " weeks old";
+			}
+
+		} else if (configuration.timeScaleName.equals(context
+				.getString(R.string.ts_months))) {
+			long lifeInMsec = configuration.user.lifeDurationMsec();
+			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+			formatString = DECIMAL_FORMAT_STRING;
+			formatter = new DecimalFormat(formatString);
+
+			if (configuration.reverseTime) {
+				timeString = formatter.format(numMonths(ts
+						.reverseProportionalTime(configuration.user
+								.percentAlive())));
+				units = " months left";
+			} else {
+				timeString = formatter.format(numMonths(ts
+						.proportionalTime(configuration.user.percentAlive())));
+				units = " months old";
+			}
+
+		} else if (configuration.timeScaleName.equals(context
 				.getString(R.string.ts_hours))) {
 			long lifeInMsec = configuration.user.lifeDurationMsec();
 			ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
@@ -396,6 +453,14 @@ public class MorbidMeterClock {
 		return timeInMsecs / (24 * 60 * 60 * 1000.0);
 	}
 
+	public static double numWeeks(double timeInMsecs) {
+		return numDays(timeInMsecs) / 7.0;
+	}
+
+	public static double numMonths(double timeInMsecs) {
+		// Note that average length of month is value below
+		return numDays(timeInMsecs) / 30.44;
+	}
 	public static double numYears(double timeInMsecs) {
 		return numDays(timeInMsecs) / 365.25;
 	}

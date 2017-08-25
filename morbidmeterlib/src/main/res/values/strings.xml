@@ -42,8 +42,13 @@
     <string name="ts_hours">HOURS</string>
     <string name="ts_minutes">MINUTES</string>
     <string name="ts_time">CURRENT TIME</string>
+    <string name="ts_time_no_seconds">CURRENT SHORT TIME</string>
+    <string name="ts_time_military">CURRENT MILITARY TIME</string>
+    <string name="ts_time_military_no_seconds">CURRENT SHORT MILITARY TIME</string>
     <string name="ts_d_h_m_s">DAYS HOURS MINS SECS</string>
     <string name="ts_d_h_m">DAYS HOURS MINS</string>
+    <string name="ts_weeks">WEEKS</string>
+    <string name="ts_months">MONTHS</string>
     <string name="ts_none">NONE</string>
     <string name="user_dead_message">You Are Living On Borrowed Time!</string>
     <string name="help_title">MorbidMeter Help</string>
@@ -73,7 +78,12 @@
         Long press and drag to the trash any MorbidMeter widget
         that you are done with. Change the update frequency, but use a longer frequency
         if it seems that the widget is draining the battery or you don\'t need
-        a fast updates.</string>
+        a fast updates.  Note that on Android O devices and beyond, update
+        frequencies less than 1 minute don\'t work, and so are not available.
+        Also note that the CURRENT TIME timescale will only be as accurate as
+        the update frequency.  Thus if you use that timescale and the update frequency
+        is one hour, the time shown will be off by as much as an hour.  MorbidMeter
+        is not intended to be a clock!</string>
     <string name="update_button_label">Update Button</string>
     <string name="sanity_message">User parameters are out of range.  Please correct and relaunch or cancel.</string>
     <string name="sanity_title">User Parameter Error</string>
