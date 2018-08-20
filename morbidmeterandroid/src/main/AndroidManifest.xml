@@ -33,6 +33,7 @@
 
         <service android:name="org.epstudios.morbidmeter.lib.MmService" >
         </service>
+
     </application>
 
 </manifest>

@@ -25,6 +25,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -105,9 +106,15 @@ public class MorbidMeter extends AppWidgetProvider {
 				MmService.UPDATE, appWidgetId);
 		AlarmManager alarms = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
+
 		if (updateRate >= 0) {
-			alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
-					SystemClock.elapsedRealtime(), updateRate, newPending);
+//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//				alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, updateRate, newPending);
+//				alarms.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), updateRate, newPending);
+//			} else {
+				alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
+						SystemClock.elapsedRealtime(), updateRate, newPending);
+//			}
 		} else {
 			// on a negative updateRate stop the refreshing
 			alarms.cancel(newPending);

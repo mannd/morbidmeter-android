@@ -6,13 +6,21 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
+import android.support.v4.app.JobIntentService;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
-public class MmService extends Service {
+public class MmService extends JobIntentService {
 	public static final String UPDATE = "update";
 	private static final String LOG_TAG = "MM";
+	/* Give the Job a Unique Id */
+	private static final int JOB_ID = 5000;
+
+	public static void enqueueWork(Context ctx, Intent intent) {
+		enqueueWork(ctx, MmService.class, JOB_ID, intent);
+	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -68,5 +76,10 @@ public class MmService extends Service {
 	public IBinder onBind(Intent intent) {
 		return null;
 	}
+
+    @Override
+    protected void onHandleWork(@NonNull Intent intent) {
+		Log.i(LOG_TAG, "Handling work!");
+    }
 
 }
