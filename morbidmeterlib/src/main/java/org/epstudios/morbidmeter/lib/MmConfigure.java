@@ -29,6 +29,7 @@ import java.util.TimeZone;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -52,6 +53,7 @@ import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RemoteViews;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -503,6 +505,16 @@ public class MmConfigure extends Activity {
         configuration.doNotModifyName = prefs.getBoolean(
                 DO_NOT_MODIFY_NAME_KEY + appWidgetId, false);
         return configuration;
+	}
+
+
+	public static void configureSkullButton(Context context, int appWidgetId,
+											RemoteViews views) {
+		Intent intent = new Intent(context, MmConfigure.class);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
 	}
 
 	@SuppressLint("DefaultLocale")

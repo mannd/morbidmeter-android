@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter.lite"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 26
     }
 
