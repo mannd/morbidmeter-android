@@ -1,6 +1,9 @@
 package org.epstudios.morbidmeter.lib;
 
 import android.app.IntentService;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.job.JobParameters;
@@ -8,10 +11,12 @@ import android.app.job.JobService;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.JobIntentService;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -19,7 +24,6 @@ import android.widget.RemoteViews;
 public class MmService extends Service {
 	public static final String UPDATE = "update";
 	private static final String LOG_TAG = "MM";
-
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -75,6 +79,9 @@ public class MmService extends Service {
 	public void onCreate() {
 		Log.i(LOG_TAG, "MmService onCreate");
 		super.onCreate();
+		if (Build.VERSION_CODES.O <= Build.VERSION.SDK_INT) {
+			startInForeground();
+		}
 	}
 
 	@Nullable
@@ -83,5 +90,29 @@ public class MmService extends Service {
 		return null;
 	}
 
+	// With Oreo, background services are limited.
+    // Service must run in Foreground, meaning there has to be a notification.
+	// See https://stackoverflow.com/questions/47611123/oreo-starting-a-service-in-the-foreground
+	private void startInForeground() {
+		String CHANNEL_ID = "MMChannel";
+		String CHANNEL_NAME = "MorbidMeter";
+		String CHANNEL_DESCRIPTION = "Notifications for MorbidMeter";
+		int TASK_ID = 1333;
+		Intent notificationIntent = new Intent(this, MmService.class);
+		PendingIntent pendingIntent=PendingIntent.getActivity(this,0,notificationIntent,0);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(this , CHANNEL_ID)
+				.setContentTitle("MorbidMeter")
+				.setContentText("MorbidMeter")
+				.setTicker("TICKER")
+				.setContentIntent(pendingIntent);
+		Notification notification = builder.build();
+		if(Build.VERSION.SDK_INT>=26) {
+			NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+			channel.setDescription(CHANNEL_DESCRIPTION);
+			NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManager.createNotificationChannel(channel);
+		}
+		startForeground(TASK_ID, notification);
+	}
 }
 

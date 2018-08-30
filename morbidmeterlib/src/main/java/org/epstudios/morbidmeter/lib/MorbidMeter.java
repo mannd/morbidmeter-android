@@ -19,6 +19,9 @@
 package org.epstudios.morbidmeter.lib;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -27,6 +30,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -37,7 +41,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
-		Log.d(LOG_TAG, "MM Widget enabled.");
+		Log.i(LOG_TAG, "MorbidMeter onEnabled");
 	}
 
 	@Override
@@ -49,7 +53,7 @@ public class MorbidMeter extends AppWidgetProvider {
 	@Override
 	public void onUpdate(Context context, AppWidgetManager appWidgetManager,
 			int[] appWidgetIds) {
-		Log.d(LOG_TAG, "Updating MM Widgets.");
+		Log.d(LOG_TAG, "MorbidMeter onUpdate");
 		for (int appWidgetId : appWidgetIds) {
 			MorbidMeterClock.resetConfiguration(context, appWidgetId);
 			if (MorbidMeterClock.configurationIsComplete()) {
@@ -68,31 +72,28 @@ public class MorbidMeter extends AppWidgetProvider {
 	}
 
 	public static void setAlarm(Context context, int appWidgetId, int updateRate) {
-		PendingIntent newPending = makeControlPendingIntent(context,
+
+		PendingIntent pendingIntent = makeControlPendingIntent(context,
 				MmService.UPDATE, appWidgetId);
 		AlarmManager alarms = (AlarmManager) context
 				.getSystemService(Context.ALARM_SERVICE);
 
 		if (updateRate >= 0) {
-//			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//				alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, updateRate, newPending);
-//				alarms.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), updateRate, newPending);
-//			} else {
-				alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
-						SystemClock.elapsedRealtime(), updateRate, newPending);
-//			}
+            alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
+                    SystemClock.elapsedRealtime(), updateRate, pendingIntent);
+            Log.i(LOG_TAG, "Alarm started");
 		} else {
 			// on a negative updateRate stop the refreshing
-			alarms.cancel(newPending);
+			alarms.cancel(pendingIntent);
 			Log.d(LOG_TAG, "Alarm stopped.");
 		}
 	}
 
 	public static PendingIntent makeControlPendingIntent(Context context,
 			String command, int appWidgetId) {
-		Intent active = new Intent(context, MmService.class);
-		active.setAction(command);
-		active.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+		Intent intent = new Intent(context, MmService.class);
+		intent.setAction(command);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 		// this Uri data is to make the PendingIntent unique, so it wont be
 		// updated by FLAG_UPDATE_CURRENT
 		// so if there are multiple widget instances they wont override each
@@ -100,8 +101,8 @@ public class MorbidMeter extends AppWidgetProvider {
 		Uri data = Uri.withAppendedPath(
 				Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
 				String.valueOf(appWidgetId));
-		active.setData(data);
-		return (PendingIntent.getService(context, 0, active,
+		intent.setData(data);
+		return (PendingIntent.getService(context, 0, intent,
 				PendingIntent.FLAG_UPDATE_CURRENT));
 	}
 
