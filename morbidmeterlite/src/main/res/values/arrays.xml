@@ -44,6 +44,9 @@
 <!--          <item>@string/fifteen_min</item> -->
         <item>@string/thirty_min</item>
         <!-- <item>@string/one_hour</item> -->
+        <item>@string/six_hour</item>
+        <item>@string/twelve_hour</item>
+        <item>@string/one_day</item>
     </array>
 
     <array name="android_o_frequencies">
@@ -51,5 +54,8 @@
 <!--          <item>@string/fifteen_min</item> -->
         <item>@string/thirty_min</item>
         <item>@string/one_hour</item>
+        <item>@string/six_hour</item>
+        <item>@string/twelve_hour</item>
+        <item>@string/one_day</item>
     </array>
 </resources>

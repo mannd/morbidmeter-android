@@ -74,6 +74,12 @@ public class MorbidMeterClock {
 			frequency = 1000 * 60 * 30;
 		else if (frequencyString.equals(context.getString(R.string.one_hour)))
 			frequency = 1000 * 60 * 60;
+		else if (frequencyString.equals(context.getString(R.string.six_hour)))
+			frequency = 1000 * 60 * 60 * 6;
+		else if (frequencyString.equals(context.getString(R.string.twelve_hour)))
+			frequency = 1000 * 60 * 60 * 12;
+		else if (frequencyString.equals(context.getString(R.string.one_day)))
+			frequency = 1000 * 60 * 60 * 24;
 		return frequency;
 	}
 

@@ -82,8 +82,9 @@
         frequencies less than 1 minute don\'t work, and so are not available.
         Also note that the CURRENT TIME timescale will only be as accurate as
         the update frequency.  Thus if you use that timescale and the update frequency
-        is one hour, the time shown will be off by as much as an hour.  MorbidMeter
-        is not intended to be a clock!</string>
+        is one hour, the time shown will be off by as much as an hour.  If you are using MorbidMeter
+	to track your lifespan, update frequencies as low as once a day may be appropriate.
+	MorbidMeter is not intended to be a clock!</string>
     <string name="update_button_label">Update Button</string>
     <string name="sanity_message">User parameters are out of range.  Please correct and relaunch or cancel.</string>
     <string name="sanity_title">User Parameter Error</string>
@@ -95,5 +96,8 @@
     <string name="fifteen_min">15 min</string>
     <string name="thirty_min">30 min</string>
     <string name="one_hour">1 hour</string>
+    <string name="six_hour">6 hours</string>
+    <string name="twelve_hour">12 hours</string>
+    <string name="one_day">1 day</string>
 
 </resources>

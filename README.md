@@ -25,7 +25,7 @@ Time is running out -- MorbidMeter lets you know how quickly!
 This module contains unit testing code for MorbidMeter.
 
 ## License and Copyright
-Copyright 2011-2014 [EP Studios, Inc.](http://www.epstudiossoftware.com)
+Copyright 2011-2018 [EP Studios, Inc.](http://www.epstudiossoftware.com)
 
 MorbidMeter is open source, and available under the 
 [GNU GPL v3 license.](//http://www.gnu.org/licenses/gpl.html)

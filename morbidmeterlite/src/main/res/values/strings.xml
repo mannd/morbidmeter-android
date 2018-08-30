@@ -30,6 +30,11 @@
         Long press and drag to the trash any MorbidMeter widget
         that you are done with. Change the update frequency, but use a longer frequency
         if it seems that the widget is draining the battery or you don\'t need
-        a fast updates.</string>
-
+        a fast updates.  Note that on Android O devices and beyond, update
+        frequencies less than 1 minute don\'t work, and so are not available.
+        Also note that the CURRENT TIME timescale will only be as accurate as
+        the update frequency.  Thus if you use that timescale and the update frequency
+        is one hour, the time shown will be off by as much as an hour.  If you are using MorbidMeter
+	to track your lifespan, update frequencies as low as once a day may be appropriate.
+	MorbidMeter is not intended to be a clock!</string>
 </resources>
