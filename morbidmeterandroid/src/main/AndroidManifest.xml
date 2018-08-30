@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="org.epstudios.morbidmeter"
     android:allowBackup="true"
-    android:versionCode="16"
-    android:versionName="2.7" >
+    android:versionCode="17"
+    android:versionName="2.8" >
 
     <application
         android:allowBackup="true"
@@ -31,8 +31,14 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.epstudios.morbidmeter.lib.MmService" >
-        </service>
+        <!--<service android:name="org.epstudios.morbidmeter.lib.MmService" >-->
+        <!--</service>-->
+        <service
+            android:name="org.epstudios.morbidmeter.lib.MmService"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
+
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK" />
 
 </manifest>
