@@ -9,7 +9,7 @@
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:previewImage="@drawable/preview"
-        tools:ignore="UnusedAttribute">
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <receiver
             android:name="org.epstudios.morbidmeter.lib.MorbidMeter"
             android:icon="@drawable/icon"

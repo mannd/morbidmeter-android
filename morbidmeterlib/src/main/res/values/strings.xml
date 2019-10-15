@@ -80,11 +80,12 @@
         if it seems that the widget is draining the battery or you don\'t need
         a fast updates.  Note that on Android O devices and beyond, update
         frequencies less than 1 minute don\'t work, and so are not available.
-        Also note that the CURRENT TIME timescale will only be as accurate as
-        the update frequency.  Thus if you use that timescale and the update frequency
+        Also note that the CURRENT TIME and similar timescales will only be as accurate as
+        the update frequency.  Thus if you use a current time timescale and the update frequency
         is one hour, the time shown will be off by as much as an hour.  If you are using MorbidMeter
 	to track your lifespan, update frequencies as low as once a day may be appropriate.
-	MorbidMeter is not intended to be a clock!</string>
+	MorbidMeter is not intended to be a precision clock, though you can use it to measure
+    fuzzy time.</string>
     <string name="update_button_label">Update Button</string>
     <string name="sanity_message">User parameters are out of range.  Please correct and relaunch or cancel.</string>
     <string name="sanity_title">User Parameter Error</string>
