@@ -19,8 +19,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {
     api project(':morbidmeterlib')
+//    implementation "androidx.versionedparcelable:versionedparcelable:1.1.0"
 }
