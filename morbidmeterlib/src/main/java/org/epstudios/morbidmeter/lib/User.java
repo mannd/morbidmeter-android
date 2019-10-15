@@ -145,7 +145,7 @@ public class User {
 	}
 
 	public long reverseSecAlive() {
-		return reverseMsecAlive() / 60;
+		return reverseMsecAlive() / 1000;
 	}
 
 	public double percentAlive() {
