@@ -106,7 +106,7 @@ public class MorbidMeter extends AppWidgetProvider {
 				PendingIntent.FLAG_UPDATE_CURRENT));
 	}
 
-	@Override
+
 	public void onDisabled(Context context) {
 		Log.d(LOG_TAG, "MM Widget disabled.");
 		context.stopService(new Intent(context, MmService.class));

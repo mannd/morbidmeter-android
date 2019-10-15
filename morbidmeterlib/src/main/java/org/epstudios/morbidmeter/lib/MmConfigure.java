@@ -432,6 +432,9 @@ public class MmConfigure extends Activity {
 		}
 		final Set<String> reverseTimeNotOkSet = new HashSet<String>(
 				Arrays.asList(this.getString(R.string.ts_time),
+						this.getString(R.string.ts_time_military),
+						this.getString(R.string.ts_time_military_no_seconds),
+						this.getString(R.string.ts_time_no_seconds),
 						this.getString(R.string.ts_none),
 						this.getString(R.string.ts_debug)));
 		boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleName);
