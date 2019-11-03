@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.epstudios.morbidmeter.lite"
-    android:versionCode="12"
-    android:versionName="2.9" >
+    android:versionCode="13"
+    android:versionName="2.10" >
 
     <application
         android:allowBackup="true"
@@ -29,8 +29,13 @@
             </intent-filter>
         </activity>
 
-        <service android:name="org.epstudios.morbidmeter.lib.MmService" >
+        <service android:name="org.epstudios.morbidmeter.lib.MmService"
+            android:permission="android.permission.BIND_JOB_SERVICE" >
         </service>
     </application>
 
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK" />
+    <uses-permission
+        android:name="android.permission.FOREGROUND_SERVICE" />
 </manifest>
