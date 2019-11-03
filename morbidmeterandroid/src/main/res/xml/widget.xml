@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:configure="org.epstudios.morbidmeter.lib.MmConfigure"
     android:initialLayout="@layout/main"
-    android:minHeight="180dip"
+    android:minHeight="80dip"
     android:minWidth="250dip"
     android:previewImage="@drawable/preview"
     android:resizeMode="horizontal|vertical"
