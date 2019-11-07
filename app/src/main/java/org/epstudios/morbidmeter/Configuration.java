@@ -19,15 +19,14 @@
 package org.epstudios.morbidmeter;
 
 // essentially a C++ style 'struct'
-public class Configuration {
-    public User user;
-    public String timeScaleName;
-    public boolean reverseTime;
-    public boolean useMsec;
-    public boolean showNotifications;
-    public int notificationSound;
-    public boolean configurationComplete;
-    public String updateFrequency;
-    public boolean doNotModifyName;
-
+class Configuration {
+    User user;
+    String timeScaleName;
+    boolean reverseTime;
+    boolean useMsec;
+    boolean showNotifications;
+    int notificationSound;
+    boolean configurationComplete;
+    String updateFrequency;
+    boolean doNotModifyName;
 }

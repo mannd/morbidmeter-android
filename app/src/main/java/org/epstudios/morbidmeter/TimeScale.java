@@ -28,7 +28,7 @@ public class TimeScale {
     private Format formatter;
     private String formatString;
 
-    public TimeScale() {
+    TimeScale() {
         this.name = "";
         this.minimum = 0L;
         this.maximum = 0L;

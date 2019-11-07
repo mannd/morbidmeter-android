@@ -31,15 +31,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.EditText;
@@ -71,7 +68,7 @@ public class MmConfigure extends Activity {
     public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
     public static final String DO_NOT_MODIFY_NAME_KEY = "do_not_modify_name";
     private static final String LOG_TAG = "MM";
-    private static final String PREFS_NAME = "org.epstudios.morbidmeter.lib.MmConfigure";
+    private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static boolean INHIBIT_DATE_CHANGE_LISTENER = false;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     private EditText userNameEditText;
@@ -81,8 +78,6 @@ public class MmConfigure extends Activity {
     private EditText longevityEditText;
     private Spinner timeScaleSpinner;
     private Spinner frequencySpinner;
-    private OnItemSelectedListener itemListener;
-    private OnItemSelectedListener frequencyItemListener;
     private CheckBox reverseTimeCheckBox;
     private CheckBox useMsecCheckBox;
     private CheckBox showNotificationsCheckBox;
@@ -121,7 +116,7 @@ public class MmConfigure extends Activity {
                 configuration.configurationComplete);
         prefs.putBoolean(DO_NOT_MODIFY_NAME_KEY + appWidgetId,
                 configuration.doNotModifyName);
-        prefs.commit();
+        prefs.apply();
     }
 
     static Configuration loadPrefs(Context context, int appWidgetId) {
@@ -226,32 +221,27 @@ public class MmConfigure extends Activity {
         longevityTextView.setText(getLongevityText(configuration.user
                 .getLongevity()));
         longevityEditText.setText(formattedLongevity(configuration.user.getLongevity()));
-        longevityEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    double longevity;
-                    try {
-                        longevity = Double.parseDouble(longevityEditText
-                                .getText().toString());
-                    } catch (final NumberFormatException e) {
-                        longevity = 0.0;
-                    }
-                    longevityTextView.setText(getLongevityText(longevity));
-                    Calendar deathDay = User.getDeathDate(
-                            birthDayDatePicker.getYear(),
-                            birthDayDatePicker.getMonth(),
-                            birthDayDatePicker.getDayOfMonth(), longevity);
-                    // disable the datePicker onDateChanged for this transaction
-                    INHIBIT_DATE_CHANGE_LISTENER = true;
-                    deathDayDatePicker.updateDate(deathDay.get(Calendar.YEAR),
-                            deathDay.get(Calendar.MONTH),
-                            deathDay.get(Calendar.DAY_OF_MONTH));
-                    INHIBIT_DATE_CHANGE_LISTENER = false;
+        longevityEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                double longevity;
+                try {
+                    longevity = Double.parseDouble(longevityEditText
+                            .getText().toString());
+                } catch (final NumberFormatException e) {
+                    longevity = 0.0;
                 }
+                longevityTextView.setText(getLongevityText(longevity));
+                Calendar deathDay1 = User.getDeathDate(
+                        birthDayDatePicker.getYear(),
+                        birthDayDatePicker.getMonth(),
+                        birthDayDatePicker.getDayOfMonth(), longevity);
+                // disable the datePicker onDateChanged for this transaction
+                INHIBIT_DATE_CHANGE_LISTENER = true;
+                deathDayDatePicker.updateDate(deathDay1.get(Calendar.YEAR),
+                        deathDay1.get(Calendar.MONTH),
+                        deathDay1.get(Calendar.DAY_OF_MONTH));
+                INHIBIT_DATE_CHANGE_LISTENER = false;
             }
-
         });
 
         // best way to do this is below, so suppress warning
@@ -273,16 +263,11 @@ public class MmConfigure extends Activity {
 
         setEnabledOptions(configuration.timeScaleName);
         showNotificationsCheckBox
-                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView,
-                                                 boolean isChecked) {
-                        for (int i = 0; i < notificationSoundRadioGroup
-                                .getChildCount(); ++i) {
-                            notificationSoundRadioGroup
-                                    .getChildAt(i).setEnabled(isChecked);
-                        }
+                .setOnCheckedChangeListener((buttonView, isChecked) -> {
+                    for (int i = 0; i < notificationSoundRadioGroup
+                            .getChildCount(); ++i) {
+                        notificationSoundRadioGroup
+                                .getChildAt(i).setEnabled(isChecked);
                     }
                 });
         notificationSoundRadioGroup.check(configuration.notificationSound);
@@ -294,93 +279,79 @@ public class MmConfigure extends Activity {
         }
 
         Button ok = findViewById(R.id.ok_button);
-        ok.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // get all variables from the various entry boxes
-                configuration.user.setName(userNameEditText.getText()
-                        .toString());
-                configuration.doNotModifyName = doNotModifyNameCheckBox.isChecked();
-                int year = birthDayDatePicker.getYear();
-                int month = birthDayDatePicker.getMonth();
-                int day = birthDayDatePicker.getDayOfMonth();
-                configuration.user.getBirthDay().set(year, month, day);
-                if (longevityEditText.getText() != null
-                        && longevityEditText.getText().length() > 0) {
-                    try {
-                        configuration.user.setLongevity(Double
-                                .parseDouble(longevityEditText.getText()
-                                        .toString()));
-                    } catch (final NumberFormatException e) {
-                        configuration.user.setLongevity(0.0);
-                    }
-                } else {
+        ok.setOnClickListener(v -> {
+            // get all variables from the various entry boxes
+            configuration.user.setName(userNameEditText.getText()
+                    .toString());
+            configuration.doNotModifyName = doNotModifyNameCheckBox.isChecked();
+            int year1 = birthDayDatePicker.getYear();
+            int month1 = birthDayDatePicker.getMonth();
+            int day1 = birthDayDatePicker.getDayOfMonth();
+            configuration.user.getBirthDay().set(year1, month1, day1);
+            if (longevityEditText.getText() != null
+                    && longevityEditText.getText().length() > 0) {
+                try {
+                    configuration.user.setLongevity(Double
+                            .parseDouble(longevityEditText.getText()
+                                    .toString()));
+                } catch (final NumberFormatException e) {
                     configuration.user.setLongevity(0.0);
                 }
-                configuration.timeScaleName = (String) timeScaleSpinner
+            } else {
+                configuration.user.setLongevity(0.0);
+            }
+            configuration.timeScaleName = (String) timeScaleSpinner
+                    .getSelectedItem();
 
-                        .getSelectedItem();
+            configuration.updateFrequency = (String) frequencySpinner
+                    .getSelectedItem();
 
-                configuration.updateFrequency = (String) frequencySpinner
-                        .getSelectedItem();
+            configuration.reverseTime = reverseTimeCheckBox.isChecked();
+            configuration.useMsec = useMsecCheckBox.isChecked();
+            configuration.showNotifications = showNotificationsCheckBox
+                    .isChecked();
+            configuration.notificationSound = notificationSoundRadioGroup
+                    .getCheckedRadioButtonId();
 
-                configuration.reverseTime = reverseTimeCheckBox.isChecked();
-                configuration.useMsec = useMsecCheckBox.isChecked();
-                configuration.showNotifications = showNotificationsCheckBox
-                        .isChecked();
-                configuration.notificationSound = notificationSoundRadioGroup
-                        .getCheckedRadioButtonId();
+            if (configuration.user.isSane()) {
+                configuration.configurationComplete = true;
+                savePrefs(context, appWidgetId, configuration);
+                AppWidgetManager appWidgetManager = AppWidgetManager
+                        .getInstance(context);
+                ComponentName thisAppWidget = new ComponentName(context
+                        .getPackageName(), MorbidMeter.class.getName());
+                Intent updateMmIntent = new Intent(context,
+                        MorbidMeter.class);
+                int[] appWidgetIds = appWidgetManager
+                        .getAppWidgetIds(thisAppWidget);
+                updateMmIntent
+                        .setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                updateMmIntent.putExtra(
+                        AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+                context.sendBroadcast(updateMmIntent);
+                Log.d(LOG_TAG, "onUpdate broadcast sent");
 
-                if (configuration.user.isSane()) {
-                    configuration.configurationComplete = true;
-                    savePrefs(context, appWidgetId, configuration);
-                    AppWidgetManager appWidgetManager = AppWidgetManager
-                            .getInstance(context);
-                    ComponentName thisAppWidget = new ComponentName(context
-                            .getPackageName(), MorbidMeter.class.getName());
-                    Intent updateMmIntent = new Intent(context,
-                            MorbidMeter.class);
-                    int[] appWidgetIds = appWidgetManager
-                            .getAppWidgetIds(thisAppWidget);
-                    updateMmIntent
-                            .setAction("android.appwidget.action.APPWIDGET_UPDATE");
-                    updateMmIntent.putExtra(
-                            AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-                    context.sendBroadcast(updateMmIntent);
-                    Log.d(LOG_TAG, "onUpdate broadcast sent");
-
-                    Intent resultValue = new Intent();
-                    resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                            appWidgetId);
-                    setResult(RESULT_OK, resultValue);
-                    finish();
-                } else {
-                    // dialog saying user not sane
-                    AlertDialog alert = new AlertDialog.Builder(context)
-                            .create();
-                    String message = getString(R.string.sanity_message);
-                    alert.setMessage(message);
-                    alert.setTitle(getString(R.string.sanity_title));
-                    alert.show();
-                }
+                Intent resultValue = new Intent();
+                resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                        appWidgetId);
+                setResult(RESULT_OK, resultValue);
+                finish();
+            } else {
+                // dialog saying user not sane
+                AlertDialog alert = new AlertDialog.Builder(context)
+                        .create();
+                String message = getString(R.string.sanity_message);
+                alert.setMessage(message);
+                alert.setTitle(getString(R.string.sanity_title));
+                alert.show();
             }
         });
 
         Button help = findViewById(R.id.help_button);
-        help.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                displayHelpMessage();
-            }
-        });
+        help.setOnClickListener(v -> displayHelpMessage());
 
         Button cancel = findViewById(R.id.cancel_button);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        cancel.setOnClickListener(v -> finish());
     }
 
     private String getLongevityText(double longevity) {
@@ -407,12 +378,12 @@ public class MmConfigure extends Activity {
                 this, R.array.timescales, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeScaleSpinner.setAdapter(adapter);
-        itemListener = new OnItemSelectedListener() {
+        // do nothing
+        OnItemSelectedListener itemListener = new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v,
                                        int position, long id) {
                 setEnabledOptions((String) timeScaleSpinner.getSelectedItem());
-
             }
 
             @Override
@@ -441,7 +412,8 @@ public class MmConfigure extends Activity {
         adapterFrequency
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         frequencySpinner.setAdapter(adapterFrequency);
-        frequencyItemListener = new OnItemSelectedListener() {
+        // do nothing
+        OnItemSelectedListener frequencyItemListener = new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v,
                                        int position, long id) {
@@ -481,7 +453,7 @@ public class MmConfigure extends Activity {
         if (!okMsec) {
             useMsecCheckBox.setChecked(false);
         }
-        final Set<String> reverseTimeNotOkSet = new HashSet<String>(
+        final Set<String> reverseTimeNotOkSet = new HashSet<>(
                 Arrays.asList(this.getString(R.string.ts_time),
                         this.getString(R.string.ts_time_military),
                         this.getString(R.string.ts_time_military_no_seconds),

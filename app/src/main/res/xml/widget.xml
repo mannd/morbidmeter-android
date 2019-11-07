@@ -8,6 +8,4 @@
     android:previewImage="@drawable/preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
-    tools:ignore="UnusedAttribute">
-
-</appwidget-provider>
+    tools:ignore="UnusedAttribute" />

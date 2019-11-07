@@ -25,7 +25,7 @@ public class CalendarTimeScale extends TimeScale {
     private final Calendar minTime;
     private final Calendar maxTime;
 
-    public CalendarTimeScale(String name, Calendar minTime, Calendar maxTime) {
+    CalendarTimeScale(String name, Calendar minTime, Calendar maxTime) {
         super(name, 0, 0);
         this.minTime = minTime;
         this.maxTime = maxTime;

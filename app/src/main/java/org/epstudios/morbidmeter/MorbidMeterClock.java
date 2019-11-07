@@ -46,14 +46,14 @@ public class MorbidMeterClock {
     private static Configuration configuration = null;
     private static int appWidgetId = 0;
 
-    public static void resetConfiguration(Context context, int appWidgetId) {
+    static void resetConfiguration(Context context, int appWidgetId) {
         configuration = MmConfigure.loadPrefs(context, appWidgetId);
         MorbidMeterClock.appWidgetId = appWidgetId;
         Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
 
     }
 
-    public static int getFrequency(Context context) {
+    static int getFrequency(Context context) {
         String frequencyString = configuration.updateFrequency;
         int frequency = -1; // shut off clock for error
         if (frequencyString.equals(context.getString(R.string.one_sec)))
@@ -83,11 +83,11 @@ public class MorbidMeterClock {
         return frequency;
     }
 
-    public static boolean configurationIsComplete() {
+    static boolean configurationIsComplete() {
         return configuration.configurationComplete;
     }
 
-    public static String getLabel() {
+    static String getLabel() {
         String timeScaleName = "Timescale:\n";
         if (configuration.reverseTime)
             timeScaleName += "REVERSE ";
@@ -99,9 +99,9 @@ public class MorbidMeterClock {
         return userName + "\n" + timeScaleName;
     }
 
-    static public String getFormattedTime(Context context) {
+    static String getFormattedTime(Context context) {
 
-        final Boolean fullDebug = false;
+        final boolean fullDebug = false;
 
         final String DECIMAL_FORMAT_STRING = "#.000000";
         final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
@@ -451,40 +451,40 @@ public class MorbidMeterClock {
         return (useMsec ? " SSS" : "");
     }
 
-    public static int percentAlive() {
+    static int percentAlive() {
         return (int) (configuration.user.percentAlive() * 100);
     }
 
-    public static double numDays(double timeInMsecs) {
+    private static double numDays(double timeInMsecs) {
         return timeInMsecs / (24 * 60 * 60 * 1000.0);
     }
 
-    public static double numWeeks(double timeInMsecs) {
+    private static double numWeeks(double timeInMsecs) {
         return numDays(timeInMsecs) / 7.0;
     }
 
-    public static double numMonths(double timeInMsecs) {
+    private static double numMonths(double timeInMsecs) {
         // Note that average length of month is value below
         return numDays(timeInMsecs) / 30.44;
     }
 
-    public static double numYears(double timeInMsecs) {
+    private static double numYears(double timeInMsecs) {
         return numDays(timeInMsecs) / 365.25;
     }
 
-    public static double numHours(double timeInMsecs) {
+    private static double numHours(double timeInMsecs) {
         return timeInMsecs / (60 * 60 * 1000);
     }
 
-    public static double numMinutes(double timeInMsecs) {
+    private static double numMinutes(double timeInMsecs) {
         return timeInMsecs / (60 * 1000);
     }
 
-    public static void showNotification(Context context, String time) {
+    private static void showNotification(Context context, String time) {
         Boolean userDead = time.equals(context
                 .getString(R.string.user_dead_message));
         Boolean atMilestone = isMilestone(context, time);
-        Boolean inMilestone;
+        boolean inMilestone;
         if ((atMilestone || userDead)) {
             SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME,
                     0);
@@ -519,11 +519,11 @@ public class MorbidMeterClock {
         SharedPreferences.Editor prefsEditor = context.getSharedPreferences(
                 PREFS_NAME, 0).edit();
         prefsEditor.putBoolean(IN_MILESTONE + appWidgetId, inMilestone);
-        prefsEditor.commit();
+        prefsEditor.apply();
 
     }
 
-    public static Boolean isMilestone(Context context, String time) {
+    private static Boolean isMilestone(Context context, String time) {
         if (configuration.timeScaleName.equals(context
                 .getString(R.string.ts_year))) {
             return isEvenHour(time);

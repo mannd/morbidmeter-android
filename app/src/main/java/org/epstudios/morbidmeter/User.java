@@ -35,9 +35,9 @@ public class User {
         this.longevity = longevity;
     }
 
-    public static double getLongevity(int birthYear, int birthMonth,
-                                      int birthDayOfMonth, int deathYear, int deathMonth,
-                                      int deathDayOfMonth) {
+    static double getLongevity(int birthYear, int birthMonth,
+                               int birthDayOfMonth, int deathYear, int deathMonth,
+                               int deathDayOfMonth) {
         Calendar deathDate = GregorianCalendar.getInstance();
         deathDate.set(deathYear, deathMonth, deathDayOfMonth);
         // normalize all deathdays to the stroke of midnight
@@ -61,8 +61,8 @@ public class User {
         }
     }
 
-    public static Calendar getDeathDate(int birthYear, int birthMonth,
-                                        int birthDayOfMonth, double longevity) {
+    static Calendar getDeathDate(int birthYear, int birthMonth,
+                                 int birthDayOfMonth, double longevity) {
         Calendar birthDate = GregorianCalendar.getInstance();
         birthDate.set(birthYear, birthMonth, birthDayOfMonth);
         // normalize all birthdays to the stroke of midnight
@@ -97,7 +97,7 @@ public class User {
         return msecAlive() + birthDayMsec() > deathDay().getTimeInMillis();
     }
 
-    public long deathDayMsec() {
+    long deathDayMsec() {
         return birthDayMsec() + lifeDurationMsec();
     }
 
@@ -105,25 +105,25 @@ public class User {
         return (long) (longevity * msecsPerYear);
     }
 
-    public long birthDayMsec() {
+    long birthDayMsec() {
         return birthDay.getTimeInMillis();
     }
 
-    public long msecAlive() {
+    long msecAlive() {
         return System.currentTimeMillis() - birthDayMsec();
         //return Calendar.getInstance().getTimeInMillis() - birthDayMsec();
     }
 
-    public long reverseMsecAlive() {
+    long reverseMsecAlive() {
         // return deathDayMsec() - msecAlive();
         return lifeDurationMsec() - msecAlive();
     }
 
-    public long secAlive() {
+    long secAlive() {
         return msecAlive() / 1000;
     }
 
-    public double daysAlive() {
+    private double daysAlive() {
         return secAlive() / 60 * 60 * 24.0;
     }
 
@@ -135,7 +135,7 @@ public class User {
         return reverseSecAlive() / 60;
     }
 
-    public double reverseDaysAlive() {
+    private double reverseDaysAlive() {
         return reverseSecAlive() / 60 * 60 * 24.0;
     }
 
@@ -149,15 +149,15 @@ public class User {
         return reverseDaysAlive() / daysPerYear;
     }
 
-    public long reverseSecAlive() {
+    long reverseSecAlive() {
         return reverseMsecAlive() / 1000;
     }
 
-    public double percentAlive() {
+    double percentAlive() {
         return ((double) msecAlive()) / lifeDurationMsec();
     }
 
-    public long msecAlive(Calendar date) {
+    private long msecAlive(Calendar date) {
         return date.getTimeInMillis() - birthDayMsec();
     }
 
@@ -167,12 +167,12 @@ public class User {
 
     public boolean isSane() {
         boolean sane = longevity > 0 && longevity < 999;
-        Calendar earliestbirthDay = GregorianCalendar.getInstance();
-        earliestbirthDay.set(1800, 0, 0);
-        Calendar latestbirthDay = GregorianCalendar.getInstance();
-        latestbirthDay.set(2100, 0, 0);
-        sane = sane && birthDay.after(earliestbirthDay)
-                && birthDay.before(latestbirthDay);
+        Calendar earliestBirthDay = GregorianCalendar.getInstance();
+        earliestBirthDay.set(1800, 0, 0);
+        Calendar latestBirthDay = GregorianCalendar.getInstance();
+        latestBirthDay.set(2100, 0, 0);
+        sane = sane && birthDay.after(earliestBirthDay)
+                && birthDay.before(latestBirthDay);
         return sane;
     }
 
@@ -194,7 +194,7 @@ public class User {
         return name;
     }
 
-    public Calendar getBirthDay() {
+    Calendar getBirthDay() {
         return birthDay;
     }
 
@@ -207,7 +207,7 @@ public class User {
         this.birthDay.set(Calendar.MILLISECOND, 0);
     }
 
-    public double getLongevity() {
+    double getLongevity() {
         return longevity;
     }
 

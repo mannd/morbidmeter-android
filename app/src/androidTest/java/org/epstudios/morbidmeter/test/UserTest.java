@@ -48,7 +48,7 @@ public class UserTest extends TestCase {
         bd.set(Calendar.MONTH, 1);
         bd.set(Calendar.DAY_OF_MONTH, 1);
         User user = new User("", bd, longevity);
-        assertEquals(true, user.isSane());
+        assertTrue(user.isSane());
         longevity = -1;
         user = new User("", bd, longevity);
         assertFalse(user.isSane());

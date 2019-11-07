@@ -34,10 +34,8 @@ public class MmService extends Service {
         views.setProgressBar(R.id.progressBar, 100,
                 MorbidMeterClock.percentAlive(), false);
         String label = MorbidMeterClock.getLabel();
-        if (label != null) {
-            views.setTextViewText(R.id.text, label);
-            Log.d(LOG_TAG, "Label updated.");
-        }
+        views.setTextViewText(R.id.text, label);
+        Log.d(LOG_TAG, "Label updated.");
     }
 
     public static void updateButtonAndWidget(Context context, int appWidgetId,

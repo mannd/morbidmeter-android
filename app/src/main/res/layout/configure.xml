@@ -129,19 +129,19 @@
                 android:id="@+id/no_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_sound_label"></RadioButton>
+                android:text="@string/no_sound_label" />
 
             <RadioButton
                 android:id="@+id/default_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_sound_label"></RadioButton>
+                android:text="@string/default_sound_label" />
 
             <RadioButton
                 android:id="@+id/mm_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mm_sound_label"></RadioButton>
+                android:text="@string/mm_sound_label" />
         </RadioGroup>
 
         <TextView
@@ -158,23 +158,27 @@
 
         <LinearLayout
             android:id="@+id/linearLayout2"
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/cancel_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel_label" />
 
             <Button
                 android:id="@+id/help_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/help_label" />
 
             <Button
                 android:id="@+id/ok_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
