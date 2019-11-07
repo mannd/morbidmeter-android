@@ -23,8 +23,6 @@ import java.text.Format;
 
 public class TimeScale {
     private final String name;
-
-    ;
     private final long maximum;
     private final long minimum;
     private Format formatter;

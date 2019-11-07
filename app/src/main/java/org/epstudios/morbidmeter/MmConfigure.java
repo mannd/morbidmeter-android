@@ -181,18 +181,18 @@ public class MmConfigure extends Activity {
         // button
         setContentView(R.layout.configure);
 
-        userNameEditText = (EditText) findViewById(R.id.user_name);
-        birthDayDatePicker = (DatePicker) findViewById(R.id.birthday);
-        deathDayDatePicker = (DatePicker) findViewById(R.id.deathday);
-        longevityTextView = (TextView) findViewById(R.id.longevityTextView);
-        longevityEditText = (EditText) findViewById(R.id.longevity);
-        timeScaleSpinner = (Spinner) findViewById(R.id.timescale);
-        frequencySpinner = (Spinner) findViewById(R.id.update_frequency);
-        reverseTimeCheckBox = (CheckBox) findViewById(R.id.reverse_time);
-        useMsecCheckBox = (CheckBox) findViewById(R.id.show_msec);
-        showNotificationsCheckBox = (CheckBox) findViewById(R.id.show_notifications);
-        notificationSoundRadioGroup = (RadioGroup) findViewById(R.id.notification_sound_radio_group);
-        doNotModifyNameCheckBox = (CheckBox) findViewById(R.id.do_not_modify_name_checkbox);
+        userNameEditText = findViewById(R.id.user_name);
+        birthDayDatePicker = findViewById(R.id.birthday);
+        deathDayDatePicker = findViewById(R.id.deathday);
+        longevityTextView = findViewById(R.id.longevityTextView);
+        longevityEditText = findViewById(R.id.longevity);
+        timeScaleSpinner = findViewById(R.id.timescale);
+        frequencySpinner = findViewById(R.id.update_frequency);
+        reverseTimeCheckBox = findViewById(R.id.reverse_time);
+        useMsecCheckBox = findViewById(R.id.show_msec);
+        showNotificationsCheckBox = findViewById(R.id.show_notifications);
+        notificationSoundRadioGroup = findViewById(R.id.notification_sound_radio_group);
+        doNotModifyNameCheckBox = findViewById(R.id.do_not_modify_name_checkbox);
 
         // setting the focus is kinda annoying
         // userNameEditText.requestFocus();
@@ -293,7 +293,7 @@ public class MmConfigure extends Activity {
             }
         }
 
-        Button ok = (Button) findViewById(R.id.ok_button);
+        Button ok = findViewById(R.id.ok_button);
         ok.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -366,7 +366,7 @@ public class MmConfigure extends Activity {
             }
         });
 
-        Button help = (Button) findViewById(R.id.help_button);
+        Button help = findViewById(R.id.help_button);
         help.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -374,7 +374,7 @@ public class MmConfigure extends Activity {
             }
         });
 
-        Button cancel = (Button) findViewById(R.id.cancel_button);
+        Button cancel = findViewById(R.id.cancel_button);
         cancel.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -445,7 +445,6 @@ public class MmConfigure extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v,
                                        int position, long id) {
-                ;
             }
 
             @Override
