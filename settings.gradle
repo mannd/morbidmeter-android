@@ -1,3 +1,1 @@
-include ':morbidmeterlib'
-include ':morbidmeterandroid'
-include ':morbidmeterlite'
+include ':app'
