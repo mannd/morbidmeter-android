@@ -22,60 +22,62 @@ import java.text.DecimalFormat;
 import java.text.Format;
 
 public class TimeScale {
-	public enum Duration {
-		YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE, RAW
-	};
+    private final String name;
 
-	public TimeScale() {
-		this.name = "";
-		this.minimum = 0L;
-		this.maximum = 0L;
-		formatString = "#";
-		formatter = new DecimalFormat(formatString);
-	}
+    ;
+    private final long maximum;
+    private final long minimum;
+    private Format formatter;
+    private String formatString;
 
-	public TimeScale(String name, long minimum, long maximum) {
-		this.name = name;
-		this.minimum = minimum;
-		this.maximum = maximum;
-	}
+    public TimeScale() {
+        this.name = "";
+        this.minimum = 0L;
+        this.maximum = 0L;
+        formatString = "#";
+        formatter = new DecimalFormat(formatString);
+    }
 
-	public boolean okToUseMsec() {
-		return false;
-	}
+    public TimeScale(String name, long minimum, long maximum) {
+        this.name = name;
+        this.minimum = minimum;
+        this.maximum = maximum;
+    }
 
-	public long duration() {
-		return maximum - minimum;
-	}
+    public boolean okToUseMsec() {
+        return false;
+    }
 
-	public double proportionalTime(double percent) {
-		return minimum + (percent * duration());
-	}
+    public long duration() {
+        return maximum - minimum;
+    }
 
-	public double reverseProportionalTime(double percent) {
-		return maximum - (percent * duration());
-	}
+    public double proportionalTime(double percent) {
+        return minimum + (percent * duration());
+    }
 
-	public String getName() {
-		return name;
-	}
+    public double reverseProportionalTime(double percent) {
+        return maximum - (percent * duration());
+    }
 
-	public Format getFormatter() {
-		return formatter;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setFormatter(Format formatter) {
-		this.formatter = formatter;
-	}
+    public Format getFormatter() {
+        return formatter;
+    }
 
-	public void setFormatString(String formatString) {
-		this.formatString = formatString;
-	}
+    public void setFormatter(Format formatter) {
+        this.formatter = formatter;
+    }
 
-	private final String name;
-	private final long maximum;
-	private final long minimum;
-	private Format formatter;
-	private String formatString;
+    public void setFormatString(String formatString) {
+        this.formatString = formatString;
+    }
+
+    public enum Duration {
+        YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE, RAW
+    }
 
 }

@@ -41,7 +41,7 @@
         <item>@string/thirty_sec</item>
         -->
         <item>@string/one_min</item>
-<!--          <item>@string/fifteen_min</item> -->
+        <!--          <item>@string/fifteen_min</item> -->
         <item>@string/thirty_min</item>
         <!-- <item>@string/one_hour</item> -->
         <item>@string/six_hour</item>
@@ -51,7 +51,7 @@
 
     <array name="android_o_frequencies">
         <item>@string/one_min</item>
-<!--          <item>@string/fifteen_min</item> -->
+        <!--          <item>@string/fifteen_min</item> -->
         <item>@string/thirty_min</item>
         <item>@string/one_hour</item>
         <item>@string/six_hour</item>

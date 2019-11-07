@@ -8,7 +8,7 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView4"
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/longevity_hint"
-            android:inputType="numberDecimal" >
+            android:inputType="numberDecimal">
 
             <requestFocus />
         </EditText>
@@ -77,7 +77,7 @@
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView3"
@@ -123,28 +123,25 @@
             android:text="@string/notification_sound_label"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
-        <RadioGroup android:id="@+id/notification_sound_radio_group" >
+        <RadioGroup android:id="@+id/notification_sound_radio_group">
 
             <RadioButton
                 android:id="@+id/no_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/no_sound_label" >
-            </RadioButton>
+                android:text="@string/no_sound_label"></RadioButton>
 
             <RadioButton
                 android:id="@+id/default_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/default_sound_label" >
-            </RadioButton>
+                android:text="@string/default_sound_label"></RadioButton>
 
             <RadioButton
                 android:id="@+id/mm_sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/mm_sound_label" >
-            </RadioButton>
+                android:text="@string/mm_sound_label"></RadioButton>
         </RadioGroup>
 
         <TextView
@@ -162,7 +159,7 @@
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <Button
                 android:id="@+id/cancel_button"
