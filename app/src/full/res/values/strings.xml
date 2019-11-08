@@ -1,104 +1,42 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name">MorbidMeter</string>
-    <string name="birthday_label">Birthday or Start Date</string>
-    <string name="longevity_label">Longevity or duration is</string>
-    <string name="longevity_label_completion">years</string>
-    <string name="longevity_hint">Enter longevity or duration (yrs)</string>
-    <string name="deathday_label">Deathday or End Date</string>
-    <string name="timescale_label">Time Scale</string>
-    <string name="reverse_time_label">Reverse time</string>
-    <string name="show_msec_label">Show msec</string>
-    <string name="notifications_label">Notifications</string>
-    <string name="show_notifications_label">Show notifications</string>
-    <string name="notification_sound_label">Notification sound</string>
-    <string name="no_sound_label">No notification sound</string>
-    <string name="default_sound_label">Use default notification sound</string>
-    <string name="mm_sound_label">Use MorbidMeter sound (Bells)</string>
-    <string name="update_frequency_label">Update frequency (values &lt;30 min may shorten battery life)</string>
-    <string name="ok_label">Start</string>
-    <string name="help_label">Help</string>
-    <string name="cancel_label">Cancel</string>
-    <string name="user_name_label">User Name or Title</string>
-    <string name="default_user_name">Default User</string>
-    <string name="user_name_checkbox_label">Don\'t add \'MorbidMeter\' to title text</string>
-    <string name="initial_label">MorbidMeter\nClick skull to configure</string>
-    <string name="loading_label">MorbidMeter Loading</string>
-    <!-- TimeScales -->
-    <string name="ts_day">ONE DAY</string>
-    <string name="ts_hour">ONE HOUR</string>
-    <string name="ts_month">ONE MONTH</string>
-    <string name="ts_percent">PERCENT</string>
-    <string name="ts_year">ONE YEAR</string>
-    <string name="ts_universe">UNIVERSE</string>
-    <string name="ts_x_universe">X-UNIVERSE</string>
-    <string name="ts_x_universe_2">X-UNIVERSE 2</string>
-    <string name="ts_raw">MILLISECONDS</string>
-    <string name="ts_seconds">SECONDS</string>
-    <string name="ts_debug">DEBUG</string>
-    <string name="ts_days">DAYS</string>
-    <string name="ts_years">YEARS</string>
-    <string name="ts_hours">HOURS</string>
-    <string name="ts_minutes">MINUTES</string>
-    <string name="ts_time">CURRENT TIME</string>
-    <string name="ts_time_no_seconds">CURRENT SHORT TIME</string>
-    <string name="ts_time_military">CURRENT MILITARY TIME</string>
-    <string name="ts_time_military_no_seconds">CURRENT SHORT MILITARY TIME</string>
-    <string name="ts_d_h_m_s">DAYS HOURS MINS SECS</string>
-    <string name="ts_d_h_m">DAYS HOURS MINS</string>
-    <string name="ts_weeks">WEEKS</string>
-    <string name="ts_months">MONTHS</string>
-    <string name="ts_none">NONE</string>
-    <string name="user_dead_message">You Are Living On Borrowed Time!</string>
-    <string name="help_title">MorbidMeter Help</string>
-    <string name="help_message">MorbidMeter tracks your lifespan over an alternative timescale.
+    <string name="help_message">
+        MorbidMeter tracks your lifespan over an alternative timescale.
         For example, using a single year as a timescale and an estimated longevity of 80 years,
         a person in their 40s would have a MorbidMeter date sometime in the summer. 
-        Using a day-long
-        timescale, the MorbidMeter time would be around noon.  Alternatively
-        you can use MorbidMeter as a countdown widget, but with much more entertaining
-        options than your average countdown widget!
-        \n\nUse the configuration screen shown when you start the
-        widget or touch the Skull button to set the timescale as well as other widget
-        parameters.  Fill in your name, birth date, and
-        predicted longevity in years. You will need to pick a longevity.
-        There are sites on the Internet that can predict your longevity.
-        \n\nTimescales ending in S such as DAYS give the total number of days (or other
-        time period)
-        you have been alive, whereas the DAY timescale stretches your life over a single day.
-        PERCENT gives the percentage of your life you have lived, and UNIVERSE 
-        stretches your life to the life of the universe, estimated at 15 billion years (or use
-        the X-UNIVERSE options if you believe the earth is 6000 years old). You can reverse time
-        and/or add milliseconds in some of the timescales.  Select Show Notifications and pick
-        a notification sound if you want to be notified when you reach a MorbidMeter milestone
-        (e.g. an hour of MorbidMeter time has passed).  
-        \n\nYou can have multiple different MorbidMeter widgets
-        on your screen with different parameters at the same time.  
-        Long press and drag to the trash any MorbidMeter widget
-        that you are done with. Change the update frequency, but use a longer frequency
-        if it seems that the widget is draining the battery or you don\'t need
-        a fast updates.  Note that on Android O devices and beyond, update
-        frequencies less than 1 minute don\'t work, and so are not available.
-        Also note that the CURRENT TIME and similar timescales will only be as accurate as
-        the update frequency.  Thus if you use a current time timescale and the update frequency
-        is one hour, the time shown will be off by as much as an hour.  If you are using MorbidMeter
-	to track your lifespan, update frequencies as low as once a day may be appropriate.
-	MorbidMeter is not intended to be a precision clock, though you can use it to measure
-    fuzzy time.</string>
-    <string name="update_button_label">Update Button</string>
-    <string name="sanity_message">User parameters are out of range.  Please correct and relaunch or cancel.</string>
-    <string name="sanity_title">User Parameter Error</string>
-    <string name="one_sec">1 sec</string>
-    <string name="five_sec">5 sec</string>
-    <string name="fifteen_sec">15 sec</string>
-    <string name="thirty_sec">30 sec</string>
-    <string name="one_min">1 min</string>
-    <string name="fifteen_min">15 min</string>
-    <string name="thirty_min">30 min</string>
-    <string name="one_hour">1 hour</string>
-    <string name="six_hour">6 hours</string>
-    <string name="twelve_hour">12 hours</string>
-    <string name="one_day">1 day</string>
+        Using a day-long timescale, the MorbidMeter time would be around noon.
+        Alternatively, you can use MorbidMeter as a countdown widget, but with much more
+        entertaining options than your average countdown widget!
 
+        \n\nUse the configuration screen shown when you start the widget or touch the skull
+        button to set the timescale as well as other widget parameters.
+        Fill in your name, birth date, and predicted longevity in years.
+        You will need to pick a longevity.
+        There are sites on the Internet that can predict your longevity.
+
+        \n\nTimescales ending in S (such as DAYS) give the total number of days (or other
+        time period) you have been alive, whereas the DAY timescale stretches your life over a
+        single day.
+        PERCENT gives the percentage of your life you have lived, and UNIVERSE stretches your life
+        to the life of the universe, estimated at 15 billion years (or you can use the X-UNIVERSE
+        options if you believe the earth is 6000 years old).
+        You can reverse time and/or add milliseconds in some of the timescales.
+        Select Show Notifications and pick a notification sound if you want to be notified when
+        you reach a MorbidMeter milestone (e.g. an hour of MorbidMeter time has passed).
+
+        \n\nYou can have multiple different MorbidMeter widgets on your screen with different
+        parameters at the same time.
+        Long press and drag to the trash any MorbidMeter widget that you are done with.
+        Change the update frequency, but use a longer frequency if it seems that the widget is
+        draining the battery or you don\'t need fast updates.
+        Note that on Android Oreo (8.0) devices and beyond, update frequencies less than 1 minute
+        don\'t work, and so are not available.
+        Also note that the CURRENT TIME and similar timescales will only be as accurate as the
+        update frequency.
+        Thus if you use a current time timescale and the update frequency is one hour, the time
+        shown will be off by as much as an hour.
+        If you are using MorbidMeter to track your lifespan, update frequencies as low as once a
+        day may be appropriate.
+        MorbidMeter is not intended to be a precision clock, though you can use it to measure
+        fuzzy time.
+    </string>
 </resources>

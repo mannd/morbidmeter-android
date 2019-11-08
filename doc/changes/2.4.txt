@@ -1,5 +1,0 @@
-MorbidMeter v2.4 Release Notes
-Changes since v2.3
-* Dead message now shown on widget even if show notifications off.
-* Bug causing "Unfortunately MM has stopped" message fixed.
-* Time wobble bug finally squashed for good.
