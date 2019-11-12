@@ -1,5 +1,0 @@
-MorbidMeter v2.5 Release Notes
-Changes since v2.4
-* Fixed regression that broke non-date timescales in v2.4.
-* Now have option to have name or title not append "MorbidMeter."
-* Widget scales better with long title text.
