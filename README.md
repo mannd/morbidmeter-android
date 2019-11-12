@@ -11,7 +11,6 @@ Only this repository will be maintained as of this point (starting October 27, 2
 Note that this project is separate from the original MorbidMeter project,
 which is a Python program and is situated in the MorbidMeter repository here on GitHub.
 
-
 ## Download
 [<img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
     alt="Get it on Google Play"
@@ -22,7 +21,6 @@ which is a Python program and is situated in the MorbidMeter repository here on 
 
 
 ## License and Copyright
-
 Copyright 2011-2019 [EP Studios, Inc.](https://www.epstudiossoftware.com/)
 
 MorbidMeter is open-source, and is available under the 
@@ -50,4 +48,8 @@ The skull icon is in the public domain. Source and documentation are
 David Mann
 
 Email: [mannd@epstudiossoftware.com](mailto:mannd@epstudiossoftware.com)  
-Website: [www.epstudiossoftware.com](https://www.epstudiossoftware.com/)   
+Website:
+[www.epstudiossoftware.com](https://www.epstudiossoftware.com/)
+
+### Contributors
+TacoTheDank
