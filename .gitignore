@@ -32,6 +32,7 @@ local.properties
 lint.xml
 
 # Android Studio
-.idea
-.gradle
+.idea/
+.gradle/
 build/
+*.iml

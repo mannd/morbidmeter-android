@@ -1,5 +1,0 @@
-MorbidMeter v2.2.1 Release Notes
-
-Changes since v2.2
-
-* Added number formatting to timescales lacking it

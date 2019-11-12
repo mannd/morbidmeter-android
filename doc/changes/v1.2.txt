@@ -1,9 +1,0 @@
-MorbidMeter v1.2.1 Release Notes
-
-Changes since v1.1
-
-* New glossy blue background.
-
-* Implemented notifications for MorbidMeter milestones.
-
-
