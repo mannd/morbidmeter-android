@@ -99,7 +99,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/longevity_hint"
-                android:inputType="numberDecimal">
+                android:inputType="numberDecimal"
+                android:importantForAutofill="no">
 
                 <requestFocus />
             </EditText>

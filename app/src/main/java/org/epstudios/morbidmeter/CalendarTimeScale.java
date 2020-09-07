@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -21,6 +21,7 @@ package org.epstudios.morbidmeter;
 import java.util.Calendar;
 
 
+@SuppressWarnings("unused")
 public class CalendarTimeScale extends TimeScale {
     private final Calendar minTime;
     private final Calendar maxTime;

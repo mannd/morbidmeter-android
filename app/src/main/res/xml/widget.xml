@@ -5,7 +5,7 @@
     android:initialLayout="@layout/main"
     android:minWidth="250dip"
     android:minHeight="110dip"
-    android:previewImage="@drawable/preview"
+    android:previewImage="@drawable/morbidmeter_new_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     tools:ignore="UnusedAttribute" />

@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -50,6 +50,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class MmConfigure extends Activity {
@@ -166,7 +167,7 @@ public class MmConfigure extends Activity {
         super.onCreate(savedInstanceState);
         Intent launchIntent = getIntent();
         Bundle extras = launchIntent.getExtras();
-        appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
+        appWidgetId = Objects.requireNonNull(extras).getInt(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 AppWidgetManager.INVALID_APPWIDGET_ID);
         Intent cancelResultIntent = new Intent();
         cancelResultIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,

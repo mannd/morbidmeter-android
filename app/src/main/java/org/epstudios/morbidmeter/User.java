@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -77,6 +77,7 @@ public class User {
         return deathDate;
     }
 
+    @SuppressWarnings("unused")
     public GregorianCalendar birthDay() {
         return this.birthDay;
     }
@@ -87,6 +88,7 @@ public class User {
         return deathDay;
     }
 
+    @SuppressWarnings("unused")
     public double longevityFromDeathDate(int year, int month, int dayOfMonth) {
         return getLongevity(birthDay.get(Calendar.YEAR),
                 birthDay.get(Calendar.MONTH),
@@ -124,27 +126,31 @@ public class User {
     }
 
     private double daysAlive() {
-        return secAlive() / 60 * 60 * 24.0;
+        return (double)secAlive() / 60 * 60 * 24.0;
     }
 
+    @SuppressWarnings("unused")
     public double minutesAlive() {
-        return secAlive() / 60;
+        return (double)secAlive() / 60;
     }
 
+    @SuppressWarnings("unused")
     public double reverseMinutesAlive() {
-        return reverseSecAlive() / 60;
+        return (double)reverseSecAlive() / 60;
     }
 
     private double reverseDaysAlive() {
-        return reverseSecAlive() / 60 * 60 * 24.0;
+        return (double)reverseSecAlive() / 60 * 60 * 24.0;
     }
 
+    @SuppressWarnings("unused")
     public double yearsAlive() {
         return daysAlive() / daysPerYear;
     }
 
     // next 2 only used in tests so far
 
+    @SuppressWarnings("unused")
     public double reverseYearsAlive() {
         return reverseDaysAlive() / daysPerYear;
     }
@@ -215,10 +221,12 @@ public class User {
         this.longevity = longevity;
     }
 
+    @SuppressWarnings("unused")
     public double getDaysPerYear() {
         return daysPerYear;
     }
 
+    @SuppressWarnings("unused")
     public long getMsecsPerYear() {
         return msecsPerYear;
     }

@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -21,6 +21,7 @@ package org.epstudios.morbidmeter;
 import java.text.DecimalFormat;
 import java.text.Format;
 
+@SuppressWarnings("unused")
 public class TimeScale {
     private final String name;
     private final long maximum;
@@ -74,6 +75,7 @@ public class TimeScale {
         this.formatString = formatString;
     }
 
+    @SuppressWarnings("unused")
     public enum Duration {
         YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE, RAW
     }

@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2014 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -37,9 +37,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("ALL")
 public class MorbidMeterClock {
 
-    private static final String DEPRECATION = "deprecation";
     private static final String LOG_TAG = "MM";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static final String IN_MILESTONE = "in_milestone";
@@ -99,6 +99,7 @@ public class MorbidMeterClock {
         return userName + "\n" + timeScaleName;
     }
 
+    @SuppressWarnings("ConstantConditions")
     static String getFormattedTime(Context context) {
 
         final boolean fullDebug = false;
@@ -107,7 +108,7 @@ public class MorbidMeterClock {
         final String SHORT_DECIMAL_FORMAT_STRING = "#,###.0000";
         final String SHORT_INT_FORMAT_STRING = "#,###";
         String formatString = "";
-        String timeString = "";
+        String timeString;
         String units = "";
         // Log.d(LOG_TAG, "percent alive = " +
         // configuration.user.percentAlive());
@@ -492,7 +493,7 @@ public class MorbidMeterClock {
             if (!inMilestone) {
                 Notification.Builder builder = new Notification.Builder(context);
                 builder.setAutoCancel(true);
-                builder.setSmallIcon(R.drawable.notificationskull);
+                builder.setSmallIcon(R.drawable.ic_skull_hollow_eyes);
                 builder.setTicker("MorbidMeter Milestone");
                 builder.setWhen(System.currentTimeMillis());
                 builder.setContentTitle("MorbidMeter");
@@ -510,7 +511,7 @@ public class MorbidMeterClock {
 
                 NotificationManager notificationManager = (NotificationManager) context
                         .getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(1, builder.getNotification());
+                notificationManager.notify(1, builder.build());
                 inMilestone = true;
             }
         } else {
