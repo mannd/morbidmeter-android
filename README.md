@@ -21,7 +21,7 @@ which is a Python program and is situated in the MorbidMeter repository here on 
 
 
 ## License and Copyright
-Copyright 2011-2019 [EP Studios, Inc.](https://www.epstudiossoftware.com/)
+Copyright 2011-2020 [EP Studios, Inc.](https://www.epstudiossoftware.com/)
 
 MorbidMeter is open-source, and is available under the 
 [GNU GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.html).

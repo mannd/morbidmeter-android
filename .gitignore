@@ -36,3 +36,7 @@ lint.xml
 .gradle/
 build/
 *.iml
+
+# MorbidMeter
+app/full
+app/lite
