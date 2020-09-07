@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
-        android:previewImage="@drawable/morbidmeter_new_preview"
+        android:previewImage="@drawable/morbidmeter_new_preview2"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,UnusedAttribute"
         android:allowBackup="true">

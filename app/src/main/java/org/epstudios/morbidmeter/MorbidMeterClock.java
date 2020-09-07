@@ -493,7 +493,7 @@ public class MorbidMeterClock {
             if (!inMilestone) {
                 Notification.Builder builder = new Notification.Builder(context);
                 builder.setAutoCancel(true);
-                builder.setSmallIcon(R.drawable.ic_skull_hollow_eyes);
+                builder.setSmallIcon(R.drawable.ic_stat_notification);
                 builder.setTicker("MorbidMeter Milestone");
                 builder.setWhen(System.currentTimeMillis());
                 builder.setContentTitle("MorbidMeter");
