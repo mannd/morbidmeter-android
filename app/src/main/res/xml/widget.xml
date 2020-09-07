@@ -4,7 +4,7 @@
     android:configure="org.epstudios.morbidmeter.MmConfigure"
     android:initialLayout="@layout/main"
     android:minWidth="250dip"
-    android:minHeight="80dip"
+    android:minHeight="110dip"
     android:previewImage="@drawable/preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
