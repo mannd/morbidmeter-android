@@ -3,7 +3,7 @@
 
 ### 2.9
 * Updated Target SDK to 28 (added foreground permission).
-* Made all clock time scales non-reversable.
+* Made all clock time scales non-reversible.
 * Fixed major reverse-time bug.
 * Updated help text.
 

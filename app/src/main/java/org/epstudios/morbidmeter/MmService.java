@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import java.util.Objects;
+
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
@@ -57,7 +59,7 @@ public class MmService extends Service {
             return START_REDELIVER_INTENT;
         }
         Context context = getApplicationContext();
-        int appWidgetId = intent.getExtras().getInt(
+        int appWidgetId = Objects.requireNonNull(intent.getExtras()).getInt(
                 AppWidgetManager.EXTRA_APPWIDGET_ID);
         MorbidMeterClock.resetConfiguration(context, appWidgetId);
         RemoteViews views = new RemoteViews(context.getPackageName(),

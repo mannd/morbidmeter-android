@@ -4,8 +4,8 @@
     android:configure="org.epstudios.morbidmeter.MmConfigure"
     android:initialLayout="@layout/main"
     android:minWidth="250dip"
-    android:minHeight="80dip"
-    android:previewImage="@drawable/preview"
+    android:minHeight="180dip"
+    android:previewImage="@drawable/morbidmeter_new_preview2"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     tools:ignore="UnusedAttribute" />

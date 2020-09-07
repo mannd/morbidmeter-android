@@ -65,4 +65,5 @@
     <string name="six_hour">6 hours</string>
     <string name="twelve_hour">12 hours</string>
     <string name="one_day">1 day</string>
+    <string name="name_hint">Fill in your name, or whatever</string>
 </resources>
