@@ -157,8 +157,15 @@ public class MmConfigure extends Activity {
                                             RemoteViews views) {
         Intent intent = new Intent(context, MmConfigure.class);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        } else {
+            pendingIntent = PendingIntent.getActivity(context, appWidgetId, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+        }
         views.setOnClickPendingIntent(R.id.update_button, pendingIntent);
     }
 
