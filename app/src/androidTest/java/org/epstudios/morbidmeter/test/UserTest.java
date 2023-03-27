@@ -38,7 +38,9 @@ public class UserTest extends TestCase {
         testDate.set(Calendar.YEAR, 1990);
         testDate.set(Calendar.MONTH, 1);
         testDate.set(Calendar.DAY_OF_MONTH, 1);
-        assertEquals(0.5, user.percentAlive(testDate), 0.01);
+        double percent = user.percentAlive(testDate);
+        assertEquals(0.5, percent, 0.01);
+//        assertEquals(0.5, user.percentAlive(testDate), 0.01);
     }
 
     public void testIsSane() {

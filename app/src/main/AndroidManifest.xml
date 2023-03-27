@@ -17,6 +17,7 @@
         android:allowBackup="true">
         <receiver
             android:name=".MorbidMeter"
+            android:exported="true"
             android:icon="@drawable/icon"
             android:label="@string/app_name">
             <intent-filter>
@@ -28,7 +29,8 @@
                 android:resource="@xml/widget" />
         </receiver>
 
-        <activity android:name=".MmConfigure">
+        <activity android:name=".MmConfigure"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>

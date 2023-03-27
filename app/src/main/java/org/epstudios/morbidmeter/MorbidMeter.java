@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011, 2014 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -25,6 +25,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -63,8 +64,17 @@ public class MorbidMeter extends AppWidgetProvider {
                 Uri.parse("mmwidget://widget/id/#" + command + appWidgetId),
                 String.valueOf(appWidgetId));
         intent.setData(data);
-        return (PendingIntent.getService(context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT));
+
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        } else {
+            pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+        return pendingIntent;
     }
 
     @Override

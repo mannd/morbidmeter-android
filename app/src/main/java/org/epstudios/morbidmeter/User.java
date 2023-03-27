@@ -150,7 +150,6 @@ public class User {
 
     // next 2 only used in tests so far
 
-    @SuppressWarnings("unused")
     public double reverseYearsAlive() {
         return reverseDaysAlive() / daysPerYear;
     }
@@ -166,6 +165,10 @@ public class User {
     private long msecAlive(Calendar date) {
         return date.getTimeInMillis() - birthDayMsec();
     }
+
+//    public double percentAlive(Calendar date) {
+//        return ((double) msecAlive(date)) / lifeDurationMsec();
+//    }
 
     public double percentAlive(Calendar date) {
         return ((double) msecAlive(date)) / lifeDurationMsec();
