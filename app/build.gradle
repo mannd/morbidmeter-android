@@ -7,7 +7,7 @@ android {
         applicationId "org.epstudios.morbidmeter"
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 22
+        versionCode 23
         versionName "2.14.0"
 
         testApplicationId "org.epstudios.morbidmeter.test"
