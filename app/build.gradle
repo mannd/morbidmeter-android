@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter"
         minSdkVersion 19
-        targetSdkVersion 33
-        versionCode 22
-        versionName "2.14.0"
+        targetSdkVersion 34
+        versionCode 24
+        versionName "2.15.0"
 
         testApplicationId "org.epstudios.morbidmeter.test"
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
@@ -54,6 +54,7 @@ android {
     lint {
         disable 'GoogleAppIndexingWarning'
     }
+    namespace 'org.epstudios.morbidmeter'
 
 
 }
