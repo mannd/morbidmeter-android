@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.util.Log
+import android.view.View
 import android.widget.RemoteViews
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -83,8 +84,11 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         Log.d(LOG_TAG, "updateAppWidget called with appWidgetId: $appWidgetId")
         val views = RemoteViews(context.packageName, R.layout.main)
         // TODO: Fix this code
-        val currentTime = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(Date())
-        views.setTextViewText(R.id.time, currentTime)
+        // Skull button needs to be configured each time?  Maybe just with
+        // initial configuration.
+        MorbidMeterClock.resetConfiguration(context, appWidgetId)
+        MmConfigure.configureSkullButton(context, appWidgetId, views)
+        updateWidget(context, views)
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
@@ -119,5 +123,25 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
             android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
         )
         alarmManager.cancel(pendingIntent)
+    }
+
+    fun updateWidget(context: Context, views: RemoteViews) {
+        val currentTime = MorbidMeterClock.getFormattedTime(context)
+        if (currentTime != null) {
+            Log.d(LOG_TAG, "Current time = $currentTime")
+            if (currentTime == "0") {
+                views.setViewVisibility(R.id.time, View.GONE)
+            } else {
+                views.setViewVisibility(R.id.time, View.VISIBLE)
+                views.setTextViewText(R.id.time, currentTime)
+            }
+        }
+        views.setProgressBar(
+            R.id.progressBar, 100,
+            MorbidMeterClock.percentAlive(), false
+        )
+        val label = MorbidMeterClock.getLabel()
+        views.setTextViewText(R.id.text, label)
+        Log.d(LOG_TAG, "Label updated.")
     }
 }
