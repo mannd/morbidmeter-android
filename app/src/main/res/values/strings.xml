@@ -66,4 +66,6 @@
     <string name="twelve_hour">12 hours</string>
     <string name="one_day">1 day</string>
     <string name="name_hint">Fill in your name, or whatever</string>
+    <string name="use_exact_time_label">Use exact timing (may shorten battery life)</string>
+    <string name="use_exact_time_checkbox_label">Use exact time</string>
 </resources>
