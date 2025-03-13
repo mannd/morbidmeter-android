@@ -90,6 +90,7 @@ public class MmService extends Service {
     // Service must run in Foreground, meaning there has to be a notification.
     // See https://stackoverflow.com/questions/47611123/oreo-starting-a-service-in-the-foreground
     private void startInForeground() {
+        Log.i(LOG_TAG, "startInForeground");
         String CHANNEL_ID = "MMChannel";
         String CHANNEL_NAME = "MorbidMeter";
         String CHANNEL_DESCRIPTION = "Notifications for MorbidMeter";

@@ -32,28 +32,36 @@ import android.widget.RemoteViews;
 
 public class MorbidMeter extends AppWidgetProvider {
     private static final String LOG_TAG = "MM";
+    public static final String UPDATE_ACTION = "org.epstudios.morbidmeter.UPDATE";
 
     public static void setAlarm(Context context, int appWidgetId, int updateRate) {
 
         PendingIntent pendingIntent = makeControlPendingIntent(context,
-                MmService.UPDATE, appWidgetId);
-        AlarmManager alarms = (AlarmManager) context
+                MorbidMeter.UPDATE_ACTION, appWidgetId);
+        AlarmManager alarmManager = (AlarmManager) context
                 .getSystemService(Context.ALARM_SERVICE);
 
         if (updateRate >= 0) {
-            alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime(), updateRate, pendingIntent);
+            Log.i(LOG_TAG, "updateRate: " + updateRate);
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + 60000, // 1 minute
+                    pendingIntent
+            );
+//            alarms.setRepeating(AlarmManager.ELAPSED_REALTIME,
+//                    SystemClock.elapsedRealtime(), updateRate, pendingIntent);
             Log.i(LOG_TAG, "Alarm started");
         } else {
             // on a negative updateRate stop the refreshing
-            alarms.cancel(pendingIntent);
+            alarmManager.cancel(pendingIntent);
             Log.d(LOG_TAG, "Alarm stopped.");
         }
     }
 
     public static PendingIntent makeControlPendingIntent(Context context,
                                                          String command, int appWidgetId) {
-        Intent intent = new Intent(context, MmService.class);
+        Log.d(LOG_TAG, "makeControlPendingIntent");
+        Intent intent = new Intent(context, MorbidMeter.class);
         intent.setAction(command);
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         // this Uri data is to make the PendingIntent unique, so it wont be

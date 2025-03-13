@@ -68,6 +68,7 @@ public class MmConfigure extends Activity {
     public static final String NOTIFICATION_SOUND_KEY = "notification_sound";
     public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
     public static final String DO_NOT_MODIFY_NAME_KEY = "do_not_modify_name";
+    public static final String USE_EXACT_TIME_KEY = "use_exact_time";
     private static final String LOG_TAG = "MM";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static boolean INHIBIT_DATE_CHANGE_LISTENER = false;
@@ -84,6 +85,7 @@ public class MmConfigure extends Activity {
     private CheckBox showNotificationsCheckBox;
     private RadioGroup notificationSoundRadioGroup;
     private CheckBox doNotModifyNameCheckBox;
+    private CheckBox useExactTimeCheckBox;
 
     private Configuration configuration;
 
@@ -117,6 +119,7 @@ public class MmConfigure extends Activity {
                 configuration.configurationComplete);
         prefs.putBoolean(DO_NOT_MODIFY_NAME_KEY + appWidgetId,
                 configuration.doNotModifyName);
+        prefs.putBoolean(USE_EXACT_TIME_KEY + appWidgetId, configuration.useExactTime);
         prefs.apply();
     }
 
@@ -150,6 +153,7 @@ public class MmConfigure extends Activity {
                 CONFIGURATION_COMPLETE_KEY + appWidgetId, false);
         configuration.doNotModifyName = prefs.getBoolean(
                 DO_NOT_MODIFY_NAME_KEY + appWidgetId, false);
+        configuration.useExactTime = prefs.getBoolean(USE_EXACT_TIME_KEY + appWidgetId, false);
         return configuration;
     }
 
@@ -184,6 +188,11 @@ public class MmConfigure extends Activity {
         // button
         setContentView(R.layout.configure);
 
+        // TODO: If exact alarm wanted, and if permission not granted, then ask for permission
+        // by launching a permission request activity.
+//        Intent intent = new Intent(this, PermissionRequestActivity.class);
+//        startActivity(intent);
+
         userNameEditText = findViewById(R.id.user_name);
         birthDayDatePicker = findViewById(R.id.birthday);
         deathDayDatePicker = findViewById(R.id.deathday);
@@ -196,6 +205,7 @@ public class MmConfigure extends Activity {
         showNotificationsCheckBox = findViewById(R.id.show_notifications);
         notificationSoundRadioGroup = findViewById(R.id.notification_sound_radio_group);
         doNotModifyNameCheckBox = findViewById(R.id.do_not_modify_name_checkbox);
+        useExactTimeCheckBox = findViewById(R.id.use_exact_time);
 
         // setting the focus is kinda annoying
         // userNameEditText.requestFocus();
@@ -268,6 +278,7 @@ public class MmConfigure extends Activity {
         reverseTimeCheckBox.setChecked(configuration.reverseTime);
         useMsecCheckBox.setChecked(configuration.useMsec);
         showNotificationsCheckBox.setChecked(configuration.showNotifications);
+        useExactTimeCheckBox.setChecked(configuration.useExactTime);
 
         setEnabledOptions(configuration.timeScaleName);
         showNotificationsCheckBox
@@ -320,6 +331,7 @@ public class MmConfigure extends Activity {
                     .isChecked();
             configuration.notificationSound = notificationSoundRadioGroup
                     .getCheckedRadioButtonId();
+            configuration.useExactTime = useExactTimeCheckBox.isChecked();
 
             if (configuration.user.isSane()) {
                 configuration.configurationComplete = true;
@@ -360,6 +372,7 @@ public class MmConfigure extends Activity {
 
         Button cancel = findViewById(R.id.cancel_button);
         cancel.setOnClickListener(v -> finish());
+
     }
 
     private String getLongevityText(double longevity) {

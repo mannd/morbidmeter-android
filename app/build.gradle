@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter"
-        minSdkVersion 19
-        targetSdkVersion 34
+        minSdkVersion 24
+        targetSdkVersion 35
         versionCode 24
         versionName "2.15.0"
 
@@ -55,6 +56,9 @@ android {
         disable 'GoogleAppIndexingWarning'
     }
     namespace 'org.epstudios.morbidmeter'
+    kotlinOptions {
+        jvmTarget = '11'
+    }
 
 
 }
@@ -62,5 +66,6 @@ android {
 dependencies {
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.15.0'
     androidTestImplementation 'junit:junit:4.13.2'
 }

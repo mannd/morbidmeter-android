@@ -1,4 +1,4 @@
-/*  MorbidMeter - Lifetime in perspective 
+/*  MorbidMeter - Lifetime in perspective
     Copyright (C) 2011 EP Studios, Inc.
     www.epstudiossoftware.com
 
@@ -29,4 +29,5 @@ class Configuration {
     boolean configurationComplete;
     String updateFrequency;
     boolean doNotModifyName;
+    boolean useExactTime;
 }
