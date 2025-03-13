@@ -339,13 +339,13 @@ public class MmConfigure extends Activity {
                 AppWidgetManager appWidgetManager = AppWidgetManager
                         .getInstance(context);
                 ComponentName thisAppWidget = new ComponentName(context
-                        .getPackageName(), MorbidMeter.class.getName());
+                        .getPackageName(), MorbidMeterWidgetProvider.class.getName());
                 Intent updateMmIntent = new Intent(context,
-                        MorbidMeter.class);
+                        MorbidMeterWidgetProvider.class);
                 int[] appWidgetIds = appWidgetManager
                         .getAppWidgetIds(thisAppWidget);
                 updateMmIntent
-                        .setAction("android.appwidget.action.APPWIDGET_UPDATE");
+                        .setAction("android.appwidget.action.UPDATE_WIDGET");
                 updateMmIntent.putExtra(
                         AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
                 context.sendBroadcast(updateMmIntent);
