@@ -39,7 +39,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
 
     companion object {
         private const val UPDATE_ACTION =
-            "com.epstudiossoftware.morbidmeterwidgetprovider.UPDATE_WIDGET"
+            "com.epstudiossoftware.morbidmeter.UPDATE_WIDGET"
         private const val LOG_TAG = "MorbidMeterWidgetProvider"
     }
 
