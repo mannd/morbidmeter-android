@@ -37,7 +37,6 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("ALL")
 public class MorbidMeterClock {
 
     private static final String LOG_TAG = "MM";
@@ -99,7 +98,7 @@ public class MorbidMeterClock {
         return userName + "\n" + timeScaleName;
     }
 
-    @SuppressWarnings("ConstantConditions")
+    //@SuppressWarnings("ConstantConditions")
     static String getFormattedTime(Context context) {
 
         final boolean fullDebug = false;
@@ -110,10 +109,6 @@ public class MorbidMeterClock {
         String formatString = "";
         String timeString;
         String units = "";
-        // Log.d(LOG_TAG, "percent alive = " +
-        // configuration.user.percentAlive());
-        // Log.d(LOG_TAG, "birthday msec = " +
-        // configuration.user.birthDayMsec());
         Format formatter = new DecimalFormat(formatString);
         TimeScale ts = new TimeScale();
         if (configuration.user.percentAlive() >= 1.0) {
@@ -435,13 +430,6 @@ public class MorbidMeterClock {
         return timeString;
     }
 
-// --Commented out by Inspection START (9/5/15, 2:45 PM):
-//    private static Format getSimpleDateFormat(String formatString, Boolean useMsec) {
-//        formatString += msecSuffix(useMsec);
-//        return new SimpleDateFormat(formatString, Locale.getDefault());
-//    }
-// --Commented out by Inspection STOP (9/5/15, 2:45 PM)
-
     private static String msecSuffix(Boolean useMsec) {
         // return (useMsec ? " S" : "");
         // the above should return 1-3 digits of msec and does except in
@@ -501,7 +489,7 @@ public class MorbidMeterClock {
                 Intent notificationIntent = new Intent(context,
                         MorbidMeter.class);
                 PendingIntent notificationPendingIntent = PendingIntent
-                        .getActivity(context, appWidgetId, notificationIntent, 0);
+                        .getActivity(context, appWidgetId, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT );
                 builder.setContentIntent(notificationPendingIntent);
                 if (configuration.notificationSound == R.id.default_sound)
                     builder.setDefaults(Notification.DEFAULT_ALL);
