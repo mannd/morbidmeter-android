@@ -55,4 +55,19 @@
         android:textColor="@android:color/white"
         android:textSize="16sp" />
 
+<!--    This field will be used for a real time clock-->
+    <TextClock
+        android:id="@+id/realTime"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="8dp"
+        android:format12Hour="hh:mm:ss a"
+        android:format24Hour="HH:mm:ss"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+
+
+
 </LinearLayout>
