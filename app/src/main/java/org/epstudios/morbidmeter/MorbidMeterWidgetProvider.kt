@@ -67,7 +67,8 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         Log.d(LOG_TAG, "onReceive called with action: ${intent.action}")
-        if (intent.action == UPDATE_ACTION) {
+        if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE
+            || intent.action == UPDATE_ACTION) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val componentName = ComponentName(context, MorbidMeterWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)

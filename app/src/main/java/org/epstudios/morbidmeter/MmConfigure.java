@@ -344,8 +344,9 @@ public class MmConfigure extends Activity {
                         MorbidMeterWidgetProvider.class);
                 int[] appWidgetIds = appWidgetManager
                         .getAppWidgetIds(thisAppWidget);
-                updateMmIntent
-                        .setAction("android.appwidget.action.UPDATE_WIDGET");
+//                updateMmIntent
+//                        .setAction("android.appwidget.action.UPDATE_WIDGET");
+                updateMmIntent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
                 updateMmIntent.putExtra(
                         AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
                 context.sendBroadcast(updateMmIntent);
