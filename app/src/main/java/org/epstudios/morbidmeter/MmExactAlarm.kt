@@ -1,5 +1,8 @@
 package org.epstudios.morbidmeter
 
+import android.content.Context
+import android.content.Intent
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -21,5 +24,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-class MmAlarmManager {
+class MmExactAlarm(context: Context, intent: Intent, frequency: Long) : MmAlarm {
+    private val alarmManager =
+        context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+
+    override fun setAlarm(
+        context: Context,
+        intent: Intent,
+        frequency: Long
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun cancelAlarm(context: Context) {
+        TODO("Not yet implemented")
+    }
 }

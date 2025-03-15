@@ -127,6 +127,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         )
         alarmManager.cancel(pendingIntent)
     }
+
     // TODO: use a setting to determine whether to show the time or the RealTime clock.
     fun updateWidget(context: Context, views: RemoteViews) {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
