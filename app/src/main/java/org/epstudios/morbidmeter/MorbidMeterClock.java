@@ -487,7 +487,7 @@ public class MorbidMeterClock {
                 builder.setContentTitle("MorbidMeter");
                 builder.setContentText(time);
                 Intent notificationIntent = new Intent(context,
-                        MorbidMeter.class);
+                        MorbidMeterWidgetProvider.class);
                 PendingIntent notificationPendingIntent = PendingIntent
                         .getActivity(context, appWidgetId, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT );
                 builder.setContentIntent(notificationPendingIntent);

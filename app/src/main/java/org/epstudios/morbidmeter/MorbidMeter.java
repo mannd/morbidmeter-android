@@ -108,7 +108,7 @@ public class MorbidMeter extends AppWidgetProvider {
                         MorbidMeterClock.getFrequency(context));
                 Log.d(LOG_TAG, "Alarm started");
                 RemoteViews views = new RemoteViews(context.getPackageName(),
-                        R.layout.main);
+                        R.layout.widget);
                 // we'll update everything here to avoid a delay if clock
                 // frequency is long
                 MmService.updateButtonAndWidget(context, appWidgetId, views);

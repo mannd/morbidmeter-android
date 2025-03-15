@@ -2,7 +2,7 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:configure="org.epstudios.morbidmeter.MmConfigure"
-    android:initialLayout="@layout/main"
+    android:initialLayout="@layout/widget"
     android:minWidth="250dip"
     android:minHeight="180dip"
     android:previewImage="@drawable/morbidmeter_new_preview2"

@@ -63,7 +63,7 @@ public class MmService extends Service {
                 AppWidgetManager.EXTRA_APPWIDGET_ID);
         MorbidMeterClock.resetConfiguration(context, appWidgetId);
         RemoteViews views = new RemoteViews(context.getPackageName(),
-                R.layout.main);
+                R.layout.widget);
         updateButtonAndWidget(context, appWidgetId, views);
         AppWidgetManager appWidgetManager = AppWidgetManager
                 .getInstance(context);
