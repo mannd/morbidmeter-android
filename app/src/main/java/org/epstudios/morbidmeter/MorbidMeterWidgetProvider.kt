@@ -10,9 +10,6 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -56,7 +53,8 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
 
     override fun onEnabled(context: Context) {
         Log.d(LOG_TAG, "onEnabled called")
-        scheduleNextUpdate(context)
+        // TODO: too early to get a frequency here? so not needed?
+//        scheduleNextUpdate(context)
     }
 
     override fun onDisabled(context: Context) {
@@ -83,11 +81,13 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         appWidgetId: Int
     ) {
         Log.d(LOG_TAG, "updateAppWidget called with appWidgetId: $appWidgetId")
-        val views = RemoteViews(context.packageName, R.layout.main)
+        val views = RemoteViews(context.packageName, R.layout.widget)
         // TODO: Fix this code
         // Skull button needs to be configured each time?  Maybe just with
         // initial configuration.
         MorbidMeterClock.resetConfiguration(context, appWidgetId)
+        val frequency = MorbidMeterClock.getFrequency(context)
+        Log.d(LOG_TAG, "Frequency = $frequency")
         MmConfigure.configureSkullButton(context, appWidgetId, views)
         updateWidget(context, views)
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -105,9 +105,11 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
             intent,
             android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
         )
+        val frequency = MorbidMeterClock.getFrequency(context)
+        Log.d(LOG_TAG, "Frequency = $frequency")
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + 60000, pendingIntent
+            SystemClock.elapsedRealtime() + frequency, pendingIntent
         )
     }
 
@@ -125,7 +127,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         )
         alarmManager.cancel(pendingIntent)
     }
-
+    // TODO: use a setting to determine whether to show the time or the RealTime clock.
     fun updateWidget(context: Context, views: RemoteViews) {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
         if (currentTime != null) {
