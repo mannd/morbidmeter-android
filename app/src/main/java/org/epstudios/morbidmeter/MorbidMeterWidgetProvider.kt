@@ -40,6 +40,8 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         private const val LOG_TAG = "MorbidMeterWidgetProvider"
     }
 
+    var alarm: MmAlarm? = null
+
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
@@ -95,18 +97,22 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
 
     private fun scheduleNextUpdate2(context: Context) {
         Log.d(LOG_TAG, "scheduleNextUpdate2 called")
-        val alarm = MmExactAlarm(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-            action = UPDATE_ACTION
-        })
-        alarm.setAlarm(MorbidMeterClock.getFrequency(context))
+        if (alarm == null) {
+            alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+                action = UPDATE_ACTION
+            }, MmAlarmType.EXACT)
+        }
+        alarm?.setAlarm(MorbidMeterClock.getFrequency(context))
     }
 
     private fun cancelUpdates2(context: Context) {
         Log.d(LOG_TAG, "cancelUpdates2 called")
-        val alarm = MmExactAlarm(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-            action = UPDATE_ACTION
-        })
-        alarm.cancelAlarm()
+        if (alarm == null) {
+            alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+                action = UPDATE_ACTION
+            }, MmAlarmType.EXACT)
+        }
+        alarm?.cancelAlarm()
     }
 
     private fun scheduleNextUpdate(context: Context) {

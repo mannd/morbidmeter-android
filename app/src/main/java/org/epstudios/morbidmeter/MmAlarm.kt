@@ -25,6 +25,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
+enum class MmAlarmType { EXACT, INEXACT }
+
+
 abstract class MmAlarm(context: Context, intent: Intent) {
     protected val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
     protected val pendingIntent: PendingIntent = android.app.PendingIntent.getBroadcast(
@@ -37,5 +40,15 @@ abstract class MmAlarm(context: Context, intent: Intent) {
 
     fun cancelAlarm() {
         alarmManager.cancel(pendingIntent)
+    }
+
+    companion object {
+        fun create(context: Context, intent: Intent, type: MmAlarmType): MmAlarm {
+            return when (type) {
+                MmAlarmType.EXACT -> MmExactAlarm(context, intent)
+                MmAlarmType.INEXACT -> MmInexactAlarm(context, intent)
+            }
+        }
+
     }
 }
