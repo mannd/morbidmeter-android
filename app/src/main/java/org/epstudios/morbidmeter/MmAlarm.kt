@@ -1,5 +1,9 @@
 package org.epstudios.morbidmeter
 
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -21,9 +25,17 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-interface MmAlarm {
-    fun setAlarm(context: android.content.Context,
-                 intent: android.content.Intent,
-                 frequency: Long)
-    fun cancelAlarm(context: android.content.Context)
+abstract class MmAlarm(context: Context, intent: Intent) {
+    protected val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+    protected val pendingIntent: PendingIntent = android.app.PendingIntent.getBroadcast(
+        context,
+        0,
+        intent,
+        android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT )
+
+    abstract fun setAlarm(frequency: Int)
+
+    fun cancelAlarm() {
+        alarmManager.cancel(pendingIntent)
+    }
 }

@@ -1,7 +1,9 @@
 package org.epstudios.morbidmeter
 
+import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -24,19 +26,12 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-class MmExactAlarm(context: Context, intent: Intent, frequency: Long) : MmAlarm {
-    private val alarmManager =
-        context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
+class MmExactAlarm(context: Context, intent: Intent) : MmAlarm(context, intent) {
 
-    override fun setAlarm(
-        context: Context,
-        intent: Intent,
-        frequency: Long
-    ) {
-        TODO("Not yet implemented")
-    }
-
-    override fun cancelAlarm(context: Context) {
-        TODO("Not yet implemented")
+    override fun setAlarm(frequency: Int) {
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + frequency, pendingIntent
+        )
     }
 }

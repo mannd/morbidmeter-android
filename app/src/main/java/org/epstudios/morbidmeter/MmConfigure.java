@@ -421,11 +421,7 @@ public class MmConfigure extends Activity {
         // a minute instead).  So, these frequencies aren't offered for Android O
         // and above.
         int frequencyArrayInt;
-        if (Build.VERSION.SDK_INT <= 19) {
-            frequencyArrayInt = R.array.frequencies;
-        } else {
-            frequencyArrayInt = R.array.android_o_frequencies;
-        }
+        frequencyArrayInt = R.array.android_o_frequencies;
         ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
                 .createFromResource(this, frequencyArrayInt,
                         android.R.layout.simple_spinner_item);

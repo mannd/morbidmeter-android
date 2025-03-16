@@ -59,7 +59,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         Log.d(LOG_TAG, "onDisabled called")
-        cancelUpdates(context)
+        cancelUpdates2(context)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -71,7 +71,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
             val componentName = ComponentName(context, MorbidMeterWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
             onUpdate(context, appWidgetManager, appWidgetIds)
-            scheduleNextUpdate(context)
+            scheduleNextUpdate2(context)
         }
     }
 
@@ -91,6 +91,22 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         MmConfigure.configureSkullButton(context, appWidgetId, views)
         updateWidget(context, views)
         appWidgetManager.updateAppWidget(appWidgetId, views)
+    }
+
+    private fun scheduleNextUpdate2(context: Context) {
+        Log.d(LOG_TAG, "scheduleNextUpdate2 called")
+        val alarm = MmExactAlarm(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+            action = UPDATE_ACTION
+        })
+        alarm.setAlarm(MorbidMeterClock.getFrequency(context))
+    }
+
+    private fun cancelUpdates2(context: Context) {
+        Log.d(LOG_TAG, "cancelUpdates2 called")
+        val alarm = MmExactAlarm(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+            action = UPDATE_ACTION
+        })
+        alarm.cancelAlarm()
     }
 
     private fun scheduleNextUpdate(context: Context) {
