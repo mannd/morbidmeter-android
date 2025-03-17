@@ -31,6 +31,7 @@ class MmInexactAlarm(context: Context, intent: Intent) : MmAlarm(context, intent
     override fun setAlarm(frequency: Int) {
         alarmManager.setAndAllowWhileIdle(
             AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + frequency, pendingIntent)
+            SystemClock.elapsedRealtime() + frequency, pendingIntent
+        )
     }
 }

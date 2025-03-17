@@ -32,7 +32,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-class MorbidMeterWidgetProvider: AppWidgetProvider() {
+class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     companion object {
         private const val UPDATE_ACTION =
@@ -69,7 +69,8 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         super.onReceive(context, intent)
         Log.d(LOG_TAG, "onReceive called with action: ${intent.action}")
         if (intent.action == AppWidgetManager.ACTION_APPWIDGET_UPDATE
-            || intent.action == UPDATE_ACTION) {
+            || intent.action == UPDATE_ACTION
+        ) {
             val appWidgetManager = AppWidgetManager.getInstance(context)
             val componentName = ComponentName(context, MorbidMeterWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
@@ -99,9 +100,13 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
     private fun scheduleNextUpdate2(context: Context) {
         Log.d(LOG_TAG, "scheduleNextUpdate2 called")
         if (alarm == null) {
-            alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-                action = UPDATE_ACTION
-            }, alarmType)
+            alarm = MmAlarm.create(
+                context,
+                Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+                    action = UPDATE_ACTION
+                },
+                alarmType
+            )
         }
         alarm?.setAlarm(MorbidMeterClock.getFrequency(context))
     }
@@ -109,9 +114,13 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
     private fun cancelUpdates2(context: Context) {
         Log.d(LOG_TAG, "cancelUpdates2 called")
         if (alarm == null) {
-            alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-                action = UPDATE_ACTION
-            }, alarmType)
+            alarm = MmAlarm.create(
+                context,
+                Intent(context, MorbidMeterWidgetProvider::class.java).apply {
+                    action = UPDATE_ACTION
+                },
+                alarmType
+            )
         }
         alarm?.cancelAlarm()
     }
