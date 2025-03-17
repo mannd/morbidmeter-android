@@ -41,6 +41,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
     }
 
     var alarm: MmAlarm? = null
+    var alarmType: MmAlarmType = MmAlarmType.INEXACT
 
     override fun onUpdate(
         context: Context,
@@ -100,7 +101,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         if (alarm == null) {
             alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
                 action = UPDATE_ACTION
-            }, MmAlarmType.EXACT)
+            }, alarmType)
         }
         alarm?.setAlarm(MorbidMeterClock.getFrequency(context))
     }
@@ -110,7 +111,7 @@ class MorbidMeterWidgetProvider: AppWidgetProvider() {
         if (alarm == null) {
             alarm = MmAlarm.create(context, Intent(context, MorbidMeterWidgetProvider::class.java).apply {
                 action = UPDATE_ACTION
-            }, MmAlarmType.EXACT)
+            }, alarmType)
         }
         alarm?.cancelAlarm()
     }

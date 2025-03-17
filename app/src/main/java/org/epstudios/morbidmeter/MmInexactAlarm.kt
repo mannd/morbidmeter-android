@@ -1,7 +1,9 @@
 package org.epstudios.morbidmeter
 
+import android.app.AlarmManager
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -27,6 +29,8 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 
 class MmInexactAlarm(context: Context, intent: Intent) : MmAlarm(context, intent) {
     override fun setAlarm(frequency: Int) {
-        TODO("Not yet implemented")
+        alarmManager.setAndAllowWhileIdle(
+            AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            SystemClock.elapsedRealtime() + frequency, pendingIntent)
     }
 }
