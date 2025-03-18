@@ -126,7 +126,12 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
         if (currentTime != null) {
             Log.d(LOG_TAG, "Current time = $currentTime")
-            if (currentTime == "0") {
+            if (MorbidMeterClock.getTimeScaleName() == context.getString(R.string.ts_time)) {
+                Log.d(LOG_TAG, "setting real time")
+                views.setViewVisibility(R.id.time, View.GONE)
+                views.setViewVisibility(R.id.realTime, View.VISIBLE)
+            }
+            else if (currentTime == "0") {
                 views.setViewVisibility(R.id.time, View.GONE)
             } else {
                 views.setViewVisibility(R.id.time, View.VISIBLE)

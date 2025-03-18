@@ -97,6 +97,10 @@ public class MorbidMeterClock {
         return userName + "\n" + timeScaleName;
     }
 
+    static String getTimeScaleName() {
+        return configuration.timeScaleName;
+    }
+
     //@SuppressWarnings("ConstantConditions")
     static String getFormattedTime(Context context) {
 
