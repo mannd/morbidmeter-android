@@ -21,7 +21,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-enum class TimeScaleName {
+enum class TimeScaleType {
     NONE,
     PERCENT,
     TIME,
@@ -36,5 +36,14 @@ enum class TimeScaleName {
     UNIVERSE,
     X_UNIVERSE_2,
     X_UNIVERSE,
-    RAW
+    RAW;
+
+    companion object {
+        val realTimeTypes: Set<TimeScaleType> = setOf(
+            TIME,
+            TIME_NO_SECONDS,
+            TIME_MILITARY,
+            TIME_MILITARY_NO_SECONDS
+        )
+    }
 }
