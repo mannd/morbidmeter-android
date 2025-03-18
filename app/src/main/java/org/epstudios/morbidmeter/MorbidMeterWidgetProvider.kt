@@ -1,12 +1,10 @@
 package org.epstudios.morbidmeter
 
-import android.app.AlarmManager
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -62,7 +60,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         Log.d(LOG_TAG, "onDisabled called")
-        cancelUpdates2(context)
+        cancelUpdates(context)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -75,7 +73,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             val componentName = ComponentName(context, MorbidMeterWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
             onUpdate(context, appWidgetManager, appWidgetIds)
-            scheduleNextUpdate2(context)
+            scheduleNextUpdate(context)
         }
     }
 
@@ -90,15 +88,13 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         // Skull button needs to be configured each time?  Maybe just with
         // initial configuration.
         MorbidMeterClock.resetConfiguration(context, appWidgetId)
-        val frequency = MorbidMeterClock.getFrequency(context)
-        Log.d(LOG_TAG, "Frequency = $frequency")
         MmConfigure.configureSkullButton(context, appWidgetId, views)
         updateWidget(context, views)
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    private fun scheduleNextUpdate2(context: Context) {
-        Log.d(LOG_TAG, "scheduleNextUpdate2 called")
+    private fun scheduleNextUpdate(context: Context) {
+        Log.d(LOG_TAG, "scheduleNextUpdate called")
         if (alarm == null) {
             alarm = MmAlarm.create(
                 context,
@@ -111,8 +107,8 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         alarm?.setAlarm(MorbidMeterClock.getFrequency(context))
     }
 
-    private fun cancelUpdates2(context: Context) {
-        Log.d(LOG_TAG, "cancelUpdates2 called")
+    private fun cancelUpdates(context: Context) {
+        Log.d(LOG_TAG, "cancelUpdates called")
         if (alarm == null) {
             alarm = MmAlarm.create(
                 context,
@@ -123,41 +119,6 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             )
         }
         alarm?.cancelAlarm()
-    }
-
-    private fun scheduleNextUpdate(context: Context) {
-        Log.d(LOG_TAG, "scheduleNextUpdate called")
-        val alarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
-        val intent = Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-            action = UPDATE_ACTION
-        }
-        val pendingIntent = android.app.PendingIntent.getBroadcast(
-            context, 0,
-            intent,
-            android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        val frequency = MorbidMeterClock.getFrequency(context)
-        Log.d(LOG_TAG, "Frequency = $frequency")
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.ELAPSED_REALTIME_WAKEUP,
-            SystemClock.elapsedRealtime() + frequency, pendingIntent
-        )
-    }
-
-    private fun cancelUpdates(context: Context) {
-        Log.d(LOG_TAG, "cancelUpdates called")
-        val alarmManager =
-            context.getSystemService(Context.ALARM_SERVICE) as android.app.AlarmManager
-        val intent = Intent(context, MorbidMeterWidgetProvider::class.java).apply {
-            action = UPDATE_ACTION
-        }
-        val pendingIntent = android.app.PendingIntent.getBroadcast(
-            context, 0,
-            intent,
-            android.app.PendingIntent.FLAG_IMMUTABLE or android.app.PendingIntent.FLAG_UPDATE_CURRENT
-        )
-        alarmManager.cancel(pendingIntent)
     }
 
     // TODO: use a setting to determine whether to show the time or the RealTime clock.

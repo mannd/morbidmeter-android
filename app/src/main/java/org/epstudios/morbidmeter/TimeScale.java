@@ -21,7 +21,6 @@ package org.epstudios.morbidmeter;
 import java.text.DecimalFormat;
 import java.text.Format;
 
-@SuppressWarnings("unused")
 public class TimeScale {
     private final String name;
     private final long maximum;

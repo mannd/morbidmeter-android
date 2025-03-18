@@ -49,7 +49,6 @@ public class MorbidMeterClock {
         configuration = MmConfigure.loadPrefs(context, appWidgetId);
         MorbidMeterClock.appWidgetId = appWidgetId;
         Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
-
     }
 
     static int getFrequency(Context context) {
