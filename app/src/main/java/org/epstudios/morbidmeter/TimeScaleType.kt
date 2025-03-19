@@ -1,5 +1,9 @@
 package org.epstudios.morbidmeter
 
+import android.content.res.Resources
+import android.util.Log
+import org.epstudios.morbidmeter.TimeScaleType
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -45,5 +49,26 @@ enum class TimeScaleType {
             TIME_MILITARY,
             TIME_MILITARY_NO_SECONDS
         )
+        private const val LOG_TAG = "MorbidMeterWidgetProvider"
+    }
+
+    fun isRealTime(): Boolean {
+        return realTimeTypes.contains(this)
+    }
+
+    fun getMyTimescaleTypes(resources: Resources): List<TimeScaleType> {
+        val timescaleNames = resources.getStringArray(R.array.my_timescales)
+        val timescaleTypes = mutableListOf<TimeScaleType>()
+        for (name in timescaleNames) {
+            try {
+                val timescaleType = TimeScaleType.valueOf(name)
+                timescaleTypes.add(timescaleType)
+            } catch (e: IllegalArgumentException) {
+                // Handle the case where the string doesn't match an enum value
+                // For example, log an error or skip the value
+                Log.e(LOG_TAG, "Invalid TimeScaleType name: $name")
+            }
+        }
+        return timescaleTypes
     }
 }

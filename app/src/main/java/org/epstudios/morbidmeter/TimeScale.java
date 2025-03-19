@@ -27,7 +27,7 @@ public class TimeScale {
     private final long minimum;
     private Format formatter;
     private String formatString;
-    private TimeScaleName timeScaleName;
+    private TimeScaleType timeScaleType;
 
     TimeScale() {
         this.name = "";
@@ -35,10 +35,10 @@ public class TimeScale {
         this.maximum = 0L;
         formatString = "#";
         formatter = new DecimalFormat(formatString);
-        timeScaleName = TimeScaleName.NONE;
+        timeScaleType = TimeScaleType.NONE;
     }
 
-    public TimeScale(String name, long minimum, long maximum) {
+    public TimeScale(String name, long minimum, long maximum, TimeScaleType timeScaleType) {
         this.name = name;
         this.minimum = minimum;
         this.maximum = maximum;

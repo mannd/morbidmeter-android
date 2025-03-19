@@ -30,10 +30,13 @@ import android.util.Log;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +47,7 @@ public class MorbidMeterClock {
     private static final String IN_MILESTONE = "in_milestone";
     private static Configuration configuration = null;
     private static int appWidgetId = 0;
+    private static TimeScale timeScale = null;
 
     static void resetConfiguration(Context context, int appWidgetId) {
         configuration = MmConfigure.loadPrefs(context, appWidgetId);
@@ -101,6 +105,9 @@ public class MorbidMeterClock {
         return configuration.timeScaleName;
     }
 
+    // NB: There is an incredible amount of clunky code in this method, but
+    // it has stood the test of time and any attempt to simplify it would
+    // almost certain result in bugs.  So...I'll let it be.
     //@SuppressWarnings("ConstantConditions")
     static String getFormattedTime(Context context) {
 
@@ -123,6 +130,7 @@ public class MorbidMeterClock {
         }
         if (configuration.timeScaleName.equals(context
                 .getString(R.string.ts_none))) {
+            timeScale = new TimeScale(configuration.timeScaleName, 0, 0
             return "0";
         }
         if (configuration.timeScaleName.equals(context

@@ -27,6 +27,34 @@
         <item>@string/ts_none</item>
         <!--<item>@string/ts_debug</item>-->
     </array>
+
+    <string-array name="my_timescales">
+        <item>TIME</item>
+        <item>TIME_NO_SECONDS</item>
+        <item>TIME_MILITARY</item>
+        <item>TIME_MILITARY_NO_SECONDS</item>
+        <item>RAW</item>
+        <item>SECONDS</item>
+        <item>MINUTES</item>
+        <item>HOURS</item>
+        <item>DAYS</item>
+        <item>WEEKS</item>
+        <item>MONTHS</item>
+        <item>YEAR</item>
+        <item>D_H_M_S</item>
+        <item>D_H_M</item>
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>MONTH</item>
+        <item>YEAR</item>
+        <item>UNIVERSE</item>
+        <item>X_UNIVERSE</item>
+        <item>X_UNIVERSE_2</item>
+        <item>PERCENT</item>
+        <item>NONE</item>
+        <!--<item>DEBUG</item>-->
+    </string-array>
+
     <array name="frequencies">
         <item>@string/one_sec</item>
         <item>@string/five_sec</item>
@@ -50,5 +78,4 @@
         <item>@string/twelve_hour</item>
         <item>@string/one_day</item>
     </array>
-
 </resources>
