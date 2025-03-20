@@ -8,6 +8,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import android.widget.TextClock
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -126,8 +127,17 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
         if (currentTime != null) {
             Log.d(LOG_TAG, "Current time = $currentTime")
-            if (MorbidMeterClock.getTimeScaleNameId() == R.string.ts_time) {
+            // TODO: have fixed format strings for each real time use...
+            if (TimeScaleType.isRealTime(MorbidMeterClock.getTimeScaleNameId())) {
                 Log.d(LOG_TAG, "setting real time")
+                views.setCharSequence(
+                    R.id.realTime,
+                    "setFormat12Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
+                // Probably will override users clock preference
+                // so set 12 hour and 24 hour clock to same format.
+                views.setCharSequence(
+                    R.id.realTime,
+                    "setFormat24Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
                 views.setViewVisibility(R.id.time, View.GONE)
                 views.setViewVisibility(R.id.realTime, View.VISIBLE)
             }

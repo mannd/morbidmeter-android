@@ -266,7 +266,7 @@ public class MmConfigure extends Activity {
         @SuppressWarnings("unchecked")
         ArrayAdapter<Integer> arrayAdapter = (ArrayAdapter<Integer>) timeScaleSpinner
                 .getAdapter();
-        int position = arrayAdapter.getPosition(configuration.timeScaleNameId);
+        int position = TimeScaleType.indexFromString(configuration.timeScaleNameId);
         timeScaleSpinner.setSelection(position);
         @SuppressWarnings("unchecked")
         ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner

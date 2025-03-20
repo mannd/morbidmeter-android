@@ -55,9 +55,25 @@ enum class TimeScaleType {
             return TimeScaleType.values().find { it.ordinal == value }
         }
 
-//        fun isRealTime(): Boolean {
-//            return realTimeTypes.contains(this)
-//        }
+        @JvmStatic
+        fun indexFromString(stringId: Int): Int {
+            return timescaleNameIds.indexOf(stringId)
+        }
+
+        @JvmStatic
+        fun fromStringId(stringId: Int): TimeScaleType? {
+            val index = indexFromString(stringId)
+            if (index != -1) {
+                return fromInt(index)
+            } else {
+                return null
+            }
+        }
+
+        @JvmStatic
+        fun isRealTime(stringId: Int): Boolean {
+            return realTimeTypes.contains(fromStringId(stringId))
+        }
 
         /**
          * Array of integer references to the time scale names
@@ -68,17 +84,26 @@ enum class TimeScaleType {
             R.string.ts_time_no_seconds,
             R.string.ts_time_military,
             R.string.ts_time_military_no_seconds,
-            R.string.ts_debug,
-            R.string.ts_year,
+            R.string.ts_raw,
+            R.string.ts_seconds,
+            R.string.ts_minutes,
+            R.string.ts_hours,
+            R.string.ts_days,
+            R.string.ts_weeks,
+            R.string.ts_months,
+            R.string.ts_years,
+            R.string.ts_d_h_m_s,
+            R.string.ts_d_h_m,
             R.string.ts_day,
             R.string.ts_hour,
             R.string.ts_month,
+            R.string.ts_year,
             R.string.ts_universe,
             R.string.ts_x_universe_2,
             R.string.ts_x_universe,
             R.string.ts_percent,
             R.string.ts_none,
-            R.string.ts_raw
+            R.string.ts_debug
         )
     }
 
