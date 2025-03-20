@@ -399,10 +399,13 @@ public class MmConfigure extends Activity {
     }
 
     private void setAdapters() {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.timescalenames, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        timeScaleSpinner.setAdapter(adapter);
+        ArrayAdapter<CharSequence> timescaleAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item,
+                TimeScaleType.getStringArray(this));
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+//                this, R.array.timescalenames, android.R.layout.simple_spinner_item);
+        timescaleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        timeScaleSpinner.setAdapter(timescaleAdapter);
         // do nothing
         OnItemSelectedListener itemListener = new OnItemSelectedListener() {
             @Override

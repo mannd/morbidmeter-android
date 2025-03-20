@@ -70,27 +70,4 @@ open class TimeScale {
         YEAR, DAY, HOUR, MONTH, PERCENT, UNIVERSE, AGE, RAW
     }
 
-    /**
-     * Get the index of a string in the timescales array
-     *
-     * @param resources the Resources to retrieve the array
-     * @param timeScaleName the string to find the index of
-     * @return the index of the string in the array, or -1 if the string is not found
-     */
-    fun getTimeScaleIndex(resources: Resources, timeScaleName: String): Int {
-        val timescaleNames = resources.getStringArray(R.array.timescalenames)
-        for (i in timescaleNames.indices) {
-            val resourceId = resources.getIdentifier(
-                timescaleNames[i].substring(1),
-                "string",
-                "org.epstudios.morbidmeter"
-            )
-            val actualString = resources.getString(resourceId)
-
-            if (actualString == timeScaleName) {
-                return i
-            }
-        }
-        return -1 // Not found
-    }
 }

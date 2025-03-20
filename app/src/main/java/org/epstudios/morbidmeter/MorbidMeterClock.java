@@ -38,18 +38,29 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MorbidMeterClock {
+    private final Context context;
+    private final TimeScale timeScale;
 
     private static final String LOG_TAG = "MM";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static final String IN_MILESTONE = "in_milestone";
     private static Configuration configuration = null;
     private static int appWidgetId = 0;
-    private static TimeScale timeScale = null;
+
+    // TODO: Change from static class to instance class.
+    public MorbidMeterClock(Context context, TimeScale timeScale) {
+        this.context = context;
+        this.timeScale = timeScale;
+    }
 
     static void resetConfiguration(Context context, int appWidgetId) {
         configuration = MmConfigure.loadPrefs(context, appWidgetId);
         MorbidMeterClock.appWidgetId = appWidgetId;
         Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
+    }
+
+    int getFrequency() {
+        return getFrequency(context);
     }
 
     static int getFrequency(Context context) {
@@ -86,6 +97,10 @@ public class MorbidMeterClock {
         return configuration.configurationComplete;
     }
 
+    String getLabel() {
+        return getLabel(context);
+    }
+
     static String getLabel(Context context) {
         String timeScaleName = "Timescale:\n";
         if (configuration.reverseTime)
@@ -100,6 +115,10 @@ public class MorbidMeterClock {
 
     static Integer getTimeScaleNameId() {
         return configuration.timeScaleNameId;
+    }
+
+    String getFormattedTime() {
+        return getFormattedTime(context);
     }
 
     // NB: There is an incredible amount of clunky code in this method, but

@@ -1,7 +1,9 @@
 package org.epstudios.morbidmeter
 
+import android.content.Context
 import android.content.res.Resources
 import android.util.Log
+import java.sql.Time
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -105,6 +107,12 @@ enum class TimeScaleType {
             R.string.ts_none,
             R.string.ts_debug
         )
+
+        @JvmStatic
+        fun getStringArray(context: Context): Array<String> {
+            return TimeScaleType.timescaleNameIds.map {
+                context.getString(it) }.toTypedArray()
+        }
     }
 
     fun getMyTimescaleTypes(resources: Resources): List<TimeScaleType> {
