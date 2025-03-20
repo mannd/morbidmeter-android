@@ -21,7 +21,7 @@ package org.epstudios.morbidmeter;
 // essentially a C++ style 'struct'
 class Configuration {
     User user;
-    String timeScaleName;
+    Integer timeScaleNameId;
     boolean reverseTime;
     boolean useMsec;
     boolean showNotifications;

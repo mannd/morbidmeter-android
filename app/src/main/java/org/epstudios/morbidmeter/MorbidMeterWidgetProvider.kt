@@ -126,7 +126,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
         if (currentTime != null) {
             Log.d(LOG_TAG, "Current time = $currentTime")
-            if (MorbidMeterClock.getTimeScaleName() == context.getString(R.string.ts_time)) {
+            if (MorbidMeterClock.getTimeScaleNameId() == R.string.ts_time) {
                 Log.d(LOG_TAG, "setting real time")
                 views.setViewVisibility(R.id.time, View.GONE)
                 views.setViewVisibility(R.id.realTime, View.VISIBLE)
@@ -142,7 +142,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             R.id.progressBar, 100,
             MorbidMeterClock.percentAlive(), false
         )
-        val label = MorbidMeterClock.getLabel()
+        val label = MorbidMeterClock.getLabel(context)
         views.setTextViewText(R.id.text, label)
         Log.d(LOG_TAG, "Label updated.")
     }

@@ -103,8 +103,8 @@ public class MmConfigure extends Activity {
                 .getBirthDay().get(Calendar.DAY_OF_MONTH));
         prefs.putFloat(LONGEVITY_KEY + appWidgetId,
                 (float) configuration.user.getLongevity());
-        prefs.putString(TIMESCALE_KEY + appWidgetId,
-                configuration.timeScaleName);
+        prefs.putInt(TIMESCALE_KEY + appWidgetId,
+                configuration.timeScaleNameId);
         prefs.putString(FREQUENCY_KEY + appWidgetId,
                 configuration.updateFrequency);
         prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
@@ -137,8 +137,8 @@ public class MmConfigure extends Activity {
         //birthDay.setTimeZone(TimeZone.getTimeZone("UTC"));
         double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
         configuration.user = new User(name, birthDay, longevity);
-        configuration.timeScaleName = prefs.getString(TIMESCALE_KEY
-                + appWidgetId, context.getString(R.string.ts_time));
+        configuration.timeScaleNameId = prefs.getInt(TIMESCALE_KEY
+                + appWidgetId, R.string.ts_time);
         configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
                 + appWidgetId, context.getString(R.string.one_min));
         configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
@@ -264,9 +264,9 @@ public class MmConfigure extends Activity {
 
         // best way to do this is below, so suppress warning
         @SuppressWarnings("unchecked")
-        ArrayAdapter<String> arrayAdapter = (ArrayAdapter<String>) timeScaleSpinner
+        ArrayAdapter<Integer> arrayAdapter = (ArrayAdapter<Integer>) timeScaleSpinner
                 .getAdapter();
-        int position = arrayAdapter.getPosition(configuration.timeScaleName);
+        int position = arrayAdapter.getPosition(configuration.timeScaleNameId);
         timeScaleSpinner.setSelection(position);
         @SuppressWarnings("unchecked")
         ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner
@@ -280,7 +280,7 @@ public class MmConfigure extends Activity {
         showNotificationsCheckBox.setChecked(configuration.showNotifications);
         useExactTimeCheckBox.setChecked(configuration.useExactTime);
 
-        setEnabledOptions(configuration.timeScaleName);
+        setEnabledOptions(configuration.timeScaleNameId);
         showNotificationsCheckBox
                 .setOnCheckedChangeListener((buttonView, isChecked) -> {
                     for (int i = 0; i < notificationSoundRadioGroup
@@ -319,8 +319,13 @@ public class MmConfigure extends Activity {
             } else {
                 configuration.user.setLongevity(0.0);
             }
-            configuration.timeScaleName = (String) timeScaleSpinner
-                    .getSelectedItem();
+
+            //configuration.timeScaleNameId = (String) timeScaleSpinner
+                    //.getSelectedItem();
+            int[] timeScaleNameIds = TimeScaleType.getTimescaleNameIds();
+            configuration.timeScaleNameId = timeScaleNameIds[timeScaleSpinner.getSelectedItemPosition()];
+//            configuration.timeScaleNameId = (Integer) timeScaleSpinner
+//                    .getSelectedItem();
 
             configuration.updateFrequency = (String) frequencySpinner
                     .getSelectedItem();
@@ -395,7 +400,7 @@ public class MmConfigure extends Activity {
 
     private void setAdapters() {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this, R.array.timescales, android.R.layout.simple_spinner_item);
+                this, R.array.timescalenames, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         timeScaleSpinner.setAdapter(adapter);
         // do nothing
@@ -403,7 +408,7 @@ public class MmConfigure extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v,
                                        int position, long id) {
-                setEnabledOptions((String) timeScaleSpinner.getSelectedItem());
+                setEnabledOptions(TimeScaleType.getTimescaleNameIds()[position]);
             }
 
             @Override
@@ -446,7 +451,7 @@ public class MmConfigure extends Activity {
 
     }
 
-    private void setEnabledOptions(String timeScaleName) {
+    private void setEnabledOptions(int timeScaleNameId) {
         // note that all timescales have at least notifications for death.
         // but lite version has no notifications
         if (isLite()) {
@@ -459,24 +464,24 @@ public class MmConfigure extends Activity {
             //reverseTimeCheckBox.setChecked(false);
             return;
         }
-        final Set<String> okMsecSet = new HashSet<>(Arrays.asList(
-                this.getString(R.string.ts_day),
-                this.getString(R.string.ts_hour),
-                this.getString(R.string.ts_month),
-                this.getString(R.string.ts_year)));
-        boolean okMsec = okMsecSet.contains(timeScaleName);
+        final Set<Integer> okMsecSet = new HashSet<>(Arrays.asList(
+                R.string.ts_day,
+                R.string.ts_hour,
+                R.string.ts_month,
+                R.string.ts_year));
+        boolean okMsec = okMsecSet.contains(timeScaleNameId);
         useMsecCheckBox.setEnabled(okMsec);
         if (!okMsec) {
             useMsecCheckBox.setChecked(false);
         }
-        final Set<String> reverseTimeNotOkSet = new HashSet<>(
-                Arrays.asList(this.getString(R.string.ts_time),
-                        this.getString(R.string.ts_time_military),
-                        this.getString(R.string.ts_time_military_no_seconds),
-                        this.getString(R.string.ts_time_no_seconds),
-                        this.getString(R.string.ts_none),
-                        this.getString(R.string.ts_debug)));
-        boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleName);
+        final Set<Integer> reverseTimeNotOkSet = new HashSet<>(
+                Arrays.asList(R.string.ts_time,
+                        R.string.ts_time_military,
+                        R.string.ts_time_military_no_seconds,
+                        R.string.ts_time_no_seconds,
+                        R.string.ts_none,
+                        R.string.ts_debug));
+        boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleNameId);
         reverseTimeCheckBox.setEnabled(!noReverseTime);
         if (noReverseTime) {
             reverseTimeCheckBox.setChecked(false);

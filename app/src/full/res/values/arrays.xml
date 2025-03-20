@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <array name="timescales">
+    <array name="timescalenames">
         <item>@string/ts_time</item>
         <item>@string/ts_time_no_seconds</item>
         <item>@string/ts_time_military</item>
@@ -28,7 +28,7 @@
         <!--<item>@string/ts_debug</item>-->
     </array>
 
-    <string-array name="my_timescales">
+    <string-array name="timescaletypes">
         <item>TIME</item>
         <item>TIME_NO_SECONDS</item>
         <item>TIME_MILITARY</item>

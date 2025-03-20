@@ -36,7 +36,7 @@ public class MmService extends Service {
         }
         views.setProgressBar(R.id.progressBar, 100,
                 MorbidMeterClock.percentAlive(), false);
-        String label = MorbidMeterClock.getLabel();
+        String label = MorbidMeterClock.getLabel(context);
         views.setTextViewText(R.id.text, label);
         Log.d(LOG_TAG, "Label updated.");
     }

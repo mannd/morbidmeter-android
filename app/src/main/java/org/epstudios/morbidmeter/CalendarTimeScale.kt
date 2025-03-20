@@ -21,10 +21,10 @@ import java.util.Calendar
 
 @Suppress("unused")
 class CalendarTimeScale internal constructor(
-    name: String?,
+    nameId: Int,
     private val minTime: Calendar,
     private val maxTime: Calendar
-) : TimeScale(name, 0, 0) {
+) : TimeScale(nameId, 0, 0) {
     public override fun okToUseMsec(): Boolean {
         return true
     }

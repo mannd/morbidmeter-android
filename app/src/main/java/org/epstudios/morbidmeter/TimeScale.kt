@@ -23,7 +23,7 @@ import java.text.Format
 import kotlin.text.substring
 
 open class TimeScale {
-    val name: String?
+    val nameId: Int
     private val maximum: Long
     private val minimum: Long
     var formatter: Format? = null
@@ -31,7 +31,7 @@ open class TimeScale {
     private var timeScaleType: TimeScaleType? = null
 
     internal constructor() {
-        this.name = ""
+        this.nameId = 0
         this.minimum = 0L
         this.maximum = 0L
         formatString = "#"
@@ -39,8 +39,8 @@ open class TimeScale {
         timeScaleType = TimeScaleType.NONE
     }
 
-    constructor(name: String?, minimum: Long, maximum: Long) {
-        this.name = name
+    constructor(nameId: Int, minimum: Long, maximum: Long) {
+        this.nameId = nameId
         this.minimum = minimum
         this.maximum = maximum
     }
@@ -78,7 +78,7 @@ open class TimeScale {
      * @return the index of the string in the array, or -1 if the string is not found
      */
     fun getTimeScaleIndex(resources: Resources, timeScaleName: String): Int {
-        val timescaleNames = resources.getStringArray(R.array.timescales)
+        val timescaleNames = resources.getStringArray(R.array.timescalenames)
         for (i in timescaleNames.indices) {
             val resourceId = resources.getIdentifier(
                 timescaleNames[i].substring(1),

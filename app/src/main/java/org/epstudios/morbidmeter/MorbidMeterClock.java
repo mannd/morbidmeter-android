@@ -30,13 +30,10 @@ import android.util.Log;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -89,11 +86,11 @@ public class MorbidMeterClock {
         return configuration.configurationComplete;
     }
 
-    static String getLabel() {
+    static String getLabel(Context context) {
         String timeScaleName = "Timescale:\n";
         if (configuration.reverseTime)
             timeScaleName += "REVERSE ";
-        timeScaleName += configuration.timeScaleName;
+        timeScaleName += context.getString(configuration.timeScaleNameId);
         String userName = (configuration.doNotModifyName ? configuration.user.getName()
                 : configuration.user.getApostrophedName() + " MorbidMeter");
 
@@ -101,8 +98,8 @@ public class MorbidMeterClock {
         return userName + "\n" + timeScaleName;
     }
 
-    static String getTimeScaleName() {
-        return configuration.timeScaleName;
+    static Integer getTimeScaleNameId() {
+        return configuration.timeScaleNameId;
     }
 
     // NB: There is an incredible amount of clunky code in this method, but
@@ -128,13 +125,11 @@ public class MorbidMeterClock {
             }
             return context.getString(R.string.user_dead_message);
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_none))) {
+        if (configuration.timeScaleNameId == R.string.ts_none) {
             return "0";
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_percent))) {
-            ts = new TimeScale(configuration.timeScaleName, 0, 100);
+        if (configuration.timeScaleNameId == R.string.ts_percent) {
+            ts = new TimeScale(configuration.timeScaleNameId, 0, 100);
             formatString = DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
             units = "%";
@@ -142,35 +137,34 @@ public class MorbidMeterClock {
                 units += " left";
 
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_time))) {
+        if (configuration.timeScaleNameId == R.string.ts_time) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nhh:mm:ss a z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleName.equals(context
+        if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_time_no_seconds))) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nhh:mm a z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleName.equals(context
+        if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_time_military))) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm:ss z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleName.equals(context
+        if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_time_military_no_seconds))) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleName.equals(context
+        if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_debug))) {
             long currentSystemTime = System.currentTimeMillis();
             timeString = "System Time " + currentSystemTime + " ms";
@@ -181,41 +175,36 @@ public class MorbidMeterClock {
             timeString += "\n%Alive " + configuration.user.percentAlive() + "%";
             return timeString;
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_year))) {
-            ts = new CalendarTimeScale(configuration.timeScaleName,
+        if (configuration.timeScaleNameId == R.string.ts_year) {
+            ts = new CalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
             formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_day))) {
-            ts = new CalendarTimeScale(configuration.timeScaleName,
+        if (configuration.timeScaleNameId == R.string.ts_day) {
+            ts = new CalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0));
             formatString = "h:mm:ss a" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_hour))) {
-            ts = new CalendarTimeScale(configuration.timeScaleName,
+        if (configuration.timeScaleNameId == R.string.ts_hour) {
+            ts = new CalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
             formatString = "hh:mm:ss" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_month))) {
-            ts = new CalendarTimeScale(configuration.timeScaleName,
+        if (configuration.timeScaleNameId == R.string.ts_month) {
+            ts = new CalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2000, Calendar.FEBRUARY, 1, 0, 0, 0));
             formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_universe))) {
-            ts = new TimeScale(configuration.timeScaleName, 0, 15000000000L);
+        if (configuration.timeScaleNameId == R.string.ts_universe) {
+            ts = new TimeScale(configuration.timeScaleNameId, 0, 15000000000L);
             formatString = "##,###,###,###";
             formatter = new DecimalFormat(formatString);
             if (configuration.reverseTime)
@@ -223,9 +212,8 @@ public class MorbidMeterClock {
             else
                 units = " yrs from Big Bang";
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_x_universe_2))) {
-            ts = new TimeScale(configuration.timeScaleName, 0, 6000L);
+        if (configuration.timeScaleNameId == R.string.ts_x_universe_2) {
+            ts = new TimeScale(configuration.timeScaleNameId, 0, 6000L);
             formatString = "##,###,###,###.0000";
             formatter = new DecimalFormat(formatString);
             if (configuration.reverseTime)
@@ -233,9 +221,8 @@ public class MorbidMeterClock {
             else
                 units = " yrs from Creation";
         }
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_x_universe))) {
-            ts = new CalendarTimeScale(configuration.timeScaleName,
+        if (configuration.timeScaleNameId == R.string.ts_x_universe) {
+            ts = new CalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(-4000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
             formatString = "y G MMMM d\nh:mm:ss a";
@@ -244,8 +231,7 @@ public class MorbidMeterClock {
         }
 
         // deal with raw time scales, i.e. real time
-        if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_raw))) {
+        if (configuration.timeScaleNameId == R.string.ts_raw) {
             formatString = "#,###";
             formatter = new DecimalFormat(formatString);
 
@@ -255,8 +241,7 @@ public class MorbidMeterClock {
             else
                 timeString = formatter.format(configuration.user.msecAlive())
                         + " msec alive";
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_seconds))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_seconds) {
             formatString = "#,###";
             formatter = new DecimalFormat(formatString);
 
@@ -268,10 +253,9 @@ public class MorbidMeterClock {
                         + " sec alive";
         }
         // age in days or years does a different calculation
-        else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_days))) {
+        else if (configuration.timeScaleNameId == R.string.ts_days) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = SHORT_DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -285,10 +269,9 @@ public class MorbidMeterClock {
                         .proportionalTime(configuration.user.percentAlive())));
                 units = " days old";
             }
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_years))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_years) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -302,10 +285,9 @@ public class MorbidMeterClock {
                         .proportionalTime(configuration.user.percentAlive())));
                 units = " years old";
             }
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_weeks))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_weeks) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -320,10 +302,9 @@ public class MorbidMeterClock {
                 units = " weeks old";
             }
 
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_months))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_months) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -338,10 +319,9 @@ public class MorbidMeterClock {
                 units = " months old";
             }
 
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_hours))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_hours) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = SHORT_DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -355,10 +335,9 @@ public class MorbidMeterClock {
                         .proportionalTime(configuration.user.percentAlive())));
                 units = " hours old";
             }
-        } else if (configuration.timeScaleName.equals(context
-                .getString(R.string.ts_minutes))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_minutes) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             formatString = SHORT_DECIMAL_FORMAT_STRING;
             formatter = new DecimalFormat(formatString);
 
@@ -372,9 +351,9 @@ public class MorbidMeterClock {
                         .proportionalTime(configuration.user.percentAlive())));
                 units = " mins old";
             }
-        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m_s))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_d_h_m_s) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             double proportionalTime;
             if (configuration.reverseTime) {
                 proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
@@ -391,9 +370,9 @@ public class MorbidMeterClock {
             formatter = new DecimalFormat(formatString);
             timeString = formatter.format(days) + "d " + hours % 24 + "h " +
                     mins % 60 + "m " + secs % 60 + "s";
-        } else if (configuration.timeScaleName.equals(context.getString(R.string.ts_d_h_m))) {
+        } else if (configuration.timeScaleNameId == R.string.ts_d_h_m) {
             long lifeInMsec = configuration.user.lifeDurationMsec();
-            ts = new TimeScale(configuration.timeScaleName, 0, lifeInMsec);
+            ts = new TimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
             double proportionalTime;
             if (configuration.reverseTime) {
                 proportionalTime = ts.reverseProportionalTime(configuration.user.percentAlive());
@@ -523,18 +502,18 @@ public class MorbidMeterClock {
     }
 
     private static Boolean isMilestone(Context context, String time) {
-        if (configuration.timeScaleName.equals(context
+        if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_year))) {
             return isEvenHour(time);
-        } else if (configuration.timeScaleName.equals(context
+        } else if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_month))
-                || configuration.timeScaleName.equals(context
+                || configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_day))) {
             return isEvenMinute(time);
-        } else if (configuration.timeScaleName.equals(context
+        } else if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_percent))) {
             return isEvenPercentage(time);
-        } else if (configuration.timeScaleName.equals(context
+        } else if (configuration.timeScaleNameId.equals(context
                 .getString(R.string.ts_universe))) {
             return isEvenMillion(time);
         } else

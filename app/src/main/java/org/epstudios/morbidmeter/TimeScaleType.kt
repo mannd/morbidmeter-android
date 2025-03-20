@@ -2,7 +2,6 @@ package org.epstudios.morbidmeter
 
 import android.content.res.Resources
 import android.util.Log
-import org.epstudios.morbidmeter.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -26,8 +25,6 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 enum class TimeScaleType {
-    NONE,
-    PERCENT,
     TIME,
     TIME_NO_SECONDS,
     TIME_MILITARY,
@@ -40,6 +37,8 @@ enum class TimeScaleType {
     UNIVERSE,
     X_UNIVERSE_2,
     X_UNIVERSE,
+    PERCENT,
+    NONE,
     RAW;
 
     companion object {
@@ -50,14 +49,41 @@ enum class TimeScaleType {
             TIME_MILITARY_NO_SECONDS
         )
         private const val LOG_TAG = "MorbidMeterWidgetProvider"
-    }
 
-    fun isRealTime(): Boolean {
-        return realTimeTypes.contains(this)
+        @JvmStatic
+        fun fromInt(value: Int): TimeScaleType? {
+            return TimeScaleType.values().find { it.ordinal == value }
+        }
+
+//        fun isRealTime(): Boolean {
+//            return realTimeTypes.contains(this)
+//        }
+
+        /**
+         * Array of integer references to the time scale names
+         */
+        @JvmStatic
+        public val timescaleNameIds = intArrayOf(
+            R.string.ts_time,
+            R.string.ts_time_no_seconds,
+            R.string.ts_time_military,
+            R.string.ts_time_military_no_seconds,
+            R.string.ts_debug,
+            R.string.ts_year,
+            R.string.ts_day,
+            R.string.ts_hour,
+            R.string.ts_month,
+            R.string.ts_universe,
+            R.string.ts_x_universe_2,
+            R.string.ts_x_universe,
+            R.string.ts_percent,
+            R.string.ts_none,
+            R.string.ts_raw
+        )
     }
 
     fun getMyTimescaleTypes(resources: Resources): List<TimeScaleType> {
-        val timescaleNames = resources.getStringArray(R.array.my_timescales)
+        val timescaleNames = resources.getStringArray(R.array.timescaletypes)
         val timescaleTypes = mutableListOf<TimeScaleType>()
         for (name in timescaleNames) {
             try {
