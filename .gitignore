@@ -42,4 +42,4 @@ app/full
 app/lite
 
 # Emacs
-.project/
+.project

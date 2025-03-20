@@ -130,7 +130,6 @@ public class MorbidMeterClock {
         }
         if (configuration.timeScaleName.equals(context
                 .getString(R.string.ts_none))) {
-            timeScale = new TimeScale(configuration.timeScaleName, 0, 0
             return "0";
         }
         if (configuration.timeScaleName.equals(context
