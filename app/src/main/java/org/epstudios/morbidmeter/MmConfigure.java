@@ -61,6 +61,7 @@ public class MmConfigure extends Activity {
     public static final String LONGEVITY_KEY = "longevity";
     public static final String TIMESCALE_KEY = "timescale";
     public static final String FREQUENCY_KEY = "frequency";
+    public static final String FREQUENCY_ID_KEY = "frequency_id";
     public static final String REVERSE_TIME_KEY = "reverse_time";
     public static final String USE_MSEC_KEY = "use_msec";
     public static final String LAST_APP_WIDGET_ID = "last_app_widget_id";
@@ -105,8 +106,8 @@ public class MmConfigure extends Activity {
                 (float) configuration.user.getLongevity());
         prefs.putInt(TIMESCALE_KEY + appWidgetId,
                 configuration.timeScaleNameId);
-        prefs.putString(FREQUENCY_KEY + appWidgetId,
-                configuration.updateFrequency);
+        prefs.putInt(FREQUENCY_ID_KEY + appWidgetId,
+                configuration.updateFrequencyId);
         prefs.putBoolean(REVERSE_TIME_KEY + appWidgetId,
                 configuration.reverseTime);
         prefs.putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec);
@@ -139,8 +140,8 @@ public class MmConfigure extends Activity {
         configuration.user = new User(name, birthDay, longevity);
         configuration.timeScaleNameId = prefs.getInt(TIMESCALE_KEY
                 + appWidgetId, R.string.ts_time);
-        configuration.updateFrequency = prefs.getString(FREQUENCY_KEY
-                + appWidgetId, context.getString(R.string.one_min));
+        configuration.updateFrequencyId = prefs.getInt(FREQUENCY_ID_KEY
+                + appWidgetId, R.string.f_one_min);
         configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
                 + appWidgetId, false);
         configuration.useMsec = prefs.getBoolean(USE_MSEC_KEY + appWidgetId,
@@ -271,8 +272,7 @@ public class MmConfigure extends Activity {
         @SuppressWarnings("unchecked")
         ArrayAdapter<String> frequencyArrayAdapter = (ArrayAdapter<String>) frequencySpinner
                 .getAdapter();
-        int frequencyPosition = frequencyArrayAdapter
-                .getPosition(configuration.updateFrequency);
+        int frequencyPosition = Frequency.indexFromString(configuration.updateFrequencyId);
         frequencySpinner.setSelection(frequencyPosition);
 
         reverseTimeCheckBox.setChecked(configuration.reverseTime);
@@ -320,16 +320,11 @@ public class MmConfigure extends Activity {
                 configuration.user.setLongevity(0.0);
             }
 
-            //configuration.timeScaleNameId = (String) timeScaleSpinner
-                    //.getSelectedItem();
             int[] timeScaleNameIds = TimeScaleType.getTimescaleNameIds();
-            configuration.timeScaleNameId = timeScaleNameIds[timeScaleSpinner.getSelectedItemPosition()];
-//            configuration.timeScaleNameId = (Integer) timeScaleSpinner
-//                    .getSelectedItem();
-
-            configuration.updateFrequency = (String) frequencySpinner
-                    .getSelectedItem();
-
+            configuration.timeScaleNameId = timeScaleNameIds[timeScaleSpinner
+                    .getSelectedItemPosition()];
+            int[] frequencyIds = Frequency.getFrequencyNameIds();
+            configuration.updateFrequencyId = frequencyIds[frequencySpinner.getSelectedItemPosition()];
             configuration.reverseTime = reverseTimeCheckBox.isChecked();
             configuration.useMsec = useMsecCheckBox.isChecked();
             configuration.showNotifications = showNotificationsCheckBox
@@ -418,21 +413,12 @@ public class MmConfigure extends Activity {
             public void onNothingSelected(AdapterView<?> parent) {
                 // do nothing
             }
-
         };
 
         timeScaleSpinner.setOnItemSelectedListener(itemListener);
 
-        // In versions higher than 19, AlarmManager.setRepeating is equivalent to
-        // setInexactRepeating and, apparently to save battery life,
-        // repeat intervals < 1 minute are not allowed (they turn out to be
-        // a minute instead).  So, these frequencies aren't offered for Android O
-        // and above.
-        int frequencyArrayInt;
-        frequencyArrayInt = R.array.android_o_frequencies;
-        ArrayAdapter<CharSequence> adapterFrequency = ArrayAdapter
-                .createFromResource(this, frequencyArrayInt,
-                        android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapterFrequency = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,
+                Frequency.getStringArray(this));
         adapterFrequency
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         frequencySpinner.setAdapter(adapterFrequency);

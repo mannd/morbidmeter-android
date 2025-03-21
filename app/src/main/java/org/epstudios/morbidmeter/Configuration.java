@@ -21,13 +21,13 @@ package org.epstudios.morbidmeter;
 // essentially a C++ style 'struct'
 class Configuration {
     User user;
-    Integer timeScaleNameId;
+    int timeScaleNameId;
     boolean reverseTime;
     boolean useMsec;
     boolean showNotifications;
     int notificationSound;
     boolean configurationComplete;
-    String updateFrequency;
+    Integer updateFrequencyId;
     boolean doNotModifyName;
     boolean useExactTime;
 }
