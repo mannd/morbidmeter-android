@@ -30,26 +30,26 @@
     </string-array>
 
     <array name="frequencies">
-        <item>@string/one_sec</item>
-        <item>@string/five_sec</item>
-        <item>@string/fifteen_sec</item>
-        <item>@string/thirty_sec</item>
-        <item>@string/one_min</item>
-        <item>@string/fifteen_min</item>
-        <item>@string/thirty_min</item>
-        <item>@string/one_hour</item>
-        <item>@string/six_hour</item>
-        <item>@string/twelve_hour</item>
-        <item>@string/one_day</item>
+        <item>@string/f_one_sec</item>
+        <item>@string/f_five_sec</item>
+        <item>@string/f_fifteen_sec</item>
+        <item>@string/f_thirty_sec</item>
+        <item>@string/f_one_min</item>
+        <item>@string/f_fifteen_min</item>
+        <item>@string/f_thirty_min</item>
+        <item>@string/f_one_hour</item>
+        <item>@string/f_six_hour</item>
+        <item>@string/f_twelve_hour</item>
+        <item>@string/f_one_day</item>
     </array>
 
     <array name="android_o_frequencies">
-        <item>@string/one_min</item>
-        <item>@string/fifteen_min</item>
-        <item>@string/thirty_min</item>
-        <item>@string/one_hour</item>
-        <item>@string/six_hour</item>
-        <item>@string/twelve_hour</item>
-        <item>@string/one_day</item>
+        <item>@string/f_one_min</item>
+        <item>@string/f_fifteen_min</item>
+        <item>@string/f_thirty_min</item>
+        <item>@string/f_one_hour</item>
+        <item>@string/f_six_hour</item>
+        <item>@string/f_twelve_hour</item>
+        <item>@string/f_one_day</item>
     </array>
 </resources>

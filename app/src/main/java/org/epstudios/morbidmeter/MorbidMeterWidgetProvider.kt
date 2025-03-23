@@ -127,26 +127,39 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val currentTime = MorbidMeterClock.getFormattedTime(context)
         if (currentTime != null) {
             Log.d(LOG_TAG, "Current time = $currentTime")
-            // TODO: have fixed format strings for each real time use...
-            if (TimeScaleType.isRealTime(MorbidMeterClock.getTimeScaleNameId())) {
+            val timeScale = MorbidMeterClock.getTimeScale()
+            Log.d(LOG_TAG, "timeScale = $timeScale")
+            if (timeScale != null && timeScale.type == TimeScale.Companion.TimeScaleType.REAL_TIME) {
                 Log.d(LOG_TAG, "setting real time")
                 views.setCharSequence(
                     R.id.realTime,
-                    "setFormat12Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
-                // Probably will override users clock preference
-                // so set 12 hour and 24 hour clock to same format.
+                    "setFormat12Hour", timeScale.getCurrentTime(context));
                 views.setCharSequence(
                     R.id.realTime,
-                    "setFormat24Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
+                    "setFormat24Hour", timeScale.getCurrentTime(context));
                 views.setViewVisibility(R.id.time, View.GONE)
                 views.setViewVisibility(R.id.realTime, View.VISIBLE)
             }
-            else if (currentTime == "0") {
-                views.setViewVisibility(R.id.time, View.GONE)
-            } else {
-                views.setViewVisibility(R.id.time, View.VISIBLE)
-                views.setTextViewText(R.id.time, currentTime)
-            }
+
+//            if (TimeScaleType.isRealTime(MorbidMeterClock.getTimeScaleNameId())) {
+//                Log.d(LOG_TAG, "setting real time")
+//                views.setCharSequence(
+//                    R.id.realTime,
+//                    "setFormat12Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
+//                // Probably will override users clock preference
+//                // so set 12 hour and 24 hour clock to same format.
+//                views.setCharSequence(
+//                    R.id.realTime,
+//                    "setFormat24Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
+//                views.setViewVisibility(R.id.time, View.GONE)
+//                views.setViewVisibility(R.id.realTime, View.VISIBLE)
+//            }
+//            else if (currentTime == "0") {
+//                views.setViewVisibility(R.id.time, View.GONE)
+//            } else {
+//                views.setViewVisibility(R.id.time, View.VISIBLE)
+//                views.setTextViewText(R.id.time, currentTime)
+//            }
         }
         views.setProgressBar(
             R.id.progressBar, 100,

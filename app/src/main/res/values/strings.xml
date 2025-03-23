@@ -49,22 +49,25 @@
     <string name="ts_months">MONTHS</string>
     <string name="ts_none">NONE</string>
 
+    <!-- Frequencies -->
+    <string name="f_one_sec">1 sec</string>
+    <string name="f_five_sec">5 sec</string>
+    <string name="f_fifteen_sec">15 sec</string>
+    <string name="f_thirty_sec">30 sec</string>
+    <string name="f_one_min">1 min</string>
+    <string name="f_fifteen_min">15 min</string>
+    <string name="f_thirty_min">30 min</string>
+    <string name="f_one_hour">1 hour</string>
+    <string name="f_six_hour">6 hours</string>
+    <string name="f_twelve_hour">12 hours</string>
+    <string name="f_one_day">1 day</string>
+
     <string name="user_dead_message">You are living on borrowed time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="update_button_label">Update button</string>
     <string name="sanity_message">User parameters are out of range. Please correct and relaunch, or cancel.</string>
     <string name="sanity_title">User parameter error</string>
-    <string name="one_sec">1 sec</string>
-    <string name="five_sec">5 sec</string>
-    <string name="fifteen_sec">15 sec</string>
-    <string name="thirty_sec">30 sec</string>
-    <string name="one_min">1 min</string>
-    <string name="fifteen_min">15 min</string>
-    <string name="thirty_min">30 min</string>
-    <string name="one_hour">1 hour</string>
-    <string name="six_hour">6 hours</string>
-    <string name="twelve_hour">12 hours</string>
-    <string name="one_day">1 day</string>
+
     <string name="name_hint">Fill in your name, or whatever</string>
     <string name="use_exact_time_label">Use exact timing (may shorten battery life)</string>
     <string name="use_exact_time_checkbox_label">Use exact time</string>

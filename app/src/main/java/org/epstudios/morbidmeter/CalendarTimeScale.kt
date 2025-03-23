@@ -19,12 +19,11 @@ package org.epstudios.morbidmeter
 
 import java.util.Calendar
 
-@Suppress("unused")
 class CalendarTimeScale internal constructor(
     nameId: Int,
     private val minTime: Calendar,
     private val maxTime: Calendar
-) : TimeScale(nameId, 0, 0) {
+) : SimpleTimeScale(nameId, 0, 0) {
     public override fun okToUseMsec(): Boolean {
         return true
     }

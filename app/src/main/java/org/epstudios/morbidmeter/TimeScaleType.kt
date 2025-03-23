@@ -26,6 +26,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 enum class TimeScaleType {
     TIME,
     TIME_NO_SECONDS,
@@ -50,11 +51,11 @@ enum class TimeScaleType {
             TIME_MILITARY,
             TIME_MILITARY_NO_SECONDS
         )
-        private const val LOG_TAG = "MorbidMeterWidgetProvider"
+        private const val LOG_TAG = "TimeScaleType"
 
         @JvmStatic
         fun fromInt(value: Int): TimeScaleType? {
-            return TimeScaleType.values().find { it.ordinal == value }
+            return TimeScaleType.entries.find { it.ordinal == value }
         }
 
         @JvmStatic

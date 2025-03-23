@@ -2,7 +2,7 @@ package org.epstudios.morbidmeter.test;
 
 import junit.framework.TestCase;
 
-import org.epstudios.morbidmeter.TimeScale;
+import org.epstudios.morbidmeter.SimpleTimeScale;
 import org.epstudios.morbidmeter.User;
 
 import java.util.Calendar;
@@ -10,26 +10,26 @@ import java.util.GregorianCalendar;
 
 public class TimeScaleTest extends TestCase {
     public void testTimeScaleDuration() {
-        TimeScale ts = new TimeScale("test", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale("test", 0, 100);
         assertEquals(100, ts.duration());
     }
 
     public void testProportionalTime() {
-        TimeScale ts = new TimeScale("", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale("", 0, 100);
         assertEquals(50.0, ts.proportionalTime(.5));
         assertEquals(0.0, ts.proportionalTime(0));
         assertEquals(100.0, ts.proportionalTime(1));
     }
 
     public void testReverseProportionalTime() {
-        TimeScale ts = new TimeScale("", 500, 600);
+        SimpleTimeScale ts = new SimpleTimeScale("", 500, 600);
         assertEquals(550.0, ts.reverseProportionalTime(.5));
         assertEquals(500.0, ts.reverseProportionalTime(1));
         assertEquals(600.0, ts.reverseProportionalTime(0));
     }
 
     public void testPercentTimeScale() {
-        TimeScale ts = new TimeScale("percent", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale("percent", 0, 100);
         GregorianCalendar bd = new GregorianCalendar();
         bd.set(1950, 1, 1);
         User u = new User("test", bd, 50.0);

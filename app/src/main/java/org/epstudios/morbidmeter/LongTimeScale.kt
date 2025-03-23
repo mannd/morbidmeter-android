@@ -1,6 +1,7 @@
 package org.epstudios.morbidmeter
 
 import android.content.Context
+import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -24,36 +25,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Interface for a time scale.
- */
-interface TimeScale {
-
-    companion object {
-        /**
-         * Types of time scales.
-         * REAL_TIME shows the current time using different formats.
-         * PERIOD is a time scale that is based on an integer duration.
-         * CALENDAR is a time scale that is based on a calendar.
-         */
-        enum class TimeScaleType {
-            REAL_TIME,
-            DURATION,
-            CALENDAR
-        }
-    }
-
-    val nameId: Int // Resource ID for the name of the time scale
-    val type: TimeScaleType // Type of time scale
-
-    /**
-     * Get the name of the time scale.
-     * @param context Context to use for getting the string.
-     * @return The name of the time scale.
-     */
-    fun getName(context: Context): String {
-        return context.getString(nameId)
-    }
+class LongTimeScale(): TimeScale {
+    override val nameId: Int = R.string.ts_time
+    override val type: TimeScale.Companion.TimeScaleType = TimeScale.Companion.TimeScaleType.REAL_TIME
 
     /**
      * Get the current time in the time scale.
@@ -66,9 +40,7 @@ interface TimeScale {
      * @param context Context to use for getting the string.
      * @return The current time in the time scale.
      */
-    fun getCurrentTime(context: Context): String
-
-
-
+    override fun getCurrentTime(context: Context): String {
+        return "EEEE, MMMM d yyyy\nhh:mm:ss a z"
+    }
 }
-
