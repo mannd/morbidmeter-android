@@ -139,7 +139,7 @@ public class MmConfigure extends Activity {
         double longevity = prefs.getFloat(LONGEVITY_KEY + appWidgetId, 79.0f);
         configuration.user = new User(name, birthDay, longevity);
         configuration.timeScaleNameId = prefs.getInt(TIMESCALE_KEY
-                + appWidgetId, R.string.ts_time);
+                + appWidgetId, R.string.ts_long_time);
         configuration.updateFrequencyId = prefs.getInt(FREQUENCY_ID_KEY
                 + appWidgetId, R.string.f_one_min);
         configuration.reverseTime = prefs.getBoolean(REVERSE_TIME_KEY
@@ -464,10 +464,10 @@ public class MmConfigure extends Activity {
             useMsecCheckBox.setChecked(false);
         }
         final Set<Integer> reverseTimeNotOkSet = new HashSet<>(
-                Arrays.asList(R.string.ts_time,
-                        R.string.ts_time_military,
-                        R.string.ts_time_military_no_seconds,
-                        R.string.ts_time_no_seconds,
+                Arrays.asList(R.string.ts_long_time,
+                        R.string.ts_long_military_time,
+                        R.string.ts_short_military_time,
+                        R.string.ts_short_time,
                         R.string.ts_none,
                         R.string.ts_debug));
         boolean noReverseTime = reverseTimeNotOkSet.contains(timeScaleNameId);

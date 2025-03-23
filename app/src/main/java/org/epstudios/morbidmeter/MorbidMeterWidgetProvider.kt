@@ -8,7 +8,6 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import android.widget.TextClock
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -129,7 +128,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             Log.d(LOG_TAG, "Current time = $currentTime")
             val timeScale = MorbidMeterClock.getTimeScale()
             Log.d(LOG_TAG, "timeScale = $timeScale")
-            if (timeScale != null && timeScale.type == TimeScale.Companion.TimeScaleType.REAL_TIME) {
+            if (timeScale != null && timeScale.kind == TimeScaleKind.REAL_TIME) {
                 Log.d(LOG_TAG, "setting real time")
                 views.setCharSequence(
                     R.id.realTime,

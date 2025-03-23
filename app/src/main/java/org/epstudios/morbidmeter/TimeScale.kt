@@ -29,22 +29,9 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 interface TimeScale {
 
-    companion object {
-        /**
-         * Types of time scales.
-         * REAL_TIME shows the current time using different formats.
-         * PERIOD is a time scale that is based on an integer duration.
-         * CALENDAR is a time scale that is based on a calendar.
-         */
-        enum class TimeScaleType {
-            REAL_TIME,
-            DURATION,
-            CALENDAR
-        }
-    }
-
-    val nameId: Int // Resource ID for the name of the time scale
     val type: TimeScaleType // Type of time scale
+    val nameId: Int // Resource ID for the name of the time scale
+    val kind: TimeScaleKind // Type of time scale
 
     /**
      * Get the name of the time scale.

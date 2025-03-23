@@ -106,8 +106,17 @@ public class MorbidMeterClock {
             return null;
         }
         switch (type) {
-            case TIME:
+            case LONG_TIME:
                 return new LongTimeScale();
+            case SHORT_TIME:
+                return new ShortTimeScale();
+            case LONG_MILITARY_TIME:
+                return new LongMilitaryTimeScale();
+            case SHORT_MILITARY_TIME:
+                return new ShortMilitaryTimeScale();
+
+            case NONE:
+            case PERCENT:
             default:
                 return null;
         }
@@ -148,25 +157,25 @@ public class MorbidMeterClock {
                 units += " left";
 
         }
-        if (configuration.timeScaleNameId == R.string.ts_time) {
+        if (configuration.timeScaleNameId == R.string.ts_long_time) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nhh:mm:ss a z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleNameId == R.string.ts_time_no_seconds) {
+        if (configuration.timeScaleNameId == R.string.ts_short_time) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nhh:mm a z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleNameId == R.string.ts_time_military) {
+        if (configuration.timeScaleNameId == R.string.ts_long_military_time) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm:ss z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
             return timeString; // early exit
         }
-        if (configuration.timeScaleNameId == R.string.ts_time_military_no_seconds) {
+        if (configuration.timeScaleNameId == R.string.ts_short_military_time) {
             formatter = new SimpleDateFormat("EEEE, MMMM d yyyy\nHH:mm z",
                     Locale.getDefault());
             timeString = formatter.format(new Date());
@@ -467,7 +476,7 @@ public class MorbidMeterClock {
 
     // We need to suppress deprecation here because we are using
     // deprecated methods for older versions of Android.
-    @SuppressWarnings("Deprecation")
+    @SuppressWarnings("deprecation")
     private static void showNotification(Context context, String time) {
         final String CHANNEL_ID = "morbidmeter_channel";
         final int NOTIFICATION_ID = 1;

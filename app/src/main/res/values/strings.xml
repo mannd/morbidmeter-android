@@ -39,10 +39,10 @@
     <string name="ts_years">YEARS</string>
     <string name="ts_hours">HOURS</string>
     <string name="ts_minutes">MINUTES</string>
-    <string name="ts_time">CURRENT TIME</string>
-    <string name="ts_time_no_seconds">CURRENT SHORT TIME</string>
-    <string name="ts_time_military">CURRENT MILITARY TIME</string>
-    <string name="ts_time_military_no_seconds">CURRENT SHORT MILITARY TIME</string>
+    <string name="ts_long_time">CURRENT TIME</string>
+    <string name="ts_short_time">CURRENT SHORT TIME</string>
+    <string name="ts_long_military_time">CURRENT MILITARY TIME</string>
+    <string name="ts_short_military_time">CURRENT SHORT MILITARY TIME</string>
     <string name="ts_d_h_m_s">DAYS HOURS MINS SECS</string>
     <string name="ts_d_h_m">DAYS HOURS MINS</string>
     <string name="ts_weeks">WEEKS</string>
@@ -71,4 +71,8 @@
     <string name="name_hint">Fill in your name, or whatever</string>
     <string name="use_exact_time_label">Use exact timing (may shorten battery life)</string>
     <string name="use_exact_time_checkbox_label">Use exact time</string>
+    <string name="long_time">EEEE, MMMM d yyyy\nhh:mm:ss a z</string>
+    <string name="short_time">EEEE, MMMM d yyyy\nhh:mm a z</string>
+    <string name="long_military_time">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
+    <string name="short_military_time">EEEE, MMMM d yyyy\nHH:mm z</string>
 </resources>

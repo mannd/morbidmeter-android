@@ -6,7 +6,7 @@ import android.content.Context
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
 
-Created by mannd on 3/22/25.
+Created by mannd on 3/23/25.
 
 This file is part of morbidmeter-android.
 
@@ -24,12 +24,12 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class LongTimeScale(): TimeScale {
-    override val type: TimeScaleType = TimeScaleType.LONG_TIME
-    override val nameId: Int = R.string.ts_long_time
-    override val kind: TimeScaleKind = TimeScaleKind.REAL_TIME
+class ShortTimeScale : TimeScale {
+    override val type: TimeScaleType = TimeScaleType.SHORT_TIME
+    override val nameId = R.string.ts_short_time
+    override val kind = TimeScaleKind.REAL_TIME
 
     override fun getCurrentTime(context: Context): String {
-        return context.getString(R.string.long_time)
+        return context.getString(R.string.short_time)
     }
 }

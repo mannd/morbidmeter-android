@@ -3,7 +3,6 @@ package org.epstudios.morbidmeter
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
-import java.sql.Time
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -28,10 +27,10 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 enum class TimeScaleType {
-    TIME,
-    TIME_NO_SECONDS,
-    TIME_MILITARY,
-    TIME_MILITARY_NO_SECONDS,
+    LONG_TIME,
+    SHORT_TIME,
+    LONG_MILITARY_TIME,
+    SHORT_MILITARY_TIME,
     DEBUG,
     YEAR,
     DAY,
@@ -46,10 +45,10 @@ enum class TimeScaleType {
 
     companion object {
         val realTimeTypes: Set<TimeScaleType> = setOf(
-            TIME,
-            TIME_NO_SECONDS,
-            TIME_MILITARY,
-            TIME_MILITARY_NO_SECONDS
+            LONG_TIME,
+            SHORT_TIME,
+            LONG_MILITARY_TIME,
+            SHORT_MILITARY_TIME
         )
         private const val LOG_TAG = "TimeScaleType"
 
@@ -83,10 +82,10 @@ enum class TimeScaleType {
          */
         @JvmStatic
         public val timescaleNameIds = intArrayOf(
-            R.string.ts_time,
-            R.string.ts_time_no_seconds,
-            R.string.ts_time_military,
-            R.string.ts_time_military_no_seconds,
+            R.string.ts_long_time,
+            R.string.ts_short_time,
+            R.string.ts_long_military_time,
+            R.string.ts_short_military_time,
             R.string.ts_raw,
             R.string.ts_seconds,
             R.string.ts_minutes,
@@ -131,4 +130,10 @@ enum class TimeScaleType {
         }
         return timescaleTypes
     }
+}
+
+enum class TimeScaleKind {
+    REAL_TIME,
+    DURATION,
+    CALENDAR
 }

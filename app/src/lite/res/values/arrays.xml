@@ -4,7 +4,7 @@
     <array name="timescales">
 
         <!--
-             <item>@string/ts_time</item>
+             <item>@string/ts_long_time</item>
         <item>@string/ts_raw</item>
         -->
         <item>@string/ts_seconds</item>

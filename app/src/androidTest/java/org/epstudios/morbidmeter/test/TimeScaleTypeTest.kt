@@ -2,7 +2,6 @@ package org.epstudios.morbidmeter.test
 
 import junit.framework.TestCase
 import org.epstudios.morbidmeter.TimeScaleType
-import org.junit.Test
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -29,7 +28,7 @@ class TimeScaleTypeTest : TestCase() {
 
     fun testTimeScaleTypeIncludesTime() {
         val timescaleTypes = TimeScaleType.values()
-        assert(timescaleTypes.contains(TimeScaleType.TIME))
+        assert(timescaleTypes.contains(TimeScaleType.LONG_TIME))
     }
 
 
