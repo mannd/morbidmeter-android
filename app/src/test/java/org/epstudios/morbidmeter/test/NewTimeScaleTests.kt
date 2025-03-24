@@ -1,12 +1,9 @@
 package org.epstudios.morbidmeter.test
 
 import android.content.Context
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import junit.framework.TestCase
 import org.epstudios.morbidmeter.PercentTimeScale
 import org.epstudios.morbidmeter.TimeScaleDirection
-import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
@@ -35,7 +32,6 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class NewTimeScaleTests : TestCase() {
     fun testPercentTimeScale() {
         val mockContext = mock(Context::class.java)
-        `when`(mockContext.getString(R.string.ts_percent)).thenReturn("Percent")
         val ts = PercentTimeScale()
         assertEquals(100.0, ts.duration)
         assertEquals(0.0, ts.getProportionalTime(0.0, TimeScaleDirection.FORWARD))

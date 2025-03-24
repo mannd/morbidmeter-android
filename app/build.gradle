@@ -67,6 +67,10 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:deprecation"
 }
 
+tasks.withType(Test) {
+    jvmArgs("-XX:+EnableDynamicAgentLoading")
+}
+
 dependencies {
     implementation 'androidx.core:core:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
@@ -76,10 +80,10 @@ dependencies {
     testImplementation "org.mockito:mockito-core:5.10.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.2.1"
     // Optional, but recommended: Inline MockMaker
-    testImplementation("org.mockito:mockito-inline:5.10.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
 
     // JUnit for Android instrumented tests
-    androidTestImplementation "junit:junit:4.13.2"
+    testImplementation "junit:junit:4.13.2"
     // AndroidX Test Core
     androidTestImplementation "androidx.test:core:1.6.1"
     // AndroidX Test Runner
