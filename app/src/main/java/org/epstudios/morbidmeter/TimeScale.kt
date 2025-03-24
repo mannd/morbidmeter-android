@@ -60,8 +60,8 @@ interface TimeScale {
     }
 
     fun getTime(
-        context: Context, percent:
-        Double,
+        context: Context,
+        percent: Double,
         direction: TimeScaleDirection = TimeScaleDirection.FORWARD): String? {
         return null
     }

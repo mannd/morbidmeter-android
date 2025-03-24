@@ -10,26 +10,26 @@ import java.util.GregorianCalendar;
 
 public class TimeScaleTest extends TestCase {
     public void testTimeScaleDuration() {
-        SimpleTimeScale ts = new SimpleTimeScale("test", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         assertEquals(100, ts.duration());
     }
 
     public void testProportionalTime() {
-        SimpleTimeScale ts = new SimpleTimeScale("", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         assertEquals(50.0, ts.proportionalTime(.5));
         assertEquals(0.0, ts.proportionalTime(0));
         assertEquals(100.0, ts.proportionalTime(1));
     }
 
     public void testReverseProportionalTime() {
-        SimpleTimeScale ts = new SimpleTimeScale("", 500, 600);
+        SimpleTimeScale ts = new SimpleTimeScale(0, 500, 600);
         assertEquals(550.0, ts.reverseProportionalTime(.5));
         assertEquals(500.0, ts.reverseProportionalTime(1));
         assertEquals(600.0, ts.reverseProportionalTime(0));
     }
 
     public void testPercentTimeScale() {
-        SimpleTimeScale ts = new SimpleTimeScale("percent", 0, 100);
+        SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         GregorianCalendar bd = new GregorianCalendar();
         bd.set(1950, 1, 1);
         User u = new User("test", bd, 50.0);

@@ -71,9 +71,24 @@ dependencies {
     implementation 'androidx.core:core:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core-ktx:1.15.0'
+
+    // Mockito for local unit tests
     testImplementation "org.mockito:mockito-core:5.10.0"
     testImplementation "org.mockito.kotlin:mockito-kotlin:5.2.1"
+    // Optional, but recommended: Inline MockMaker
     testImplementation("org.mockito:mockito-inline:5.10.0")
 
-    androidTestImplementation 'junit:junit:4.13.2'
+    // JUnit for Android instrumented tests
+    androidTestImplementation "junit:junit:4.13.2"
+    // AndroidX Test Core
+    androidTestImplementation "androidx.test:core:1.6.1"
+    // AndroidX Test Runner
+    androidTestImplementation "androidx.test:runner:1.5.2"
+    // AndroidX Test Rules
+    androidTestImplementation "androidx.test:rules:1.5.0"
+    // AndroidX Test Ext JUnit
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    // Optional -- UI testing with Espresso
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+
 }
