@@ -31,17 +31,27 @@ enum class TimeScaleType {
     SHORT_TIME,
     LONG_MILITARY_TIME,
     SHORT_MILITARY_TIME,
-    DEBUG,
-    YEAR,
-    DAY,
-    HOUR,
-    MONTH,
+    MILLISECONDS,
+    SECONDS,
+    MINUTES,
+    HOURS,
+    DAYS,
+    WEEKS,
+    MONTHS,
+    YEARS,
+    DAYS_HOURS_MINUTES_SECONDS,
+    DAYS_HOURS_MINUTES,
+    ONE_DAY,
+    ONE_HOUR,
+    ONE_MONTH,
+    ONE_YEAR,
     UNIVERSE,
     X_UNIVERSE_2,
     X_UNIVERSE,
     PERCENT,
     NONE,
     RAW;
+
 
     companion object {
         val realTimeTypes: Set<TimeScaleType> = setOf(
@@ -135,5 +145,11 @@ enum class TimeScaleType {
 enum class TimeScaleKind {
     REAL_TIME,
     DURATION,
-    CALENDAR
+    CALENDAR,
+    NONE
+}
+
+enum class TimeScaleDirection {
+    FORWARD,
+    REVERSE
 }

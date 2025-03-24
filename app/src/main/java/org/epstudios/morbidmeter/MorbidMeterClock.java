@@ -114,9 +114,10 @@ public class MorbidMeterClock {
                 return new LongMilitaryTimeScale();
             case SHORT_MILITARY_TIME:
                 return new ShortMilitaryTimeScale();
-
             case NONE:
+                return new NoTimeScale();
             case PERCENT:
+                return new PercentTimeScale();
             default:
                 return null;
         }
@@ -447,6 +448,14 @@ public class MorbidMeterClock {
 
     static int percentAlive() {
         return (int) (configuration.user.percentAlive() * 100);
+    }
+
+    static double rawPercentAlive() {
+        return configuration.user.percentAlive();
+    }
+
+    static TimeScaleDirection getTimeScaleDirection() {
+        return configuration.reverseTime ? TimeScaleDirection.REVERSE : TimeScaleDirection.FORWARD;
     }
 
     private static double numDays(double timeInMsecs) {

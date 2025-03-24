@@ -1,6 +1,7 @@
 package org.epstudios.morbidmeter
 
 import android.content.Context
+import java.text.DecimalFormat
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -24,13 +25,20 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ShortTimeScale : TimeScale {
-    override val type: TimeScaleType = TimeScaleType.SHORT_TIME
-    override val nameId = R.string.ts_short_time
-    override val kind = TimeScaleKind.REAL_TIME
-    override val duration: Double = 0.0
+class PercentTimeScale : TimeScale {
+    override val type: TimeScaleType = TimeScaleType.PERCENT
+    override val nameId: Int = R.string.ts_percent
+    override val kind: TimeScaleKind = TimeScaleKind.DURATION
+    override val duration: Double = 100.0
 
-    override fun getRealTimeFormat(context: Context): String {
-        return context.getString(R.string.short_time)
+    val formatString = "#.000000"
+    val formatter = DecimalFormat(formatString)
+
+    override fun getTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
+        if (direction == TimeScaleDirection.FORWARD) {
+            return formatter.format(getProportionalTime(percent, direction)) + "%"
+        } else {
+            return formatter.format(getProportionalTime(percent, direction)) + "% left"
+        }
     }
 }

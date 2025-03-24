@@ -32,6 +32,8 @@ interface TimeScale {
     val type: TimeScaleType // Type of time scale
     val nameId: Int // Resource ID for the name of the time scale
     val kind: TimeScaleKind // Type of time scale
+    // TODO: do we need minumum and maximum or will duration be enough?
+    val duration: Double // Duration of the time scale in milliseconds
 
     /**
      * Get the name of the time scale.
@@ -53,9 +55,25 @@ interface TimeScale {
      * @param context Context to use for getting the string.
      * @return The current time in the time scale.
      */
-    fun getCurrentTime(context: Context): String
+    fun getRealTimeFormat(context: Context): String? {
+        return null
+    }
 
+    fun getTime(
+        context: Context, percent:
+        Double,
+        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): String? {
+        return null
+    }
 
-
+    fun getProportionalTime(
+        percent: Double,
+        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): Double {
+        if (direction == TimeScaleDirection.FORWARD) {
+            return percent * duration
+        } else {
+            return duration - (percent * duration)
+        }
+    }
 }
 

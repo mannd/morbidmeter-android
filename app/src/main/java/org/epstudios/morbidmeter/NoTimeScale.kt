@@ -24,13 +24,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ShortTimeScale : TimeScale {
-    override val type: TimeScaleType = TimeScaleType.SHORT_TIME
-    override val nameId = R.string.ts_short_time
-    override val kind = TimeScaleKind.REAL_TIME
+class NoTimeScale : TimeScale {
+    override val type: TimeScaleType = TimeScaleType.NONE
+    override val nameId = R.string.ts_none
+    override val kind = TimeScaleKind.NONE
     override val duration: Double = 0.0
-
-    override fun getRealTimeFormat(context: Context): String {
-        return context.getString(R.string.short_time)
-    }
 }

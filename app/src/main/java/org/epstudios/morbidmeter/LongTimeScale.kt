@@ -28,8 +28,9 @@ class LongTimeScale(): TimeScale {
     override val type: TimeScaleType = TimeScaleType.LONG_TIME
     override val nameId: Int = R.string.ts_long_time
     override val kind: TimeScaleKind = TimeScaleKind.REAL_TIME
+    override val duration: Double = 0.0
 
-    override fun getCurrentTime(context: Context): String {
+    override fun getRealTimeFormat(context: Context): String {
         return context.getString(R.string.long_time)
     }
 }

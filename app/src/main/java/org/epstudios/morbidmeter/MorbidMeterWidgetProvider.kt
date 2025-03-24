@@ -121,24 +121,32 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         alarm?.cancelAlarm()
     }
 
-    // TODO: use a setting to determine whether to show the time or the RealTime clock.
     fun updateWidget(context: Context, views: RemoteViews) {
-        val currentTime = MorbidMeterClock.getFormattedTime(context)
-        if (currentTime != null) {
-            Log.d(LOG_TAG, "Current time = $currentTime")
-            val timeScale = MorbidMeterClock.getTimeScale()
-            Log.d(LOG_TAG, "timeScale = $timeScale")
-            if (timeScale != null && timeScale.kind == TimeScaleKind.REAL_TIME) {
-                Log.d(LOG_TAG, "setting real time")
-                views.setCharSequence(
-                    R.id.realTime,
-                    "setFormat12Hour", timeScale.getCurrentTime(context));
-                views.setCharSequence(
-                    R.id.realTime,
-                    "setFormat24Hour", timeScale.getCurrentTime(context));
-                views.setViewVisibility(R.id.time, View.GONE)
-                views.setViewVisibility(R.id.realTime, View.VISIBLE)
-            }
+//        val currentTime = MorbidMeterClock.getFormattedTime(context)
+//        if (currentTime != null) {
+        val timeScale = MorbidMeterClock.getTimeScale()
+        Log.d(LOG_TAG, "timeScale = $timeScale")
+        if (timeScale == null) {
+            return
+        }
+        if (timeScale.kind == TimeScaleKind.REAL_TIME) {
+            Log.d(LOG_TAG, "setting real time")
+            views.setCharSequence(
+                R.id.realTime,
+                "setFormat12Hour", timeScale.getRealTimeFormat(context));
+            views.setCharSequence(
+                R.id.realTime,
+                "setFormat24Hour", timeScale.getRealTimeFormat(context));
+            views.setViewVisibility(R.id.time, View.GONE)
+            views.setViewVisibility(R.id.realTime, View.VISIBLE)
+        } else if (timeScale.kind == TimeScaleKind.DURATION) {
+            val percentage: Double = MorbidMeterClock.rawPercentAlive()
+            Log.d(LOG_TAG, "Percentage = $percentage")
+            views.setTextViewText(R.id.time, timeScale.getTime(context, percentage,
+                MorbidMeterClock.getTimeScaleDirection()))
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+        }
 
 //            if (TimeScaleType.isRealTime(MorbidMeterClock.getTimeScaleNameId())) {
 //                Log.d(LOG_TAG, "setting real time")
@@ -153,13 +161,15 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 //                views.setViewVisibility(R.id.time, View.GONE)
 //                views.setViewVisibility(R.id.realTime, View.VISIBLE)
 //            }
-//            else if (currentTime == "0") {
-//                views.setViewVisibility(R.id.time, View.GONE)
+        else if (timeScale.kind == TimeScaleKind.NONE) {
+            views.setViewVisibility(R.id.time, View.GONE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+        }
 //            } else {
 //                views.setViewVisibility(R.id.time, View.VISIBLE)
 //                views.setTextViewText(R.id.time, currentTime)
 //            }
-        }
+//        }
         views.setProgressBar(
             R.id.progressBar, 100,
             MorbidMeterClock.percentAlive(), false
