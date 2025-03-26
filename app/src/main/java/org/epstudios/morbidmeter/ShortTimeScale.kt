@@ -28,9 +28,8 @@ class ShortTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.SHORT_TIME
     override val nameId = R.string.ts_short_time
     override val kind = TimeScaleKind.REAL_TIME
-    override val duration: Double = 0.0
 
-    override fun getRealTimeFormat(context: Context): String {
+    override fun getTimeFormat(context: Context): String {
         return context.getString(R.string.short_time)
     }
 }

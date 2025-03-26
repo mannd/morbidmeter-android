@@ -1,5 +1,8 @@
 package org.epstudios.morbidmeter
 
+import android.content.Context
+import java.text.DecimalFormat
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -26,20 +29,23 @@ class DaysTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.DAYS
     override val nameId: Int = R.string.ts_days
     override val kind: TimeScaleKind = TimeScaleKind.DURATION
-    override val duration: Double = 0.0
 
-//            long lifeInMsec = configuration.user.lifeDurationMsec();
-//            ts = new SimpleTimeScale(configuration.timeScaleNameId, 0, lifeInMsec);
-//            formatString = SHORT_DECIMAL_FORMAT_STRING;
-//            formatter = new DecimalFormat(formatString);
-//
-//            if (configuration.reverseTime) {
-//                timeString = formatter.format(numDays(ts
-//                        .reverseProportionalTime(configuration.user
-//                                .percentAlive())));
-//                units = " days left";
-//            } else {
-//                timeString = formatter.format(numDays(ts
-//                        .proportionalTime(configuration.user.percentAlive())));
-//                units = " days old";
+    val formatString = "#,###.0000"
+    val formatter = DecimalFormat(formatString)
+
+    override fun getTimeDuration(
+        context: Context,
+        msecAlive: Long,
+        msecTotal: Long,
+        direction: TimeScaleDirection ): String? {
+        if (direction == TimeScaleDirection.FORWARD) {
+            return formatter.format(numDays(msecAlive)) + " days alive"
+        } else {
+            return formatter.format(numDays(msecTotal - msecAlive)) + " days remaining"
+        }
+    }
+
+    private fun numDays(msec: Long): Double {
+        return (msec / 1000.0 / 60 / 60 / 24)
+    }
 }

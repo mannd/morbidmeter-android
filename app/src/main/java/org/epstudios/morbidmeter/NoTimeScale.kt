@@ -28,5 +28,4 @@ class NoTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.NONE
     override val nameId = R.string.ts_none
     override val kind = TimeScaleKind.NONE
-    override val duration: Double = 0.0
 }

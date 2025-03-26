@@ -118,9 +118,19 @@ public class MorbidMeterClock {
                 return new NoTimeScale();
             case PERCENT:
                 return new PercentTimeScale();
+            case DAYS:
+                return new DaysTimeScale();
             default:
                 return null;
         }
+    }
+
+    static long getMsecAlive() {
+        return configuration.user.msecAlive();
+    }
+
+    static long getMsecTotal() {
+        return configuration.user.lifeDurationMsec();
     }
 
     String getFormattedTime() {

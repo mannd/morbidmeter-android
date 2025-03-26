@@ -29,16 +29,25 @@ class PercentTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.PERCENT
     override val nameId: Int = R.string.ts_percent
     override val kind: TimeScaleKind = TimeScaleKind.PERCENT
-    override val duration: Double = 100.0
 
     val formatString = "#.000000"
     val formatter = DecimalFormat(formatString)
 
-    override fun getTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
-        if (direction == TimeScaleDirection.FORWARD) {
-            return formatter.format(getProportionalTime(percent, direction)) + "%"
+    override fun getPercentTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
+        return if (direction == TimeScaleDirection.FORWARD) {
+            formatter.format(getProportionalTime(percent, direction)) + "%"
         } else {
-            return formatter.format(getProportionalTime(percent, direction)) + "% left"
+            formatter.format(getProportionalTime(percent, direction)) + "% left"
+        }
+    }
+
+    private fun getProportionalTime(
+        percent: Double,
+        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): Double {
+        if (direction == TimeScaleDirection.FORWARD) {
+            return percent * 100.0
+        } else {
+            return 100.0 - (percent * 100.0)
         }
     }
 }
