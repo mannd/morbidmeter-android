@@ -28,7 +28,7 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class PercentTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.PERCENT
     override val nameId: Int = R.string.ts_percent
-    override val kind: TimeScaleKind = TimeScaleKind.DURATION
+    override val kind: TimeScaleKind = TimeScaleKind.PERCENT
     override val duration: Double = 100.0
 
     val formatString = "#.000000"

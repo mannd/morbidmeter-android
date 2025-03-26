@@ -139,7 +139,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
                 "setFormat24Hour", timeScale.getRealTimeFormat(context));
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.VISIBLE)
-        } else if (timeScale.kind == TimeScaleKind.DURATION) {
+        } else if (timeScale.kind == TimeScaleKind.PERCENT) {
             val percentage: Double = MorbidMeterClock.rawPercentAlive()
             Log.d(LOG_TAG, "Percentage = $percentage")
             views.setTextViewText(R.id.time, timeScale.getTime(context, percentage,

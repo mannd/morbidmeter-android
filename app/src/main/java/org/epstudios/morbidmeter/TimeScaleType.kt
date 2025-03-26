@@ -144,6 +144,7 @@ enum class TimeScaleType {
 
 enum class TimeScaleKind {
     REAL_TIME,
+    PERCENT,
     DURATION,
     CALENDAR,
     NONE
