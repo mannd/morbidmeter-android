@@ -1,8 +1,9 @@
-package org.epstudios.morbidmeter
+package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
 import android.content.res.Resources
 import android.util.Log
+import org.epstudios.morbidmeter.R
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -120,7 +121,7 @@ enum class TimeScaleType {
 
         @JvmStatic
         fun getStringArray(context: Context): Array<String> {
-            return TimeScaleType.timescaleNameIds.map {
+            return timescaleNameIds.map {
                 context.getString(it) }.toTypedArray()
         }
     }
@@ -130,7 +131,7 @@ enum class TimeScaleType {
         val timescaleTypes = mutableListOf<TimeScaleType>()
         for (name in timescaleNames) {
             try {
-                val timescaleType = TimeScaleType.valueOf(name)
+                val timescaleType = valueOf(name)
                 timescaleTypes.add(timescaleType)
             } catch (e: IllegalArgumentException) {
                 // Handle the case where the string doesn't match an enum value

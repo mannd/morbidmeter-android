@@ -1,6 +1,9 @@
-package org.epstudios.morbidmeter
+package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import org.epstudios.morbidmeter.R
+import org.epstudios.morbidmeter.timescale.TimeScaleKind
+import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -24,8 +27,12 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class NoTimeScale : TimeScale {
-    override val type: TimeScaleType = TimeScaleType.NONE
-    override val nameId = R.string.ts_none
-    override val kind = TimeScaleKind.NONE
+class ShortTimeScale : TimeScale {
+    override val type: TimeScaleType = TimeScaleType.SHORT_TIME
+    override val nameId = R.string.ts_short_time
+    override val kind = TimeScaleKind.REAL_TIME
+
+    override fun getTimeFormat(context: Context): String {
+        return context.getString(R.string.short_time)
+    }
 }

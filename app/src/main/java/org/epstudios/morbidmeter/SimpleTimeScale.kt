@@ -17,6 +17,7 @@
  */
 package org.epstudios.morbidmeter
 
+import org.epstudios.morbidmeter.timescale.TimeScaleType
 import java.text.DecimalFormat
 import java.text.Format
 

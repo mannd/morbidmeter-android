@@ -45,6 +45,9 @@ import android.widget.RemoteViews;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.epstudios.morbidmeter.timescale.TimeScaleType;
+import org.epstudios.morbidmeter.User;
+
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Calendar;

@@ -8,6 +8,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import org.epstudios.morbidmeter.timescale.TimeScaleKind
 
 /**
 Copyright (C) 2025 EP Studios, Inc.

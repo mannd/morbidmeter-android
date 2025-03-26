@@ -31,6 +31,17 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 
+import org.epstudios.morbidmeter.timescale.DaysTimeScale;
+import org.epstudios.morbidmeter.timescale.LongMilitaryTimeScale;
+import org.epstudios.morbidmeter.timescale.LongTimeScale;
+import org.epstudios.morbidmeter.timescale.NoTimeScale;
+import org.epstudios.morbidmeter.timescale.PercentTimeScale;
+import org.epstudios.morbidmeter.timescale.ShortMilitaryTimeScale;
+import org.epstudios.morbidmeter.timescale.ShortTimeScale;
+import org.epstudios.morbidmeter.timescale.TimeScale;
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection;
+import org.epstudios.morbidmeter.timescale.TimeScaleType;
+
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;

@@ -1,6 +1,9 @@
-package org.epstudios.morbidmeter
+package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection
+import org.epstudios.morbidmeter.timescale.TimeScaleKind
+import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -68,9 +71,9 @@ interface TimeScale {
         context: Context,
         msecAlive: Long,
         msecTotal: Long,
-        direction: TimeScaleDirection ): String? {
+        direction: TimeScaleDirection
+    ): String? {
         return null
     }
 
 }
-

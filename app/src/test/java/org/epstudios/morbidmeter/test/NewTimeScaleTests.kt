@@ -2,8 +2,8 @@ package org.epstudios.morbidmeter.test
 
 import android.content.Context
 import junit.framework.TestCase
-import org.epstudios.morbidmeter.PercentTimeScale
-import org.epstudios.morbidmeter.TimeScaleDirection
+import org.epstudios.morbidmeter.timescale.PercentTimeScale
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 

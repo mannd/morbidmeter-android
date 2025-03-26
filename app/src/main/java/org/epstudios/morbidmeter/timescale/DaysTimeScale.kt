@@ -1,6 +1,10 @@
-package org.epstudios.morbidmeter
+package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import org.epstudios.morbidmeter.R
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection
+import org.epstudios.morbidmeter.timescale.TimeScaleKind
+import org.epstudios.morbidmeter.timescale.TimeScaleType
 import java.text.DecimalFormat
 
 /**
@@ -37,7 +41,8 @@ class DaysTimeScale : TimeScale {
         context: Context,
         msecAlive: Long,
         msecTotal: Long,
-        direction: TimeScaleDirection ): String? {
+        direction: TimeScaleDirection
+    ): String? {
         if (direction == TimeScaleDirection.FORWARD) {
             return formatter.format(numDays(msecAlive)) + " days alive"
         } else {

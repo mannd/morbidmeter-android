@@ -1,7 +1,7 @@
 package org.epstudios.morbidmeter.test
 
 import junit.framework.TestCase
-import org.epstudios.morbidmeter.TimeScaleType
+import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
