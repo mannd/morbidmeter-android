@@ -42,8 +42,5 @@
         <activity android:name=".PermissionRequestActivity"
             android:exported="true" />
 
-        <service
-            android:name=".MmService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 </manifest>

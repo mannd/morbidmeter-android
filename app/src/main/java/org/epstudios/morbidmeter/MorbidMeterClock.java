@@ -83,7 +83,7 @@ public class MorbidMeterClock {
         Frequency.FrequencyType frequencyType =
                 Frequency.getFrequencyIdToFrequencyType(frequencyId);
         Frequency frequency = new Frequency(frequencyType);
-        return frequency.getFrequency(context);
+        return frequency.getFrequency();
     }
 
     static boolean configurationIsComplete() {

@@ -25,7 +25,7 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 class Frequency(private val frequencyType: FrequencyType) {
 
-    fun getFrequency(context: Context): Int {
+    fun getFrequency(): Int {
         when (frequencyType) {
             FrequencyType.ONE_SEC -> return 1000
             FrequencyType.FIVE_SEC -> return 1000 * 5
