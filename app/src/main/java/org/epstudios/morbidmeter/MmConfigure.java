@@ -73,7 +73,7 @@ public class MmConfigure extends Activity {
     public static final String CONFIGURATION_COMPLETE_KEY = "configuration_complete";
     public static final String DO_NOT_MODIFY_NAME_KEY = "do_not_modify_name";
     public static final String USE_EXACT_TIME_KEY = "use_exact_time";
-    private static final String LOG_TAG = "MM";
+    private static final String LOG_TAG = "MmConfigure";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static boolean INHIBIT_DATE_CHANGE_LISTENER = false;
     private int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
@@ -95,9 +95,7 @@ public class MmConfigure extends Activity {
 
     static void savePrefs(Context context, int appWidgetId,
                           Configuration configuration) {
-//        if (configuration == null) {
-//            return;
-//        }
+        Log.d(LOG_TAG, "Saving configuration for widget " + appWidgetId);
         SharedPreferences.Editor prefs = context.getSharedPreferences(
                 PREFS_NAME, 0).edit();
         prefs.putString(USER_NAME_KEY + appWidgetId,
@@ -131,6 +129,7 @@ public class MmConfigure extends Activity {
     }
 
     static Configuration loadPrefs(Context context, int appWidgetId) {
+        Log.d(LOG_TAG, "Loading configuration for widget " + appWidgetId);
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         Configuration configuration = new Configuration();
         String name = prefs.getString(USER_NAME_KEY + appWidgetId,
@@ -162,6 +161,13 @@ public class MmConfigure extends Activity {
                 DO_NOT_MODIFY_NAME_KEY + appWidgetId, false);
         configuration.useExactTime = prefs.getBoolean(USE_EXACT_TIME_KEY + appWidgetId, false);
         return configuration;
+    }
+
+    public static void deletePrefs(Context context) {
+        Log.d(LOG_TAG, "Deleting configuration");
+        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
+        prefs.clear();
+        prefs.apply();
     }
 
     public static void configureSkullButton(Context context, int appWidgetId,

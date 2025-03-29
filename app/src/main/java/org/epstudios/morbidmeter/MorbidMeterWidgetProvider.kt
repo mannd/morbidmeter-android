@@ -60,10 +60,11 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 //        scheduleNextUpdate(context)
     }
 
+    // Called when last widget is disabled.
     override fun onDisabled(context: Context) {
         Log.d(LOG_TAG, "onDisabled called")
         cancelUpdates(context)
-        // TODO: delete saved preferences for this appWidgetId.
+        MmConfigure.deletePrefs(context)
     }
 
     override fun onReceive(context: Context, intent: Intent) {

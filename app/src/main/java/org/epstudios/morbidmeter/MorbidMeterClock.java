@@ -56,7 +56,7 @@ public class MorbidMeterClock {
     private final Context context;
     private final SimpleTimeScale timeScale;
 
-    private static final String LOG_TAG = "MM";
+    private static final String LOG_TAG = "MorbidMeterClock";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static final String IN_MILESTONE = "in_milestone";
     private static Configuration configuration = null;
