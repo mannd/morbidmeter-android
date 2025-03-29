@@ -31,6 +31,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     companion object {
@@ -62,6 +63,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
     override fun onDisabled(context: Context) {
         Log.d(LOG_TAG, "onDisabled called")
         cancelUpdates(context)
+        // TODO: delete saved preferences for this appWidgetId.
     }
 
     override fun onReceive(context: Context, intent: Intent) {

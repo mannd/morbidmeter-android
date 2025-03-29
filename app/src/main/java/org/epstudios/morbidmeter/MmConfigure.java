@@ -95,6 +95,9 @@ public class MmConfigure extends Activity {
 
     static void savePrefs(Context context, int appWidgetId,
                           Configuration configuration) {
+//        if (configuration == null) {
+//            return;
+//        }
         SharedPreferences.Editor prefs = context.getSharedPreferences(
                 PREFS_NAME, 0).edit();
         prefs.putString(USER_NAME_KEY + appWidgetId,

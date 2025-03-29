@@ -67,7 +67,7 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:deprecation"
 }
 
-tasks.withType(Test) {
+tasks.withType(Test).configureEach {
     jvmArgs("-XX:+EnableDynamicAgentLoading")
 }
 
