@@ -2,8 +2,6 @@ package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
 import org.epstudios.morbidmeter.R
-import org.epstudios.morbidmeter.timescale.TimeScaleKind
-import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -32,6 +30,6 @@ class LongMilitaryTimeScale : TimeScale {
     override val kind: TimeScaleKind = TimeScaleKind.REAL_TIME
 
     override fun getTimeFormat(context: Context): String {
-        return context.getString(R.string.long_military_time)
+        return context.getString(R.string.long_military_time_format)
     }
 }

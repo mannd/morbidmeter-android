@@ -35,6 +35,7 @@ import org.epstudios.morbidmeter.timescale.DaysTimeScale;
 import org.epstudios.morbidmeter.timescale.LongMilitaryTimeScale;
 import org.epstudios.morbidmeter.timescale.LongTimeScale;
 import org.epstudios.morbidmeter.timescale.NoTimeScale;
+import org.epstudios.morbidmeter.timescale.OneDayTimeScale;
 import org.epstudios.morbidmeter.timescale.PercentTimeScale;
 import org.epstudios.morbidmeter.timescale.ShortMilitaryTimeScale;
 import org.epstudios.morbidmeter.timescale.ShortTimeScale;
@@ -131,6 +132,8 @@ public class MorbidMeterClock {
                 return new PercentTimeScale();
             case DAYS:
                 return new DaysTimeScale();
+            case ONE_DAY:
+                return new OneDayTimeScale();
             default:
                 return null;
         }

@@ -45,13 +45,13 @@ class PercentTimeScale : TimeScale {
         }
     }
 
-    private fun getProportionalTime(
+    override fun getProportionalTime(
         percent: Double,
-        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): Double {
-        if (direction == TimeScaleDirection.FORWARD) {
-            return percent * 100.0
+        direction: TimeScaleDirection): Double {
+        return if (direction == TimeScaleDirection.FORWARD) {
+            percent * 100.0
         } else {
-            return 100.0 - (percent * 100.0)
+            100.0 - (percent * 100.0)
         }
     }
 }

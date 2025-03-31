@@ -76,4 +76,10 @@ interface TimeScale {
         return null
     }
 
+    fun getProportionalTime (
+        percent: Double,
+        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): Double {
+        return 0.0
+    }
+
 }

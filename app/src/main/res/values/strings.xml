@@ -71,8 +71,11 @@
     <string name="name_hint">Fill in your name, or whatever</string>
     <string name="use_exact_time_label">Use exact timing (may shorten battery life)</string>
     <string name="use_exact_time_checkbox_label">Use exact time</string>
-    <string name="long_time">EEEE, MMMM d yyyy\nhh:mm:ss a z</string>
-    <string name="short_time">EEEE, MMMM d yyyy\nhh:mm a z</string>
-    <string name="long_military_time">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
-    <string name="short_military_time">EEEE, MMMM d yyyy\nHH:mm z</string>
+
+    <!-- Time formats -->
+    <string name="long_time_format">EEEE, MMMM d yyyy\nhh:mm:ss a z</string>
+    <string name="short_time_format">EEEE, MMMM d yyyy\nhh:mm a z</string>
+    <string name="long_military_time_format">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
+    <string name="short_military_time_format">EEEE, MMMM d yyyy\nHH:mm z</string>
+    <string name="one_day_format">h:mm:ss a</string>
 </resources>
