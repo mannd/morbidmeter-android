@@ -1,8 +1,6 @@
 package org.epstudios.morbidmeter.timescale
 
 import org.epstudios.morbidmeter.R
-import org.epstudios.morbidmeter.timescale.TimeScaleKind
-import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -29,5 +27,4 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class NoTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.NONE
     override val nameId = R.string.ts_none
-    override val kind = TimeScaleKind.NONE
 }

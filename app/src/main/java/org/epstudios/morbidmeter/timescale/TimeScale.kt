@@ -1,9 +1,6 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
-import org.epstudios.morbidmeter.timescale.TimeScaleDirection
-import org.epstudios.morbidmeter.timescale.TimeScaleKind
-import org.epstudios.morbidmeter.timescale.TimeScaleType
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -34,7 +31,6 @@ interface TimeScale {
 
     val type: TimeScaleType // Type of time scale
     val nameId: Int // Resource ID for the name of the time scale
-    val kind: TimeScaleKind // Type of time scale
 
     /**
      * Get the name of the time scale.
@@ -57,13 +53,6 @@ interface TimeScale {
      * @return The current time in the time scale.
      */
     fun getTimeFormat(context: Context): String? {
-        return null
-    }
-
-    fun getPercentTime(
-        context: Context,
-        percent: Double,
-        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): String? {
         return null
     }
 

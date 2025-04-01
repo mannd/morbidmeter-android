@@ -1,13 +1,10 @@
 package org.epstudios.morbidmeter.timescale
 
-import android.content.Context
-import org.epstudios.morbidmeter.R
-
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
 
-Created by mannd on 3/23/25.
+Created by mannd on 3/31/25.
 
 This file is part of morbidmeter-android.
 
@@ -25,11 +22,6 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ShortTimeScale : RealTimeScale() {
-    override val type: TimeScaleType = TimeScaleType.SHORT_TIME
-    override val nameId = R.string.ts_short_time
+abstract class RealTimeScale() : TimeScale {
 
-    override fun getTimeFormat(context: Context): String {
-        return context.getString(R.string.short_time_format)
-    }
 }

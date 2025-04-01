@@ -217,28 +217,28 @@ public class MorbidMeterClock {
             return timeString;
         }
         if (configuration.timeScaleNameId == R.string.ts_year) {
-            ts = new CalendarTimeScale(configuration.timeScaleNameId,
+            ts = new OldCalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
             formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
         if (configuration.timeScaleNameId == R.string.ts_day) {
-            ts = new CalendarTimeScale(configuration.timeScaleNameId,
+            ts = new OldCalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0));
             formatString = "h:mm:ss a" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
         if (configuration.timeScaleNameId == R.string.ts_hour) {
-            ts = new CalendarTimeScale(configuration.timeScaleNameId,
+            ts = new OldCalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 11, 0, 0),
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 12, 0, 0));
             formatString = "hh:mm:ss" + msecSuffix(configuration.useMsec);
             formatter = new SimpleDateFormat(formatString, Locale.getDefault());
         }
         if (configuration.timeScaleNameId == R.string.ts_month) {
-            ts = new CalendarTimeScale(configuration.timeScaleNameId,
+            ts = new OldCalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2000, Calendar.FEBRUARY, 1, 0, 0, 0));
             formatString = "MMMM d\nh:mm:ss a" + msecSuffix(configuration.useMsec);
@@ -263,7 +263,7 @@ public class MorbidMeterClock {
                 units = " yrs from Creation";
         }
         if (configuration.timeScaleNameId == R.string.ts_x_universe) {
-            ts = new CalendarTimeScale(configuration.timeScaleNameId,
+            ts = new OldCalendarTimeScale(configuration.timeScaleNameId,
                     new GregorianCalendar(-4000, Calendar.JANUARY, 1, 0, 0, 0),
                     new GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0));
             formatString = "y G MMMM d\nh:mm:ss a";

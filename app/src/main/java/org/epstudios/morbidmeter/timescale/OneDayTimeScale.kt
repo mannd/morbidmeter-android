@@ -27,10 +27,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class OneDayTimeScale : TimeScale {
+class OneDayTimeScale : CalendarTimeScale() {
     override val type: TimeScaleType = TimeScaleType.ONE_DAY
     override val nameId: Int = R.string.ts_day
-    override val kind: TimeScaleKind = TimeScaleKind.CALENDAR
     val format: String? = "h:mm:ss a"
 
     private val minTime: Calendar =

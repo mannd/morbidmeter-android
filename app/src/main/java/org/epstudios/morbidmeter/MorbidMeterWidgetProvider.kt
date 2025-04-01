@@ -8,7 +8,11 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import org.epstudios.morbidmeter.timescale.TimeScaleKind
+import org.epstudios.morbidmeter.timescale.CalendarTimeScale
+import org.epstudios.morbidmeter.timescale.DurationTimeScale
+import org.epstudios.morbidmeter.timescale.NoTimeScale
+import org.epstudios.morbidmeter.timescale.PercentTimeScale
+import org.epstudios.morbidmeter.timescale.RealTimeScale
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -137,8 +141,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         }
         val percentAlive = MorbidMeterClock.rawPercentAlive()
         // TODO: null check time functions
-        if (timeScale.kind == TimeScaleKind.REAL_TIME) {
-            Log.d(LOG_TAG, "setting real time")
+        if (timeScale is RealTimeScale) {
             views.setCharSequence(
                 R.id.realTime,
                 "setFormat12Hour", timeScale.getTimeFormat(context));
@@ -147,22 +150,20 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
                 "setFormat24Hour", timeScale.getTimeFormat(context));
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.VISIBLE)
-        } else if (timeScale.kind == TimeScaleKind.PERCENT) {
-            val percentage: Double = MorbidMeterClock.rawPercentAlive()
-            Log.d(LOG_TAG, "Percentage = $percentage")
+        } else if (timeScale is PercentTimeScale) {
             views.setTextViewText(R.id.time,
                 timeScale.getPercentTime(context, percentAlive,
                 MorbidMeterClock.getTimeScaleDirection()))
             views.setViewVisibility(R.id.time, View.VISIBLE)
             views.setViewVisibility(R.id.realTime, View.GONE)
-        } else if (timeScale.kind == TimeScaleKind.DURATION) {
+        } else if (timeScale is DurationTimeScale) {
             views.setTextViewText(R.id.time, timeScale.getTimeDuration(context,
                 MorbidMeterClock.getMsecAlive(),
                 MorbidMeterClock.getMsecTotal(),
                 MorbidMeterClock.getTimeScaleDirection()))
             views.setViewVisibility(R.id.time, View.VISIBLE)
             views.setViewVisibility(R.id.realTime, View.GONE)
-        } else if (timeScale.kind == TimeScaleKind.CALENDAR) {
+        } else if (timeScale is CalendarTimeScale) {
             val proportionalTime = timeScale.getProportionalTime(
                 percentAlive,
                 MorbidMeterClock.getTimeScaleDirection()
@@ -189,7 +190,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 //                views.setViewVisibility(R.id.time, View.GONE)
 //                views.setViewVisibility(R.id.realTime, View.VISIBLE)
 //            }
-        else if (timeScale.kind == TimeScaleKind.NONE) {
+        else if (timeScale is NoTimeScale) {
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.GONE)
         }

@@ -2,9 +2,6 @@ package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
 import org.epstudios.morbidmeter.R
-import org.epstudios.morbidmeter.timescale.TimeScaleDirection
-import org.epstudios.morbidmeter.timescale.TimeScaleKind
-import org.epstudios.morbidmeter.timescale.TimeScaleType
 import java.text.DecimalFormat
 
 /**
@@ -32,20 +29,24 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class PercentTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.PERCENT
     override val nameId: Int = R.string.ts_percent
-    override val kind: TimeScaleKind = TimeScaleKind.PERCENT
 
     val formatString = "#.000000"
     val formatter = DecimalFormat(formatString)
 
-    override fun getPercentTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
+    fun getPercentTime(
+        context: Context,
+        percent: Double,
+        direction: TimeScaleDirection
+    ): String {
+        val percentString = formatter.format(getPercent(percent, direction))
         return if (direction == TimeScaleDirection.FORWARD) {
-            formatter.format(getProportionalTime(percent, direction)) + "%"
+            context.getString(R.string.percent_result, percentString)
         } else {
-            formatter.format(getProportionalTime(percent, direction)) + "% left"
+            context.getString(R.string.reverse_percent_result, percentString)
         }
     }
 
-    override fun getProportionalTime(
+    private fun getPercent(
         percent: Double,
         direction: TimeScaleDirection): Double {
         return if (direction == TimeScaleDirection.FORWARD) {

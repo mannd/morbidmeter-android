@@ -25,10 +25,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class LongTimeScale(): TimeScale {
+class LongTimeScale : RealTimeScale() {
     override val type: TimeScaleType = TimeScaleType.LONG_TIME
     override val nameId: Int = R.string.ts_long_time
-    override val kind: TimeScaleKind = TimeScaleKind.REAL_TIME
 
     override fun getTimeFormat(context: Context): String {
         return context.getString(R.string.long_time_format)

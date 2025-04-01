@@ -19,7 +19,7 @@ package org.epstudios.morbidmeter
 
 import java.util.Calendar
 
-class CalendarTimeScale internal constructor(
+class OldCalendarTimeScale internal constructor(
     nameId: Int,
     private val minTime: Calendar,
     private val maxTime: Calendar

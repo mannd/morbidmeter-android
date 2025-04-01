@@ -24,10 +24,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-class ShortMilitaryTimeScale : TimeScale {
+class ShortMilitaryTimeScale : RealTimeScale() {
     override val type: TimeScaleType = TimeScaleType.LONG_MILITARY_TIME
     override val nameId: Int = R.string.ts_long_military_time
-    override val kind: TimeScaleKind = TimeScaleKind.REAL_TIME
 
     override fun getTimeFormat(context: Context): String {
         return context.getString(R.string.short_military_time_format)

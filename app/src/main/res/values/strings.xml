@@ -78,4 +78,10 @@
     <string name="long_military_time_format">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
     <string name="short_military_time_format">EEEE, MMMM d yyyy\nHH:mm z</string>
     <string name="one_day_format">h:mm:ss a</string>
+
+    <!-- Interpolated strings -->
+    <string name="percent_result">%1$s%%</string>
+    <string name="reverse_percent_result">%1$s%% left</string>
+    <string name="days_alive_result">%1$s days alive</string>
+    <string name="reverse_days_alive_result">%1$s days remaining</string>
 </resources>
