@@ -109,5 +109,13 @@ class Frequency(private val frequencyType: FrequencyType) {
                 context.getString(it)
             }.toTypedArray()
         }
+
+        internal fun getFrequency(frequencyId: Int): Int {
+            val frequencyType =
+                getFrequencyIdToFrequencyType(frequencyId)
+            val frequency = Frequency(frequencyType)
+            return frequency.getFrequency()
+        }
     }
+
 }

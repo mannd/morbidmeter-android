@@ -46,6 +46,7 @@ class NewTimeScaleTests {
     @Test
     fun testPercentTimeScale() {
         val ts = PercentTimeScale()
+        // TODO: use raw percent, don't bother mocking context
 //        `when`(mockContext.getString(R.string.percent_result))
 //            .thenReturn("%1$s")
 //        assert("0.000000%" == ts.getPercentTime(mockContext, 0.0, TimeScaleDirection.FORWARD))

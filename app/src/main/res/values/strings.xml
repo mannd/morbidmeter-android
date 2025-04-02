@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MorbidMeter</string>
     <string name="birthday_label">Birthday or start date</string>
     <string name="longevity_label">Longevity or duration is</string>
     <string name="longevity_label_completion">years</string>
@@ -23,6 +24,7 @@
     <string name="user_name_checkbox_label">Don\'t add \'MorbidMeter\' to title text</string>
     <string name="initial_label">MorbidMeter\nClick skull to configure</string>
     <string name="loading_label">MorbidMeter loading…</string>
+
     <!-- TimeScales -->
     <string name="ts_day">ONE DAY</string>
     <string name="ts_hour">ONE HOUR</string>
@@ -84,4 +86,8 @@
     <string name="reverse_percent_result">%1$s%% left</string>
     <string name="days_alive_result">%1$s days alive</string>
     <string name="reverse_days_alive_result">%1$s days remaining</string>
+
+    <!-- Header strings -->
+    <string name="timescale_prefix">Timescale:\n</string>
+    <string name="reverse_timescale_prefix">"REVERSE "</string>
 </resources>

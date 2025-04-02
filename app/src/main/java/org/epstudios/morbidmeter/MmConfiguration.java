@@ -19,7 +19,7 @@
 package org.epstudios.morbidmeter;
 
 // essentially a C++ style 'struct'
-class Configuration {
+class MmConfiguration {
     User user;
     int timeScaleNameId;
     boolean reverseTime;

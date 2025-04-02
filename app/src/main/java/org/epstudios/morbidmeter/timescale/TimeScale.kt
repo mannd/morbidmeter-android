@@ -1,6 +1,10 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import android.content.res.Configuration
+import org.epstudios.morbidmeter.MorbidMeterClock
+import org.epstudios.morbidmeter.R
+import org.epstudios.morbidmeter.timescale.TimeScaleType.Companion.fromStringId
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -71,4 +75,23 @@ interface TimeScale {
         return 0.0
     }
 
+    companion object {
+        fun getTimeScale(timeScaleNameId: Int): TimeScale? {
+            val type = fromStringId(timeScaleNameId)
+            if (type == null) {
+                return null
+            }
+            when (type) {
+                TimeScaleType.LONG_TIME -> return LongTimeScale()
+                TimeScaleType.SHORT_TIME -> return ShortTimeScale()
+                TimeScaleType.LONG_MILITARY_TIME -> return LongMilitaryTimeScale()
+                TimeScaleType.SHORT_MILITARY_TIME -> return ShortMilitaryTimeScale()
+                TimeScaleType.NONE -> return NoTimeScale()
+                TimeScaleType.PERCENT -> return PercentTimeScale()
+                TimeScaleType.DAYS -> return DaysTimeScale()
+                TimeScaleType.ONE_DAY -> return OneDayTimeScale()
+                else -> return null
+            }
+        }
+    }
 }

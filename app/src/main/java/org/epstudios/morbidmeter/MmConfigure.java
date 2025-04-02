@@ -46,7 +46,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.epstudios.morbidmeter.timescale.TimeScaleType;
-import org.epstudios.morbidmeter.User;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -91,10 +90,10 @@ public class MmConfigure extends Activity {
     private CheckBox doNotModifyNameCheckBox;
     private CheckBox useExactTimeCheckBox;
 
-    private Configuration configuration;
+    private MmConfiguration configuration;
 
     static void savePrefs(Context context, int appWidgetId,
-                          Configuration configuration) {
+                          MmConfiguration configuration) {
         Log.d(LOG_TAG, "Saving configuration for widget " + appWidgetId);
         SharedPreferences.Editor prefs = context.getSharedPreferences(
                 PREFS_NAME, 0).edit();
@@ -128,10 +127,10 @@ public class MmConfigure extends Activity {
         prefs.apply();
     }
 
-    static Configuration loadPrefs(Context context, int appWidgetId) {
+    static MmConfiguration loadPrefs(Context context, int appWidgetId) {
         Log.d(LOG_TAG, "Loading configuration for widget " + appWidgetId);
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        Configuration configuration = new Configuration();
+        MmConfiguration configuration = new MmConfiguration();
         String name = prefs.getString(USER_NAME_KEY + appWidgetId,
                 context.getString(R.string.default_user_name));
         int year = prefs.getInt(BIRTHDAY_YEAR_KEY + appWidgetId, 1970);
@@ -170,6 +169,15 @@ public class MmConfigure extends Activity {
         prefs.apply();
     }
 
+    /**
+     * Configure the skull button.
+     * Pressing the skull button will call the configure activity with
+     * the current widget ID.  This is necessary because each widget
+     * has a different configuration.
+     * @param context
+     * @param appWidgetId
+     * @param views
+     */
     public static void configureSkullButton(Context context, int appWidgetId,
                                             RemoteViews views) {
         Intent intent = new Intent(context, MmConfigure.class);

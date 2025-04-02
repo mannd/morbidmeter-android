@@ -13,6 +13,8 @@ import org.epstudios.morbidmeter.timescale.DurationTimeScale
 import org.epstudios.morbidmeter.timescale.NoTimeScale
 import org.epstudios.morbidmeter.timescale.PercentTimeScale
 import org.epstudios.morbidmeter.timescale.RealTimeScale
+import org.epstudios.morbidmeter.timescale.TimeScale
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -46,6 +48,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         private const val LOG_TAG = "MorbidMeterWidgetProvider"
     }
 
+    var frequencyId: Int = 0
     var alarm: MmAlarm? = null
     var alarmType: MmAlarmType = MmAlarmType.INEXACT
 
@@ -62,8 +65,6 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     override fun onEnabled(context: Context) {
         Log.d(LOG_TAG, "onEnabled called")
-        // TODO: too early to get a frequency here? so not needed?
-//        scheduleNextUpdate(context)
     }
 
     // Called when last widget is disabled.
@@ -83,7 +84,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             val componentName = ComponentName(context, MorbidMeterWidgetProvider::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
             onUpdate(context, appWidgetManager, appWidgetIds)
-            scheduleNextUpdate(context)
+            scheduleNextUpdate(context, frequencyId)
         }
     }
 
@@ -97,13 +98,94 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         // TODO: Fix this code
         // Skull button needs to be configured each time?  Maybe just with
         // initial configuration.
-        MorbidMeterClock.resetConfiguration(context, appWidgetId)
+        //MorbidMeterClock.resetConfiguration(context, appWidgetId)
+        val configuration = MmConfigure.loadPrefs(context, appWidgetId)
         MmConfigure.configureSkullButton(context, appWidgetId, views)
-        updateWidget(context, views)
+        updateWidget(context, views, configuration)
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    private fun scheduleNextUpdate(context: Context) {
+    private fun updateWidget(context: Context, views: RemoteViews, configuration: MmConfiguration) {
+        val timeScale = TimeScale.getTimeScale(configuration.timeScaleNameId)
+        frequencyId = configuration.updateFrequencyId
+        Log.d(LOG_TAG, "timeScale = $timeScale")
+        if (timeScale == null) return
+        val percentAlive = configuration.user.percentAlive()
+        if (timeScale is RealTimeScale) {
+            views.setCharSequence(
+                R.id.realTime,
+                "setFormat12Hour",
+                timeScale.getTimeFormat(context)
+            );
+            views.setCharSequence(
+                R.id.realTime,
+                "setFormat24Hour", timeScale.getTimeFormat(context)
+            );
+            views.setViewVisibility(R.id.time, View.GONE)
+            views.setViewVisibility(R.id.realTime, View.VISIBLE)
+        } else if (timeScale is PercentTimeScale) {
+            views.setTextViewText(
+                R.id.time,
+                timeScale.getPercentTime(
+                    context,
+                    percentAlive,
+                    getTimeScaleDirection(configuration)
+                )
+            )
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+        } else if (timeScale is DurationTimeScale) {
+            views.setTextViewText(
+                R.id.time, timeScale.getTimeDuration(
+                    context,
+                    configuration.user.msecAlive(),
+                    configuration.user.lifeDurationMsec(),
+                    getTimeScaleDirection(configuration)
+                )
+            )
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+        } else if (timeScale is CalendarTimeScale) {
+            val proportionalTime = timeScale.getProportionalTime(
+                percentAlive,
+                getTimeScaleDirection(configuration)
+            )
+            val formatString = timeScale.getTimeFormat(context)
+            val formatter = SimpleDateFormat(formatString, Locale.getDefault());
+            views.setTextViewText(
+                R.id.time,
+                formatter.format(proportionalTime)
+            )
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+        } else if (timeScale is NoTimeScale) {
+            views.setViewVisibility(R.id.time, View.GONE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+            views.setProgressBar(
+                R.id.progressBar, 100,
+                (configuration.user.percentAlive() * 100).toInt(),
+                false
+            )
+        }
+        val label = getLabel(context, configuration)
+        views.setTextViewText(R.id.text, label)
+        Log.d(LOG_TAG, "Label updated.")
+    }
+
+    private fun getLabel(context: Context, configuration: MmConfiguration): String {
+        var timeScaleName: String? = context.getString(R.string.timescale_prefix)
+        if (configuration.reverseTime) timeScaleName +=
+            context.getString(R.string.reverse_timescale_prefix)
+        timeScaleName += context.getString(configuration.timeScaleNameId)
+        val userName = (if (configuration.doNotModifyName)
+            configuration.user.getName()
+        else
+            (configuration.user.getApostrophedName() + " " +
+                    context.getString(R.string.app_name)))
+        return userName + "\n" + timeScaleName
+    }
+
+    private fun scheduleNextUpdate(context: Context, frequencyId: Int) {
         Log.d(LOG_TAG, "scheduleNextUpdate called")
         if (alarm == null) {
             alarm = MmAlarm.create(
@@ -114,7 +196,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
                 alarmType
             )
         }
-        alarm?.setAlarm(MorbidMeterClock.getFrequency(context))
+        alarm?.setAlarm(Frequency.getFrequency(frequencyId))
     }
 
     private fun cancelUpdates(context: Context) {
@@ -131,80 +213,10 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         alarm?.cancelAlarm()
     }
 
-    fun updateWidget(context: Context, views: RemoteViews) {
-//        val currentTime = MorbidMeterClock.getFormattedTime(context)
-//        if (currentTime != null) {
-        val timeScale = MorbidMeterClock.getTimeScale()
-        Log.d(LOG_TAG, "timeScale = $timeScale")
-        if (timeScale == null) {
-            return
-        }
-        val percentAlive = MorbidMeterClock.rawPercentAlive()
-        // TODO: null check time functions
-        if (timeScale is RealTimeScale) {
-            views.setCharSequence(
-                R.id.realTime,
-                "setFormat12Hour", timeScale.getTimeFormat(context));
-            views.setCharSequence(
-                R.id.realTime,
-                "setFormat24Hour", timeScale.getTimeFormat(context));
-            views.setViewVisibility(R.id.time, View.GONE)
-            views.setViewVisibility(R.id.realTime, View.VISIBLE)
-        } else if (timeScale is PercentTimeScale) {
-            views.setTextViewText(R.id.time,
-                timeScale.getPercentTime(context, percentAlive,
-                MorbidMeterClock.getTimeScaleDirection()))
-            views.setViewVisibility(R.id.time, View.VISIBLE)
-            views.setViewVisibility(R.id.realTime, View.GONE)
-        } else if (timeScale is DurationTimeScale) {
-            views.setTextViewText(R.id.time, timeScale.getTimeDuration(context,
-                MorbidMeterClock.getMsecAlive(),
-                MorbidMeterClock.getMsecTotal(),
-                MorbidMeterClock.getTimeScaleDirection()))
-            views.setViewVisibility(R.id.time, View.VISIBLE)
-            views.setViewVisibility(R.id.realTime, View.GONE)
-        } else if (timeScale is CalendarTimeScale) {
-            val proportionalTime = timeScale.getProportionalTime(
-                percentAlive,
-                MorbidMeterClock.getTimeScaleDirection()
-            )
-            val formatString = timeScale.getTimeFormat(context)
-            val formatter = SimpleDateFormat(formatString, Locale.getDefault());
-            views.setTextViewText(
-                R.id.time,
-                formatter.format(proportionalTime)
-            )
-            views.setViewVisibility(R.id.time, View.VISIBLE)
-            views.setViewVisibility(R.id.realTime, View.GONE)
-        }
-//            if (TimeScaleType.isRealTime(MorbidMeterClock.getTimeScaleNameId())) {
-//                Log.d(LOG_TAG, "setting real time")
-//                views.setCharSequence(
-//                    R.id.realTime,
-//                    "setFormat12Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
-//                // Probably will override users clock preference
-//                // so set 12 hour and 24 hour clock to same format.
-//                views.setCharSequence(
-//                    R.id.realTime,
-//                    "setFormat24Hour", "EEEE, MMMM d yyyy\nhh:mm:ss a z")
-//                views.setViewVisibility(R.id.time, View.GONE)
-//                views.setViewVisibility(R.id.realTime, View.VISIBLE)
-//            }
-        else if (timeScale is NoTimeScale) {
-            views.setViewVisibility(R.id.time, View.GONE)
-            views.setViewVisibility(R.id.realTime, View.GONE)
-        }
-//            } else {
-//                views.setViewVisibility(R.id.time, View.VISIBLE)
-//                views.setTextViewText(R.id.time, currentTime)
-//            }
-//        }
-        views.setProgressBar(
-            R.id.progressBar, 100,
-            MorbidMeterClock.percentAlive().toInt(), false
-        )
-        val label = MorbidMeterClock.getLabel(context)
-        views.setTextViewText(R.id.text, label)
-        Log.d(LOG_TAG, "Label updated.")
+    private fun getTimeScaleDirection(configuration: MmConfiguration): TimeScaleDirection {
+        return if (configuration.reverseTime)
+            TimeScaleDirection.REVERSE
+        else
+            TimeScaleDirection.FORWARD
     }
 }

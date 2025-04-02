@@ -54,32 +54,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MorbidMeterClock {
-    private final Context context;
-    private final SimpleTimeScale timeScale;
-
     private static final String LOG_TAG = "MorbidMeterClock";
     private static final String PREFS_NAME = "org.epstudios.morbidmeter.MmConfigure";
     private static final String IN_MILESTONE = "in_milestone";
-    private static Configuration configuration = null;
+    private static MmConfiguration configuration = null;
     private static int appWidgetId = 0;
 
-    // TODO: Change from static class to instance class.
-    public MorbidMeterClock(Context context, SimpleTimeScale timeScale) {
-        this.context = context;
-        this.timeScale = timeScale;
-    }
-
+    // TODO: deprecated
     static void resetConfiguration(Context context, int appWidgetId) {
         configuration = MmConfigure.loadPrefs(context, appWidgetId);
         MorbidMeterClock.appWidgetId = appWidgetId;
         Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
     }
 
-    int getFrequency() {
-        return getFrequency(context);
+    static MmConfiguration getConfiguration(Context context, int appWidgetId) {
+        // TODO: line below should be unnecessary
+        MorbidMeterClock.appWidgetId = appWidgetId;
+        return MmConfigure.loadPrefs(context, appWidgetId);
     }
 
-    static int getFrequency(Context context) {
+    static int getFrequency() {
         int frequencyId = configuration.updateFrequencyId;
         Frequency.FrequencyType frequencyType =
                 Frequency.getFrequencyIdToFrequencyType(frequencyId);
@@ -87,23 +81,14 @@ public class MorbidMeterClock {
         return frequency.getFrequency();
     }
 
-    static boolean configurationIsComplete() {
-        return configuration.configurationComplete;
-    }
-
-    String getLabel() {
-        return getLabel(context);
-    }
-
     static String getLabel(Context context) {
-        String timeScaleName = "Timescale:\n";
+        String timeScaleName = context.getString(R.string.timescale_prefix);
         if (configuration.reverseTime)
-            timeScaleName += "REVERSE ";
+            timeScaleName += context.getString(R.string.reverse_timescale_prefix);
         timeScaleName += context.getString(configuration.timeScaleNameId);
         String userName = (configuration.doNotModifyName ? configuration.user.getName()
-                : configuration.user.getApostrophedName() + " MorbidMeter");
-
-        //String userName = configuration.user.getApostrophedName();
+                : configuration.user.getApostrophedName() + " " +
+                    context.getString(R.string.app_name));
         return userName + "\n" + timeScaleName;
     }
 
@@ -145,10 +130,6 @@ public class MorbidMeterClock {
 
     static long getMsecTotal() {
         return configuration.user.lifeDurationMsec();
-    }
-
-    String getFormattedTime() {
-        return getFormattedTime(context);
     }
 
     static String getFormattedTime(Context context) {
