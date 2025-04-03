@@ -1,9 +1,6 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
-import android.content.res.Configuration
-import org.epstudios.morbidmeter.MorbidMeterClock
-import org.epstudios.morbidmeter.R
 import org.epstudios.morbidmeter.timescale.TimeScaleType.Companion.fromStringId
 
 /**
@@ -45,35 +42,6 @@ interface TimeScale {
         return context.getString(nameId)
     }
 
-    /**
-     * Get the current time in the time scale.
-     *
-     * Note: The returned string has different functions
-     * depending on the type of time scale.  For real time scales,
-     * it is simply the format string for the current time.  For
-     * the other scales it is the the current time relative to the
-     * duration of the time scale.
-     * @param context Context to use for getting the string.
-     * @return The current time in the time scale.
-     */
-    fun getTimeFormat(context: Context): String? {
-        return null
-    }
-
-    fun getTimeDuration(
-        context: Context,
-        msecAlive: Long,
-        msecTotal: Long,
-        direction: TimeScaleDirection
-    ): String? {
-        return null
-    }
-
-    fun getProportionalTime (
-        percent: Double,
-        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): Double {
-        return 0.0
-    }
 
     companion object {
         fun getTimeScale(timeScaleNameId: Int): TimeScale? {
@@ -89,6 +57,8 @@ interface TimeScale {
                 TimeScaleType.NONE -> return NoTimeScale()
                 TimeScaleType.PERCENT -> return PercentTimeScale()
                 TimeScaleType.DAYS -> return DaysTimeScale()
+                TimeScaleType.SECONDS -> return SecondsTimeScale()
+                TimeScaleType.YEARS -> return YearsTimeScale()
                 TimeScaleType.ONE_DAY -> return OneDayTimeScale()
                 else -> return null
             }

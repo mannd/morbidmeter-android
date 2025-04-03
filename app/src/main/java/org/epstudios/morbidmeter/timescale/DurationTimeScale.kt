@@ -1,5 +1,8 @@
 package org.epstudios.morbidmeter.timescale
 
+import android.content.Context
+import org.epstudios.morbidmeter.MorbidMeterClock
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -22,9 +25,32 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * TimeScale that represents a duration.
+ */
 abstract class DurationTimeScale : TimeScale {
+
+    abstract fun getTimeDuration(
+        context: Context,
+        msecAlive: Long,
+        msecTotal: Long,
+        direction: TimeScaleDirection
+    ): String
+
+    fun getDuration(msecAlive: Long, msecTotal: Long, direction: TimeScaleDirection): Long {
+        return if (direction == TimeScaleDirection.FORWARD) {
+            msecAlive
+        } else {
+            msecTotal - msecAlive
+        }
+    }
 
     fun numDays(msec: Long): Double {
         return (msec / 1000.0 / 60 / 60 / 24)
     }
+
+    fun numYears(msecs: Long): Double {
+        return numDays(msecs) / 365.25
+    }
+
 }

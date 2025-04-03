@@ -22,6 +22,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+/**
+ * The class contains all the user data, including user birthday, deathday, and life duration.
+ */
 public class User {
     final static private double daysPerYear = 365.25;
     final static private long msecsPerYear = (long) (daysPerYear * 24 * 60 * 60 * 1000);
@@ -194,7 +197,7 @@ public class User {
     }
 
     public String getApostrophedName() {
-        if (name.length() > 0) {
+        if (!name.isEmpty()) {
             if (name.toUpperCase(Locale.getDefault()).charAt(name.length() - 1) == 'S')
                 name += "'";
             else

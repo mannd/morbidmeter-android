@@ -4,6 +4,8 @@ import android.content.Context
 import java.util.Calendar
 import java.util.GregorianCalendar
 import org.epstudios.morbidmeter.R
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -27,6 +29,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * TimeScale that maps a time duration onto one day.
+ */
 class OneDayTimeScale : CalendarTimeScale() {
     override val type: TimeScaleType = TimeScaleType.ONE_DAY
     override val nameId: Int = R.string.ts_day
@@ -37,16 +42,15 @@ class OneDayTimeScale : CalendarTimeScale() {
     private val maxTime: Calendar =
         GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0)
 
-    override fun getTimeFormat(context: Context): String? {
-        return context.getString(R.string.one_day_format)
-    }
-
-    override fun getProportionalTime(percent: Double, direction: TimeScaleDirection): Double {
-        return if (direction == TimeScaleDirection.FORWARD) {
+    override fun getProportionalTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
+        val formatString = "h:mm:ss a"
+        val formatter = SimpleDateFormat(formatString, Locale.getDefault());
+        val time = if (direction == TimeScaleDirection.FORWARD) {
             minTime.getTimeInMillis() + (percent * duration())
         } else {
             maxTime.getTimeInMillis() - (percent * duration())
         }
+        return formatter.format(time)
     }
 
     private fun duration(): Long {

@@ -40,6 +40,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * The widget provider for the MorbidMeter widgets.
+ */
 class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     companion object {
@@ -147,14 +150,13 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             views.setViewVisibility(R.id.realTime, View.GONE)
         } else if (timeScale is CalendarTimeScale) {
             val proportionalTime = timeScale.getProportionalTime(
+                context,
                 percentAlive,
                 getTimeScaleDirection(configuration)
             )
-            val formatString = timeScale.getTimeFormat(context)
-            val formatter = SimpleDateFormat(formatString, Locale.getDefault());
             views.setTextViewText(
                 R.id.time,
-                formatter.format(proportionalTime)
+                proportionalTime
             )
             views.setViewVisibility(R.id.time, View.VISIBLE)
             views.setViewVisibility(R.id.realTime, View.GONE)

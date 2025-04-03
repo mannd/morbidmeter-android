@@ -23,6 +23,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/**
+ * Enum representing the different types of frequencies.
+ */
 class Frequency(private val frequencyType: FrequencyType) {
 
     fun getFrequency(): Int {

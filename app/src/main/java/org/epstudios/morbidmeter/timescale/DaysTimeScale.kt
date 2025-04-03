@@ -26,6 +26,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Time measured in days.
+ */
 class DaysTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.DAYS
     override val nameId: Int = R.string.ts_days
@@ -37,14 +40,12 @@ class DaysTimeScale : DurationTimeScale() {
         msecAlive: Long,
         msecTotal: Long,
         direction: TimeScaleDirection
-    ): String? {
-        var duration: Long
+    ): String {
         var result: String
+        val duration = getDuration(msecAlive, msecTotal, direction)
         if (direction == TimeScaleDirection.FORWARD) {
-            duration = msecAlive
             result = context.getString(R.string.days_alive_result)
         } else {
-            duration = msecTotal - msecAlive
             result = context.getString(R.string.reverse_days_alive_result)
         }
         val days = numDays(duration)

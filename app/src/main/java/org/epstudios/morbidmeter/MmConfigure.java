@@ -55,6 +55,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * The Activity that is used to configure each widget.
+ */
 public class MmConfigure extends Activity {
     public static final String USER_NAME_KEY = "user_name";
     public static final String BIRTHDAY_YEAR_KEY = "birthday_year";

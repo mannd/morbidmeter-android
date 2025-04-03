@@ -26,6 +26,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * TimeScale that represents a percent value.
+ */
 class PercentTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.PERCENT
     override val nameId: Int = R.string.ts_percent

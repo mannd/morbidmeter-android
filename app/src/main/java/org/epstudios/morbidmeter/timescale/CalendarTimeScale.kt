@@ -1,5 +1,7 @@
 package org.epstudios.morbidmeter.timescale
 
+import android.content.Context
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -22,6 +24,14 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * TimeScale that maps a duration on a calendar time period.
+ */
 abstract class CalendarTimeScale : TimeScale {
+
+    abstract fun getProportionalTime (
+        context: Context,
+        percent: Double,
+        direction: TimeScaleDirection = TimeScaleDirection.FORWARD): String
 
 }

@@ -86,6 +86,10 @@
     <string name="reverse_percent_result">%1$s%% left</string>
     <string name="days_alive_result">%1$s days alive</string>
     <string name="reverse_days_alive_result">%1$s days remaining</string>
+    <string name="secs_alive_result">%1$s secs alive</string>
+    <string name="reverse_secs_alive_result">%1$s secs remaining</string>
+    <string name="years_alive_result">%1$s years alive</string>
+    <string name="reverse_years_alive_result">%1$s years remaining</string>
 
     <!-- Header strings -->
     <string name="timescale_prefix">Timescale:\n</string>

@@ -27,6 +27,9 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Enum representing the different types of time scales.
+ */
 enum class TimeScaleType {
     LONG_TIME,
     SHORT_TIME,
@@ -52,7 +55,6 @@ enum class TimeScaleType {
     PERCENT,
     NONE,
     RAW;
-
 
     companion object {
         val realTimeTypes: Set<TimeScaleType> = setOf(
@@ -89,7 +91,7 @@ enum class TimeScaleType {
         }
 
         /**
-         * Array of integer references to the time scale names
+         * Array of integer references to the time scale names.
          */
         @JvmStatic
         public val timescaleNameIds = intArrayOf(
@@ -143,6 +145,9 @@ enum class TimeScaleType {
     }
 }
 
+/**
+ * Time can only go forwards or backwards...
+ */
 enum class TimeScaleDirection {
     FORWARD,
     REVERSE

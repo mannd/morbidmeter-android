@@ -1,5 +1,7 @@
 package org.epstudios.morbidmeter.timescale
 
+import android.content.Context
+
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
@@ -22,6 +24,10 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Abstract class representing a real time scale, which is a time scale that is
+ * reflects real time.
+ */
 abstract class RealTimeScale() : TimeScale {
-
+    abstract fun getTimeFormat(context: Context): String?
 }
