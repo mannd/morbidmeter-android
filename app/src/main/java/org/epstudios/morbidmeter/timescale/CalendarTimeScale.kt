@@ -1,6 +1,7 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import java.util.Calendar
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -34,4 +35,7 @@ abstract class CalendarTimeScale : TimeScale {
         percent: Double,
         direction: TimeScaleDirection = TimeScaleDirection.FORWARD): String
 
+    fun timeScaleDuration(maxTime: Calendar, minTime: Calendar): Long {
+        return maxTime.getTimeInMillis() - minTime.getTimeInMillis()
+    }
 }

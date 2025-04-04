@@ -35,7 +35,9 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class OneDayTimeScale : CalendarTimeScale() {
     override val type: TimeScaleType = TimeScaleType.ONE_DAY
     override val nameId: Int = R.string.ts_day
-    val format: String? = "h:mm:ss a"
+
+    private val formatString = "h:mm:ss a"
+    private val formatter = SimpleDateFormat(formatString, Locale.getDefault())
 
     private val minTime: Calendar =
         GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0)
@@ -43,19 +45,15 @@ class OneDayTimeScale : CalendarTimeScale() {
         GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0)
 
     override fun getProportionalTime(context: Context, percent: Double, direction: TimeScaleDirection): String {
-        val formatString = "h:mm:ss a"
-        val formatter = SimpleDateFormat(formatString, Locale.getDefault());
+        val duration = timeScaleDuration(maxTime, minTime) * percent
         val time = if (direction == TimeScaleDirection.FORWARD) {
-            minTime.getTimeInMillis() + (percent * duration())
+            minTime.getTimeInMillis() + duration
         } else {
-            maxTime.getTimeInMillis() - (percent * duration())
+            maxTime.getTimeInMillis() - duration
         }
         return formatter.format(time)
     }
 
-    private fun duration(): Long {
-        return maxTime.getTimeInMillis() - minTime.getTimeInMillis()
-    }
 
 
 
