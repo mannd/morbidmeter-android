@@ -1,7 +1,8 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
-import org.epstudios.morbidmeter.MorbidMeterClock
+import org.epstudios.morbidmeter.R
+import java.text.DecimalFormat
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -45,12 +46,34 @@ abstract class DurationTimeScale : TimeScale {
         }
     }
 
+    fun getTimeDuration(
+        context: Context,
+        formatter: DecimalFormat,
+        duration: Double,
+        resultId: Int?
+    ): String {
+        if (resultId == null) return context.getString(R.string.error_message)
+        val format = formatter.format(duration)
+        return String.format(context.getString(resultId), format)
+    }
+
+    fun numSecs(msec: Long): Double {
+        return msec / 1000.0
+    }
+
     fun numDays(msec: Long): Double {
         return (msec / 1000.0 / 60 / 60 / 24)
+    }
+
+    fun numMinutes(msecs: Long): Double {
+        return msecs / (60 * 1000.0)
+    }
+
+    fun numHours(msecs: Long): Double {
+        return msecs / (60 * 60 * 1000.0)
     }
 
     fun numYears(msecs: Long): Double {
         return numDays(msecs) / 365.25
     }
-
 }

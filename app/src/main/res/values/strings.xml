@@ -90,8 +90,13 @@
     <string name="reverse_secs_alive_result">%1$s secs remaining</string>
     <string name="years_alive_result">%1$s years alive</string>
     <string name="reverse_years_alive_result">%1$s years remaining</string>
+    <string name="hours_alive_result">%1$s hours alive</string>
+    <string name="reverse_hours_alive_result">%1$s hours remaining</string>
+    <string name="minutes_alive_result">%1$s mins alive</string>
+    <string name="reverse_minutes_alive_result">%1$s mins remaining</string>
 
     <!-- Header strings -->
     <string name="timescale_prefix">Timescale:\n</string>
     <string name="reverse_timescale_prefix">"REVERSE "</string>
+    <string name="error_message">MORBIDMETER ERROR!</string>
 </resources>

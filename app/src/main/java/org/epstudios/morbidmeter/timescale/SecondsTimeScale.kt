@@ -31,6 +31,9 @@ class SecondsTimeScale : DurationTimeScale() {
     override val nameId: Int = R.string.ts_seconds
 
     val formatString = "#,###"
+    val formatter = DecimalFormat(formatString)
+    private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.secs_alive_result,
+        TimeScaleDirection.REVERSE to R.string.reverse_secs_alive_result)
 
     override fun getTimeDuration(
         context: Context,
@@ -38,15 +41,9 @@ class SecondsTimeScale : DurationTimeScale() {
         msecTotal: Long,
         direction: TimeScaleDirection
     ): String {
-        var result: String
-        val duration = getDuration(msecAlive, msecTotal, direction) / 1000
-        if (direction == TimeScaleDirection.FORWARD) {
-            result = context.getString(R.string.secs_alive_result)
-        } else {
-            result = context.getString(R.string.reverse_secs_alive_result)
-        }
-        val formatter = DecimalFormat(formatString)
-        var formattedDays = formatter.format(duration)
-        return String.format(result, formattedDays)
+        val duration = getDuration(msecAlive, msecTotal, direction)
+        val secs = numSecs(duration)
+        val resultId = resultMap[direction]
+        return getTimeDuration(context, formatter, secs, resultId)
     }
 }

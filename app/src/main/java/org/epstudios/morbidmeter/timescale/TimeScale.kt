@@ -50,16 +50,23 @@ interface TimeScale {
                 return null
             }
             when (type) {
+                // Real time scales
                 TimeScaleType.LONG_TIME -> return LongTimeScale()
                 TimeScaleType.SHORT_TIME -> return ShortTimeScale()
                 TimeScaleType.LONG_MILITARY_TIME -> return LongMilitaryTimeScale()
                 TimeScaleType.SHORT_MILITARY_TIME -> return ShortMilitaryTimeScale()
-                TimeScaleType.NONE -> return NoTimeScale()
+                // Percent time scale
                 TimeScaleType.PERCENT -> return PercentTimeScale()
-                TimeScaleType.DAYS -> return DaysTimeScale()
+                // Duration time scales
                 TimeScaleType.SECONDS -> return SecondsTimeScale()
+                TimeScaleType.MINUTES -> return MinutesTimeScale()
+                TimeScaleType.HOURS -> return HoursTimeScale()
+                TimeScaleType.DAYS -> return DaysTimeScale()
                 TimeScaleType.YEARS -> return YearsTimeScale()
+                // Calendar time scales
                 TimeScaleType.ONE_DAY -> return OneDayTimeScale()
+                // Other time scales
+                TimeScaleType.NONE -> return NoTimeScale()
                 else -> return null
             }
         }

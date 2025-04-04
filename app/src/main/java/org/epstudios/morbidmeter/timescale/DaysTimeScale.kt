@@ -33,7 +33,10 @@ class DaysTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.DAYS
     override val nameId: Int = R.string.ts_days
 
-    val formatString = "#,###.00"
+    private val formatString = "#,###.00"
+    private val formatter = DecimalFormat(formatString)
+    private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.days_alive_result,
+        TimeScaleDirection.REVERSE to R.string.reverse_days_alive_result)
 
     override fun getTimeDuration(
         context: Context,
@@ -41,16 +44,9 @@ class DaysTimeScale : DurationTimeScale() {
         msecTotal: Long,
         direction: TimeScaleDirection
     ): String {
-        var result: String
         val duration = getDuration(msecAlive, msecTotal, direction)
-        if (direction == TimeScaleDirection.FORWARD) {
-            result = context.getString(R.string.days_alive_result)
-        } else {
-            result = context.getString(R.string.reverse_days_alive_result)
-        }
         val days = numDays(duration)
-        val formatter = DecimalFormat(formatString)
-        var formattedDays = formatter.format(days)
-        return String.format(result, formattedDays)
+        val resultId = resultMap[direction]
+        return getTimeDuration(context, formatter, days, resultId)
     }
 }

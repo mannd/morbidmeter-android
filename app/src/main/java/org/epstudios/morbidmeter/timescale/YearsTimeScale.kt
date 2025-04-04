@@ -31,7 +31,10 @@ class YearsTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.YEARS
     override val nameId: Int = R.string.ts_years
 
-    val formatString = "#.000000"
+    private val formatString = "#.000000"
+    private val formatter = DecimalFormat(formatString)
+    private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.years_alive_result,
+        TimeScaleDirection.REVERSE to R.string.reverse_years_alive_result)
 
     override fun getTimeDuration(
         context: Context,
@@ -39,16 +42,9 @@ class YearsTimeScale : DurationTimeScale() {
         msecTotal: Long,
         direction: TimeScaleDirection
     ): String {
-        var result: String
         val duration = getDuration(msecAlive, msecTotal, direction)
-        if (direction == TimeScaleDirection.FORWARD) {
-            result = context.getString(R.string.years_alive_result)
-        } else {
-            result = context.getString(R.string.reverse_years_alive_result)
-        }
         val years = numYears(duration)
-        val formatter = DecimalFormat(formatString)
-        var formattedYears = formatter.format(years)
-        return String.format(result, formattedYears)
+        val resultId = resultMap[direction]
+        return getTimeDuration(context, formatter, years, resultId)
     }
 }

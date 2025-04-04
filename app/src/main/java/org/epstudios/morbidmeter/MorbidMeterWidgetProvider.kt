@@ -98,11 +98,8 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
     ) {
         Log.d(LOG_TAG, "updateAppWidget called with appWidgetId: $appWidgetId")
         val views = RemoteViews(context.packageName, R.layout.widget)
-        // TODO: Fix this code
-        // Skull button needs to be configured each time?  Maybe just with
-        // initial configuration.
-        //MorbidMeterClock.resetConfiguration(context, appWidgetId)
         val configuration = MmConfigure.loadPrefs(context, appWidgetId)
+        // TODO: Need to update button with every update?
         MmConfigure.configureSkullButton(context, appWidgetId, views)
         updateWidget(context, views, configuration)
         appWidgetManager.updateAppWidget(appWidgetId, views)
@@ -163,12 +160,12 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         } else if (timeScale is NoTimeScale) {
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.GONE)
-            views.setProgressBar(
-                R.id.progressBar, 100,
-                (configuration.user.percentAlive() * 100).toInt(),
-                false
-            )
         }
+        views.setProgressBar(
+            R.id.progressBar, 100,
+            (configuration.user.percentAlive() * 100).toInt(),
+            false
+        )
         val label = getLabel(context, configuration)
         views.setTextViewText(R.id.text, label)
         Log.d(LOG_TAG, "Label updated.")
@@ -215,6 +212,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         alarm?.cancelAlarm()
     }
 
+    // TODO: move this to MmConfiguration?
     private fun getTimeScaleDirection(configuration: MmConfiguration): TimeScaleDirection {
         return if (configuration.reverseTime)
             TimeScaleDirection.REVERSE
