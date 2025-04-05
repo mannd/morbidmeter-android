@@ -59,6 +59,7 @@ interface TimeScale {
                 // Percent time scales
                 TimeScaleType.PERCENT -> return PercentTimeScale()
                 TimeScaleType.UNIVERSE -> return UniverseTimeScale()
+                TimeScaleType.X_UNIVERSE_2 -> return XUniverse2TimeScale()
                 // Duration time scales
                 TimeScaleType.SECONDS -> return SecondsTimeScale()
                 TimeScaleType.MINUTES -> return MinutesTimeScale()
@@ -71,6 +72,7 @@ interface TimeScale {
                 TimeScaleType.ONE_WEEK -> return OneWeekTimeScale()
                 TimeScaleType.ONE_MONTH -> return OneMonthTimeScale()
                 TimeScaleType.ONE_YEAR -> return OneYearTimeScale()
+                TimeScaleType.X_UNIVERSE -> return XUniverseTimeScale()
                 // Other time scales
                 TimeScaleType.NONE -> return NoTimeScale()
                 else -> return null
