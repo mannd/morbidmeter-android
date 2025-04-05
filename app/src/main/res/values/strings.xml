@@ -102,6 +102,8 @@
     <string name="reverse_universe_result">%1$s yrs to Present</string>
     <string name="x_universe_2_result">%1$s yrs from Creation</string>
     <string name="reverse_x_universe_2_result">%1$s yrs to Armageddon</string>
+    <string name="d_h_m_result">%1$s d %2$s h %3$s m done</string>
+    <string name="reverse_d_h_m_result">%1$s d %2$s h %3$s m left</string>
 
     <!-- Header strings -->
     <string name="timescale_prefix">Timescale:\n</string>
