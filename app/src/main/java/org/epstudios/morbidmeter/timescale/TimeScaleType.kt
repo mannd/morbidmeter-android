@@ -35,7 +35,7 @@ enum class TimeScaleType {
     SHORT_TIME,
     LONG_MILITARY_TIME,
     SHORT_MILITARY_TIME,
-    MILLISECONDS,
+    //MILLISECONDS,
     SECONDS,
     MINUTES,
     HOURS,
@@ -43,7 +43,7 @@ enum class TimeScaleType {
     WEEKS,
     MONTHS,
     YEARS,
-    DAYS_HOURS_MINUTES_SECONDS,
+    //DAYS_HOURS_MINUTES_SECONDS,
     DAYS_HOURS_MINUTES,
     ONE_DAY,
     ONE_HOUR,
@@ -54,8 +54,8 @@ enum class TimeScaleType {
     X_UNIVERSE_2,
     X_UNIVERSE,
     PERCENT,
-    NONE,
-    RAW;
+    NONE;
+    //RAW;
 
     companion object {
         val realTimeTypes: Set<TimeScaleType> = setOf(
@@ -100,7 +100,7 @@ enum class TimeScaleType {
             R.string.ts_short_time,
             R.string.ts_long_military_time,
             R.string.ts_short_military_time,
-            R.string.ts_raw,
+            //R.string.ts_raw,
             R.string.ts_seconds,
             R.string.ts_minutes,
             R.string.ts_hours,
@@ -108,7 +108,7 @@ enum class TimeScaleType {
             R.string.ts_weeks,
             R.string.ts_months,
             R.string.ts_years,
-            R.string.ts_d_h_m_s,
+            //R.string.ts_d_h_m_s,
             R.string.ts_d_h_m,
             R.string.ts_day,
             R.string.ts_hour,
@@ -120,7 +120,7 @@ enum class TimeScaleType {
             R.string.ts_x_universe,
             R.string.ts_percent,
             R.string.ts_none,
-            R.string.ts_debug
+            //R.string.ts_debug
         )
 
         @JvmStatic
