@@ -56,8 +56,9 @@ interface TimeScale {
                 TimeScaleType.SHORT_TIME -> return ShortTimeScale()
                 TimeScaleType.LONG_MILITARY_TIME -> return LongMilitaryTimeScale()
                 TimeScaleType.SHORT_MILITARY_TIME -> return ShortMilitaryTimeScale()
-                // Percent time scale
+                // Percent time scales
                 TimeScaleType.PERCENT -> return PercentTimeScale()
+                TimeScaleType.UNIVERSE -> return UniverseTimeScale()
                 // Duration time scales
                 TimeScaleType.SECONDS -> return SecondsTimeScale()
                 TimeScaleType.MINUTES -> return MinutesTimeScale()

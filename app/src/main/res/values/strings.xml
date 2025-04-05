@@ -94,6 +94,8 @@
     <string name="reverse_hours_alive_result">%1$s hours remaining</string>
     <string name="minutes_alive_result">%1$s mins alive</string>
     <string name="reverse_minutes_alive_result">%1$s mins remaining</string>
+    <string name="universe_result">%1$s yrs from Big Bang</string>
+    <string name="reverse_universe_result">%1$s yrs to Present</string>
 
     <!-- Header strings -->
     <string name="timescale_prefix">Timescale:\n</string>

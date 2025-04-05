@@ -3,13 +3,12 @@ package org.epstudios.morbidmeter.timescale
 import android.content.Context
 import org.epstudios.morbidmeter.R
 import java.text.DecimalFormat
-import kotlin.math.max
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
 
-Created by mannd on 3/23/25.
+Created by mannd on 4/5/25.
 
 This file is part of morbidmeter-android.
 
@@ -27,17 +26,14 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * TimeScale that represents a percent value.
- */
-open class PercentTimeScale : TimeScale {
-    override val type: TimeScaleType = TimeScaleType.PERCENT
-    override val nameId: Int = R.string.ts_percent
+class UniverseTimeScale : PercentTimeScale() {
+    override val type: TimeScaleType = TimeScaleType.UNIVERSE
+    override val nameId: Int = R.string.ts_universe
 
-    open val formatString = "#.000000"
-    open val maxInterval = 100L
+    override val formatString = "##,###,###,###"
+    override val maxInterval = 15000000000L
 
-    open fun getPercentTime(
+    override fun getPercentTime(
         context: Context,
         percent: Double,
         direction: TimeScaleDirection
@@ -48,20 +44,9 @@ open class PercentTimeScale : TimeScale {
             direction,
             maxInterval))
         return if (direction == TimeScaleDirection.FORWARD) {
-            context.getString(R.string.percent_result, percentString)
+            context.getString(R.string.universe_result, percentString)
         } else {
-            context.getString(R.string.reverse_percent_result, percentString)
-        }
-    }
-
-    internal fun getPercentOfMaxInterval(
-        percent: Double,
-        direction: TimeScaleDirection,
-        maxInterval: Long): Double {
-        return if (direction == TimeScaleDirection.FORWARD) {
-            percent * maxInterval
-        } else {
-            maxInterval - (percent * maxInterval)
+            context.getString(R.string.reverse_universe_result, percentString)
         }
     }
 }
