@@ -1,6 +1,7 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
+import org.epstudios.morbidmeter.MorbidMeterClock
 import org.epstudios.morbidmeter.R
 import java.text.DecimalFormat
 
@@ -71,6 +72,15 @@ abstract class DurationTimeScale : TimeScale {
 
     fun numHours(msecs: Long): Double {
         return msecs / (60 * 60 * 1000.0)
+    }
+
+    fun numWeeks(msecs: Long): Double {
+        return numDays(msecs) / 7.0
+    }
+
+    fun numMonths(msec: Long): Double {
+        // Note that average length of month is value below
+        return numDays(msec) / 30.44
     }
 
     fun numYears(msecs: Long): Double {

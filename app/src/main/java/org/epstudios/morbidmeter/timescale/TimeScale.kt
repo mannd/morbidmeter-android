@@ -64,6 +64,8 @@ interface TimeScale {
                 TimeScaleType.SECONDS -> return SecondsTimeScale()
                 TimeScaleType.MINUTES -> return MinutesTimeScale()
                 TimeScaleType.HOURS -> return HoursTimeScale()
+                TimeScaleType.WEEKS -> return WeeksTimeScale()
+                TimeScaleType.MONTHS -> return MonthsTimeScale()
                 TimeScaleType.DAYS -> return DaysTimeScale()
                 TimeScaleType.YEARS -> return YearsTimeScale()
                 // Calendar time scales

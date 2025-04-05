@@ -94,6 +94,10 @@
     <string name="reverse_hours_alive_result">%1$s hours remaining</string>
     <string name="minutes_alive_result">%1$s mins alive</string>
     <string name="reverse_minutes_alive_result">%1$s mins remaining</string>
+    <string name="weeks_alive_result">%1$s weeks alive</string>
+    <string name="reverse_weeks_alive_result">%1$s weeks remaining</string>
+    <string name="months_alive_result">%1$s months alive</string>
+    <string name="reverse_months_alive_result">%1$s months remaining</string>
     <string name="universe_result">%1$s yrs from Big Bang</string>
     <string name="reverse_universe_result">%1$s yrs to Present</string>
     <string name="x_universe_2_result">%1$s yrs from Creation</string>
