@@ -1,17 +1,14 @@
 package org.epstudios.morbidmeter.timescale
 
-import android.content.Context
+import org.epstudios.morbidmeter.R
 import java.util.Calendar
 import java.util.GregorianCalendar
-import org.epstudios.morbidmeter.R
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
 
-Created by mannd on 3/30/25.
+Created by mannd on 4/5/25.
 
 This file is part of morbidmeter-android.
 
@@ -29,15 +26,17 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// TODO: are we accounting for post death, pre-birth?
 /**
- * TimeScale that maps a time duration onto one day.
+ * TimeScale that maps a time duration onto one week.
  */
-class OneDayTimeScale : CalendarTimeScale() {
-    override val type: TimeScaleType = TimeScaleType.ONE_DAY
-    override val nameId: Int = R.string.ts_day
-    override val formatString = "h:mm:ss a"
+class OneWeekTimeScale : CalendarTimeScale() {
+    override val type: TimeScaleType = TimeScaleType.ONE_WEEK
+    override val nameId: Int = R.string.ts_week
+    override val formatString = "E h:mm:ss a"
+    // This is a Sunday to Sunday
     override val minTime: Calendar =
-        GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0)
+        GregorianCalendar(2025, Calendar.APRIL, 6, 0, 0, 0)
     override val maxTime: Calendar =
-        GregorianCalendar(2000, Calendar.JANUARY, 2, 0, 0, 0)
+        GregorianCalendar(2025, Calendar.APRIL, 13, 0, 0, 0)
 }

@@ -99,4 +99,5 @@
     <string name="timescale_prefix">Timescale:\n</string>
     <string name="reverse_timescale_prefix">"REVERSE "</string>
     <string name="error_message">MORBIDMETER ERROR!</string>
+    <string name="ts_week">ONE WEEK</string>
 </resources>

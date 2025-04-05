@@ -15,8 +15,6 @@ import org.epstudios.morbidmeter.timescale.PercentTimeScale
 import org.epstudios.morbidmeter.timescale.RealTimeScale
 import org.epstudios.morbidmeter.timescale.TimeScale
 import org.epstudios.morbidmeter.timescale.TimeScaleDirection
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -147,7 +145,6 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             views.setViewVisibility(R.id.realTime, View.GONE)
         } else if (timeScale is CalendarTimeScale) {
             val proportionalTime = timeScale.getProportionalTime(
-                context,
                 percentAlive,
                 getTimeScaleDirection(configuration)
             )

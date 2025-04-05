@@ -2,6 +2,7 @@ package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
 import org.epstudios.morbidmeter.timescale.TimeScaleType.Companion.fromStringId
+import java.sql.Time
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -64,7 +65,11 @@ interface TimeScale {
                 TimeScaleType.DAYS -> return DaysTimeScale()
                 TimeScaleType.YEARS -> return YearsTimeScale()
                 // Calendar time scales
+                TimeScaleType.ONE_HOUR -> return OneHourTimeScale()
                 TimeScaleType.ONE_DAY -> return OneDayTimeScale()
+                TimeScaleType.ONE_WEEK -> return OneWeekTimeScale()
+                TimeScaleType.ONE_MONTH -> return OneMonthTimeScale()
+                TimeScaleType.ONE_YEAR -> return OneYearTimeScale()
                 // Other time scales
                 TimeScaleType.NONE -> return NoTimeScale()
                 else -> return null

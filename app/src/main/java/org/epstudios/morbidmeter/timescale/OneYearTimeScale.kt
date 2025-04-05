@@ -1,13 +1,17 @@
 package org.epstudios.morbidmeter.timescale
 
+import android.content.Context
+import org.epstudios.morbidmeter.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.GregorianCalendar
+import java.util.Locale
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
 www.epstudiossoftware.com
 
-Created by mannd on 3/31/25.
+Created by mannd on 4/5/25.
 
 This file is part of morbidmeter-android.
 
@@ -26,25 +30,14 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
- * TimeScale that maps a duration on a calendar time period.
+ * TimeScale that maps a time duration onto one year.
  */
-abstract class CalendarTimeScale : TimeScale {
-    abstract val minTime: Calendar
-    abstract val maxTime: Calendar
-    abstract val formatString: String
-
-    fun getProportionalTime(percent: Double, direction: TimeScaleDirection): String {
-        val formatter = SimpleDateFormat(formatString)
-        val duration = timeScaleDuration(maxTime, minTime) * percent
-        val time = if (direction == TimeScaleDirection.FORWARD) {
-            minTime.getTimeInMillis() + duration
-        } else {
-            maxTime.getTimeInMillis() - duration
-        }
-        return formatter.format(time)
-    }
-
-    private fun timeScaleDuration(maxTime: Calendar, minTime: Calendar): Long {
-        return maxTime.getTimeInMillis() - minTime.getTimeInMillis()
-    }
+class OneYearTimeScale : CalendarTimeScale() {
+    override val type: TimeScaleType = TimeScaleType.ONE_YEAR
+    override val nameId: Int = R.string.ts_year
+    override val formatString = "MMMM d\nh:mm:ss a"
+    override val minTime: Calendar =
+        GregorianCalendar(2000, Calendar.JANUARY, 1, 0, 0, 0)
+    override val maxTime: Calendar =
+        GregorianCalendar(2001, Calendar.JANUARY, 1, 0, 0, 0)
 }
