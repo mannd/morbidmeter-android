@@ -1,6 +1,7 @@
 package org.epstudios.morbidmeter
 
 import org.epstudios.morbidmeter.timescale.TimeScaleType
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 /**
@@ -29,7 +30,7 @@ class TimeScaleTypeTest {
     @Test
     fun testTimeScaleTypeIncludesTime() {
         val timescaleTypes = TimeScaleType.values()
-        assert(timescaleTypes.contains(TimeScaleType.LONG_TIME))
+        assertTrue(timescaleTypes.contains(TimeScaleType.LONG_TIME))
     }
 
 

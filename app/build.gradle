@@ -11,8 +11,15 @@ android {
         versionCode 24
         versionName "2.15.0"
 
-        testApplicationId "org.epstudios.morbidmeter.test"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+        }
     }
 
     buildTypes {
@@ -31,6 +38,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
     packagingOptions {
         jniLibs {
             excludes += ['META-INF/*']
@@ -54,28 +62,25 @@ tasks.withType(JavaCompile).configureEach {
     options.compilerArgs << "-Xlint:deprecation"
 }
 
+
 dependencies {
     implementation 'androidx.core:core:1.15.0'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.core:core-ktx:1.15.0'
 
-    // Mockito for local unit tests
-    testImplementation "org.mockito:mockito-core:5.10.0"
-    testImplementation "org.mockito.kotlin:mockito-kotlin:5.2.1"
-    // Optional, but recommended: Inline MockMaker
-    testImplementation("org.mockito:mockito-inline:5.2.0")
-
     // JUnit for Android instrumented tests
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
     // AndroidX Test Core
     androidTestImplementation "androidx.test:core:1.6.1"
     // AndroidX Test Runner
-    androidTestImplementation "androidx.test:runner:1.5.2"
+    androidTestImplementation "androidx.test:runner:1.6.2"
     // AndroidX Test Rules
-    androidTestImplementation "androidx.test:rules:1.5.0"
+    androidTestImplementation "androidx.test:rules:1.6.1"
     // AndroidX Test Ext JUnit
-    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
     // Optional -- UI testing with Espresso
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.5.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
 
 }
