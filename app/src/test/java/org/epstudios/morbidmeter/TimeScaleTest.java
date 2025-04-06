@@ -1,19 +1,22 @@
-package org.epstudios.morbidmeter.test;
+package org.epstudios.morbidmeter;
 
-import junit.framework.TestCase;
 
-import org.epstudios.morbidmeter.SimpleTimeScale;
-import org.epstudios.morbidmeter.User;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class TimeScaleTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class TimeScaleTest {
+    @Test
     public void testTimeScaleDuration() {
         SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         assertEquals(100, ts.duration());
     }
 
+    @Test
     public void testProportionalTime() {
         SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         assertEquals(50.0, ts.proportionalTime(.5));
@@ -21,6 +24,7 @@ public class TimeScaleTest extends TestCase {
         assertEquals(100.0, ts.proportionalTime(1));
     }
 
+    @Test
     public void testReverseProportionalTime() {
         SimpleTimeScale ts = new SimpleTimeScale(0, 500, 600);
         assertEquals(550.0, ts.reverseProportionalTime(.5));
@@ -28,6 +32,7 @@ public class TimeScaleTest extends TestCase {
         assertEquals(600.0, ts.reverseProportionalTime(0));
     }
 
+    @Test
     public void testPercentTimeScale() {
         SimpleTimeScale ts = new SimpleTimeScale(0, 0, 100);
         GregorianCalendar bd = new GregorianCalendar();
@@ -42,6 +47,7 @@ public class TimeScaleTest extends TestCase {
         assertEquals(50.0, ts.proportionalTime(u.percentAlive(date1)), 1.0);
     }
 
+    @Test
     public void testLifeDurationMsec() {
         GregorianCalendar bd = new GregorianCalendar();
         bd.set(1950, 1, 1);

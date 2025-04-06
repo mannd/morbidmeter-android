@@ -1,6 +1,7 @@
-package org.epstudios.morbidmeter.test
+package org.epstudios.morbidmeter
 
 import org.epstudios.morbidmeter.timescale.PercentTimeScale
+import org.epstudios.morbidmeter.timescale.TimeScaleDirection
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -26,18 +27,19 @@ You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 class PercentTimeScaleTest {
+
     @Test
-    fun getMaxInterval() {
+    fun testMaxInterval() {
         val scale = PercentTimeScale()
         assertEquals(100, scale.maxInterval)
     }
 
     @Test
-    fun getPercentOfMaxInterval()
+    fun testPercentOfMaxInterval()
     {
         val scale = PercentTimeScale()
         val percent = 0.5
-        val direction = org.epstudios.morbidmeter.timescale.TimeScaleDirection.FORWARD
+        val direction = TimeScaleDirection.FORWARD
         val maxInterval = 100L
         val result = scale.getPercentOfMaxInterval(percent, direction, maxInterval)
         assertEquals(50.0, result)

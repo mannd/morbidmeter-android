@@ -1,23 +1,17 @@
-package org.epstudios.morbidmeter.test;
+package org.epstudios.morbidmeter;
 
-import junit.framework.TestCase;
-
-import org.epstudios.morbidmeter.User;
+import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class UserTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-    public UserTest(String name) {
-        super(name);
-    }
+public class UserTest {
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
+    @Test
     public void testDeathDay() {
         GregorianCalendar bd = new GregorianCalendar();
         bd.set(Calendar.YEAR, 1950);
@@ -28,6 +22,7 @@ public class UserTest extends TestCase {
         assertEquals(2030, deathYear);
     }
 
+    @Test
     public void testPercentAlive() {
         GregorianCalendar bd = new GregorianCalendar();
         bd.set(Calendar.YEAR, 1950);
@@ -43,6 +38,7 @@ public class UserTest extends TestCase {
 //        assertEquals(0.5, user.percentAlive(testDate), 0.01);
     }
 
+    @Test
     public void testIsSane() {
         double longevity = 80.1;
         GregorianCalendar bd = new GregorianCalendar();
@@ -69,6 +65,7 @@ public class UserTest extends TestCase {
         assertTrue(user.isSane());
     }
 
+    @Test
     public void testIsDead() {
         GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
         User user = new User("", bd, 60.0); // should die in 2010
@@ -78,6 +75,7 @@ public class UserTest extends TestCase {
         assertFalse(user.isDead());
     }
 
+    @Test
     public void testGetApostophedName() {
         GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
         User user = new User("David", bd, 70.0);

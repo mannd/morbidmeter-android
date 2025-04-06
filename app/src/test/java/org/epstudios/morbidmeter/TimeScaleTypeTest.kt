@@ -1,7 +1,7 @@
-package org.epstudios.morbidmeter.test
+package org.epstudios.morbidmeter
 
-import junit.framework.TestCase
 import org.epstudios.morbidmeter.timescale.TimeScaleType
+import org.junit.jupiter.api.Test
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -24,8 +24,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
-class TimeScaleTypeTest : TestCase() {
+class TimeScaleTypeTest {
 
+    @Test
     fun testTimeScaleTypeIncludesTime() {
         val timescaleTypes = TimeScaleType.values()
         assert(timescaleTypes.contains(TimeScaleType.LONG_TIME))
