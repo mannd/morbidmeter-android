@@ -65,5 +65,4 @@ class DaysHoursMinsTimeScale : DurationTimeScale() {
         return String.format(context.getString(resultId), daysFormat,
             hoursFormat, minsFormat)
     }
-
 }

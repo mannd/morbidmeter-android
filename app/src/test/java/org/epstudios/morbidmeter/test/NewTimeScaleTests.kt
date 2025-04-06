@@ -7,7 +7,7 @@ import junit.framework.TestCase
 import org.epstudios.morbidmeter.timescale.PercentTimeScale
 import org.epstudios.morbidmeter.timescale.TimeScaleDirection
 import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
@@ -40,9 +40,6 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 
 @RunWith(MockitoJUnitRunner::class)
 class NewTimeScaleTests {
-    @Mock
-    val mockContext = mock(Context::class.java)
-
     @Test
     fun testPercentTimeScale() {
         val ts = PercentTimeScale()

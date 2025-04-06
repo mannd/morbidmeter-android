@@ -84,6 +84,7 @@ dependencies {
 
     // JUnit for Android instrumented tests
     testImplementation "junit:junit:4.13.2"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     // AndroidX Test Core
     androidTestImplementation "androidx.test:core:1.6.1"
     // AndroidX Test Runner
