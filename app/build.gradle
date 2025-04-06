@@ -26,19 +26,6 @@ android {
         }
     }
 
-    flavorDimensions "default"
-    productFlavors {
-        full {
-            dimension "default"
-            resValue "string", "app_name", "MorbidMeter"
-        }
-        lite {
-            dimension "default"
-            applicationIdSuffix ".lite"
-            resValue "string", "app_name", "MorbidMeter Lite"
-        }
-    }
-
     compileOptions {
         encoding = 'UTF-8'
         sourceCompatibility JavaVersion.VERSION_11
