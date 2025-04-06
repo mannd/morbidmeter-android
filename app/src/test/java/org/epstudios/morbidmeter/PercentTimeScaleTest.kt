@@ -43,5 +43,17 @@ class PercentTimeScaleTest {
         val maxInterval = 100L
         val result = scale.getPercentOfMaxInterval(percent, direction, maxInterval)
         assertEquals(50.0, result)
+        val percent2 = 0.0
+        val result2 = scale.getPercentOfMaxInterval(percent2, direction, maxInterval)
+        assertEquals(0.0, result2)
+        val percent3 = 1.0
+        val result3 = scale.getPercentOfMaxInterval(percent3, direction, maxInterval)
+        assertEquals(100.0, result3)
+        val percent4 = 1.1
+        val result4 = scale.getPercentOfMaxInterval(percent4, direction, maxInterval)
+        assertEquals(100.0, result4)
+        val percent5 = -0.1
+        val result5 = scale.getPercentOfMaxInterval(percent5, direction, maxInterval)
+        assertEquals(0.0, result5)
     }
 }

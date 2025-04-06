@@ -3,7 +3,6 @@ package org.epstudios.morbidmeter.timescale
 import android.content.Context
 import org.epstudios.morbidmeter.R
 import java.text.DecimalFormat
-import kotlin.math.max
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -54,14 +53,19 @@ open class PercentTimeScale : TimeScale {
         }
     }
 
+    /**
+     * Gets the percent of the max interval.
+     *
+     * Coerces value between 0.0 and maxInterval.
+     */
     internal fun getPercentOfMaxInterval(
         percent: Double,
         direction: TimeScaleDirection,
         maxInterval: Long): Double {
         return if (direction == TimeScaleDirection.FORWARD) {
-            percent * maxInterval
+            (percent * maxInterval).coerceIn(0.0, maxInterval.toDouble())
         } else {
-            maxInterval - (percent * maxInterval)
+            (maxInterval - (percent * maxInterval)).coerceIn(0.0, maxInterval.toDouble())
         }
     }
 }

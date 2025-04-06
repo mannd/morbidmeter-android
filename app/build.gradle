@@ -14,6 +14,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+// See  https://stackoverflow.com/questions/57795263/test-events-were-not-received-when-run-tests-using-intellij
     testOptions {
         unitTests {
             all {
