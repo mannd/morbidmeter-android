@@ -31,7 +31,7 @@ class UniverseTimeScale : PercentTimeScale() {
     override val nameId: Int = R.string.ts_universe
 
     override val formatString = "##,###,###,###"
-    override val maxInterval = 15000000000L
+    override val maxValue = 15000000000L
 
     override fun getPercentTime(
         context: Context,
@@ -42,7 +42,7 @@ class UniverseTimeScale : PercentTimeScale() {
         val percentString = formatter.format(getPercentOfMaxInterval(
             percent,
             direction,
-            maxInterval))
+            maxValue))
         return if (direction == TimeScaleDirection.FORWARD) {
             context.getString(R.string.universe_result, percentString)
         } else {

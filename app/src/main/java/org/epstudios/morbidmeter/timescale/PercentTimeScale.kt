@@ -34,7 +34,7 @@ open class PercentTimeScale : TimeScale {
     override val nameId: Int = R.string.ts_percent
 
     open val formatString = "#.000000"
-    open val maxInterval = 100L
+    open val maxValue = 100L
 
     open fun getPercentTime(
         context: Context,
@@ -45,7 +45,7 @@ open class PercentTimeScale : TimeScale {
         val percentString = formatter.format(getPercentOfMaxInterval(
             percent,
             direction,
-            maxInterval))
+            maxValue))
         return if (direction == TimeScaleDirection.FORWARD) {
             context.getString(R.string.percent_result, percentString)
         } else {
@@ -61,11 +61,11 @@ open class PercentTimeScale : TimeScale {
     internal fun getPercentOfMaxInterval(
         percent: Double,
         direction: TimeScaleDirection,
-        maxInterval: Long): Double {
+        maxValue: Long): Double {
         return if (direction == TimeScaleDirection.FORWARD) {
-            (percent * maxInterval).coerceIn(0.0, maxInterval.toDouble())
+            (percent * maxValue).coerceIn(0.0, maxValue.toDouble())
         } else {
-            (maxInterval - (percent * maxInterval)).coerceIn(0.0, maxInterval.toDouble())
+            (maxValue - (percent * maxValue)).coerceIn(0.0, maxValue.toDouble())
         }
     }
 }

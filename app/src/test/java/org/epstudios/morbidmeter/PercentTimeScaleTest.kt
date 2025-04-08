@@ -31,7 +31,7 @@ class PercentTimeScaleTest {
     @Test
     fun testMaxInterval() {
         val scale = PercentTimeScale()
-        assertEquals(100, scale.maxInterval)
+        assertEquals(100, scale.maxValue)
     }
 
     @Test

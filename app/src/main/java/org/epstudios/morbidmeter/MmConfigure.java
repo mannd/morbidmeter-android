@@ -502,7 +502,8 @@ public class MmConfigure extends Activity {
 
     @SuppressLint("DefaultLocale")
     public boolean isLite() {
-        return getPackageName().toLowerCase().contains("lite");
+        return false; // lite version no longer supported
+        //return getPackageName().toLowerCase().contains("lite");
     }
 
     private class MyOnDateChangedListener implements OnDateChangedListener {

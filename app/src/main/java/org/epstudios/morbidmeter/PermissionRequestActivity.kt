@@ -45,7 +45,7 @@ class PermissionRequestActivity : ComponentActivity() {
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
-                d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission granted")
+                Log.d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission granted")
             } else {
                 Log.d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission denied")
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
@@ -71,17 +71,17 @@ class PermissionRequestActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "PermissionRequestActivity.onCreate")
         setContentView(R.layout.permisionrequest)
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-//            Log.d(LOG_TAG, "Checking for SCHEDULE_EXACT_ALARM permission")
-//            if (ContextCompat.checkSelfPermission(this,
-//                    android.Manifest.permission.SCHEDULE_EXACT_ALARM)
-//                != PackageManager.PERMISSION_GRANTED) {
-//                Log.d(LOG_TAG, "Requesting SCHEDULE_EXACT_ALARM permission")
-//                requestPermissionLauncher.launch(android.Manifest.permission.USE_EXACT_ALARM)
-//                requestPermissionLauncher.launch(android.Manifest.permission.SCHEDULE_EXACT_ALARM)
-//            } else {
-//                finish()
-//            }
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d(LOG_TAG, "Checking for SCHEDULE_EXACT_ALARM permission")
+            if (ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+                != PackageManager.PERMISSION_GRANTED) {
+                Log.d(LOG_TAG, "Requesting SCHEDULE_EXACT_ALARM permission")
+                requestPermissionLauncher.launch(android.Manifest.permission.USE_EXACT_ALARM)
+                requestPermissionLauncher.launch(android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+            } else {
+                finish()
+            }
+        }
     }
 }
