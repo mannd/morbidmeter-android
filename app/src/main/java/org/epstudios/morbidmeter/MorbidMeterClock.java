@@ -29,7 +29,6 @@ import android.media.AudioAttributes;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 
 import org.epstudios.morbidmeter.timescale.DaysTimeScale;
 import org.epstudios.morbidmeter.timescale.LongMilitaryTimeScale;
@@ -59,42 +58,6 @@ public class MorbidMeterClock {
     private static final String IN_MILESTONE = "in_milestone";
     private static MmConfiguration configuration = null;
     private static int appWidgetId = 0;
-
-    // TODO: deprecated
-    static void resetConfiguration(Context context, int appWidgetId) {
-        configuration = MmConfigure.loadPrefs(context, appWidgetId);
-        MorbidMeterClock.appWidgetId = appWidgetId;
-        Log.d(LOG_TAG, "resetConfiguration, appWidgetId = " + appWidgetId);
-    }
-
-    static MmConfiguration getConfiguration(Context context, int appWidgetId) {
-        // TODO: line below should be unnecessary
-        MorbidMeterClock.appWidgetId = appWidgetId;
-        return MmConfigure.loadPrefs(context, appWidgetId);
-    }
-
-    static int getFrequency() {
-        int frequencyId = configuration.updateFrequencyId;
-        Frequency.FrequencyType frequencyType =
-                Frequency.getFrequencyIdToFrequencyType(frequencyId);
-        Frequency frequency = new Frequency(frequencyType);
-        return frequency.getFrequency();
-    }
-
-    static String getLabel(Context context) {
-        String timeScaleName = context.getString(R.string.timescale_prefix);
-        if (configuration.reverseTime)
-            timeScaleName += context.getString(R.string.reverse_timescale_prefix);
-        timeScaleName += context.getString(configuration.timeScaleNameId);
-        String userName = (configuration.doNotModifyName ? configuration.user.getName()
-                : configuration.user.getApostrophedName() + " " +
-                    context.getString(R.string.app_name));
-        return userName + "\n" + timeScaleName;
-    }
-
-    static Integer getTimeScaleNameId() {
-        return configuration.timeScaleNameId;
-    }
 
 
     static TimeScale getTimeScale() {
