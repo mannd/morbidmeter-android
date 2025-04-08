@@ -18,7 +18,7 @@
 package org.epstudios.morbidmeter
 
 import android.annotation.SuppressLint
-import android.app.Activity
+import android.app.AlarmManager
 import android.app.AlertDialog
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
@@ -44,6 +44,7 @@ import android.widget.RadioGroup
 import android.widget.RemoteViews
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import org.epstudios.morbidmeter.Frequency.Companion.frequencyNameIds
 import org.epstudios.morbidmeter.timescale.TimeScaleType
@@ -52,11 +53,12 @@ import java.text.DecimalFormat
 import java.util.Calendar
 import java.util.GregorianCalendar
 import java.util.Objects
+import kotlin.jvm.java
 
 /**
  * The Activity that is used to configure each widget.
  */
-class MmConfigure : Activity() {
+class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private var userNameEditText: EditText? = null
     private var birthDayDatePicker: DatePicker? = null
@@ -110,6 +112,11 @@ class MmConfigure : Activity() {
         doNotModifyNameCheckBox = findViewById<CheckBox>(R.id.do_not_modify_name_checkbox)
         useExactTimeCheckBox = findViewById<CheckBox>(R.id.use_exact_time)
 
+        val checkBox = useExactTimeCheckBox
+        checkBox?.setOnCheckedChangeListener { _,
+                                               isChecked ->
+            onExactAlarmPermissionRequested(isChecked)
+        }
         // setting the focus is kinda annoying
         // userNameEditText.requestFocus();
         this.window.setSoftInputMode(
@@ -285,6 +292,32 @@ class MmConfigure : Activity() {
 
         val cancel = findViewById<Button>(R.id.cancel_button)
         cancel.setOnClickListener(View.OnClickListener { v: View? -> finish() })
+    }
+
+    override fun onExactAlarmPermissionRequested(useExactAlarm: Boolean) {
+        if (useExactAlarm) {
+            val intent = Intent(this, PermissionRequestActivity::class.java)
+            startActivity(intent)
+        } else {
+            cancelAlarm()
+        }
+    }
+
+    private fun cancelAlarm() {
+        // TODO
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmAllowed = getSystemService(AlarmManager::class.java)
+                .canScheduleExactAlarms()
+            if (alarmAllowed) {
+                useExactTimeCheckBox!!.setEnabled(true)
+            } else {
+                useExactTimeCheckBox!!.setEnabled(false)
+            }
+        }
     }
 
     private fun getLongevityText(longevity: Double): String {
