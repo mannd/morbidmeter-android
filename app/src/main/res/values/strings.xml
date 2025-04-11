@@ -151,4 +151,15 @@
         MorbidMeter is not intended to be a precision clock, though you can use it to measure
         fuzzy time.
     </string>
+    <string name="exact_alarm_rationale_title">Allow Exact Timing</string>
+    <string name="exact_alarm_rationale_message">
+        You can enable exact timing in MorbidMeter
+        but this may shorten battery life.  If you wish to use exact timing,
+        press the Go to Settings button, and then give permission to
+        allow setting alarms and reminders.  You can always
+        inactivate this permission later in the Settings app.
+        If you do not wish to use exact timing, press Cancel.
+    </string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="cancel">Cancel</string>
 </resources>
