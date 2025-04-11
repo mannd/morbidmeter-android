@@ -106,6 +106,11 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
     private fun updateWidget(context: Context, views: RemoteViews, configuration: MmConfiguration) {
         val timeScale = TimeScale.getTimeScale(configuration.timeScaleNameId)
         frequencyId = configuration.updateFrequencyId
+        if (configuration.useExactTime) {
+            alarmType = MmAlarmType.EXACT
+        } else {
+            alarmType = MmAlarmType.INEXACT
+        }
         Log.d(LOG_TAG, "timeScale = $timeScale")
         if (timeScale == null) return
         val percentAlive = configuration.user.percentAlive()

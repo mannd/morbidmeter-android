@@ -7,12 +7,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.util.Log.*
-import android.webkit.PermissionRequest
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 
 /**
@@ -21,9 +18,9 @@ www.epstudiossoftware.com
 
 Created by mannd on 2/24/25.
 
-This file is part of TestAppWidget.
+This file is part of MorbidMeter.
 
-TestAppWidget is free software: you can redistribute it and/or modify
+MorbidMeter is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
@@ -36,6 +33,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with TestAppWidget.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class PermissionRequestActivity : ComponentActivity() {
 
     companion object {
@@ -44,43 +42,69 @@ class PermissionRequestActivity : ComponentActivity() {
 
     private val requestPermissionLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            //This callback is only for permissions such as location, camera, etc.
+            //This will never be called for SCHEDULE_EXACT_ALARM
             if (isGranted) {
                 Log.d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission granted")
             } else {
                 Log.d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission denied")
+                // This should not be called for SCHEDULE_EXACT_ALARM
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(
                         this,
                         android.Manifest.permission.SCHEDULE_EXACT_ALARM
                     )
                 ) {
+                    // This should not be called for SCHEDULE_EXACT_ALARM
                     showAppSettings()
                 }
             }
-            //finish()
         }
 
     private fun showAppSettings() {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
+        // The correct way is to use the ACTION_REQUEST_SCHEDULE_EXACT_ALARM intent
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
+                data = Uri.fromParts("package", packageName, null)
+            }
+        } else {
+            // Fallback for older Android versions if necessary.
+            // In those version, you don't need a specific permission
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            }
+        }
         startActivity(intent)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "PermissionRequestActivity.onCreate")
         setContentView(R.layout.permisionrequest)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Log.d(LOG_TAG, "Checking for SCHEDULE_EXACT_ALARM permission")
-            if (ContextCompat.checkSelfPermission(this,
-                    android.Manifest.permission.SCHEDULE_EXACT_ALARM)
-                != PackageManager.PERMISSION_GRANTED) {
+            if (!getSystemService(android.app.AlarmManager::class.java).canScheduleExactAlarms()) {
                 Log.d(LOG_TAG, "Requesting SCHEDULE_EXACT_ALARM permission")
-                requestPermissionLauncher.launch(android.Manifest.permission.USE_EXACT_ALARM)
-                requestPermissionLauncher.launch(android.Manifest.permission.SCHEDULE_EXACT_ALARM)
+                showAppSettings()
             } else {
+                Log.d(LOG_TAG, "SCHEDULE_EXACT_ALARM Permission already granted")
                 finish()
+            }
+        } else {
+            Log.d(LOG_TAG, "No need to request permission for older android versions")
+            finish()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(LOG_TAG, "onResume")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (getSystemService(android.app.AlarmManager::class.java).canScheduleExactAlarms()) {
+                Log.d(LOG_TAG, "Permission now granted.")
+                finish()
+            } else {
+                Log.d(LOG_TAG, "Permission still denied.")
             }
         }
     }

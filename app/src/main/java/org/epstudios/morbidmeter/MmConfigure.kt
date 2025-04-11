@@ -94,10 +94,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         // button
         setContentView(R.layout.configure)
 
-        // TODO: If exact alarm wanted, and if permission not granted, then ask for permission
-        // by launching a permission request activity.
-//        Intent intent = new Intent(this, PermissionRequestActivity.class);
-//        startActivity(intent);
         userNameEditText = findViewById<EditText>(R.id.user_name)
         birthDayDatePicker = findViewById<DatePicker>(R.id.birthday)
         deathDayDatePicker = findViewById<DatePicker>(R.id.deathday)
@@ -313,9 +309,9 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             val alarmAllowed = getSystemService(AlarmManager::class.java)
                 .canScheduleExactAlarms()
             if (alarmAllowed) {
-                useExactTimeCheckBox!!.setEnabled(true)
+                useExactTimeCheckBox!!.setChecked(true)
             } else {
-                useExactTimeCheckBox!!.setEnabled(false)
+                useExactTimeCheckBox!!.setChecked(false)
             }
         }
     }
