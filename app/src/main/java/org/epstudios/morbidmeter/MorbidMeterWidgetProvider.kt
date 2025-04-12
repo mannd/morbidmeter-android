@@ -75,6 +75,12 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         MmConfigure.deletePrefs(context)
     }
 
+    override fun onDeleted(context: Context, appWidgetIds: IntArray) {
+        Log.d(LOG_TAG, "onDeleted called")
+        cancelUpdates(context)
+        MmConfigure.deletePrefs(context)
+    }
+
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
         Log.d(LOG_TAG, "onReceive called with action: ${intent.action}")
