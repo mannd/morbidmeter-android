@@ -454,7 +454,7 @@ public class MorbidMeterClock {
     // We need to suppress deprecation here because we are using
     // deprecated methods for older versions of Android.
     @SuppressWarnings("deprecation")
-    private static void showNotification(Context context, String time) {
+    public static void showNotification(Context context, String time) {
         final String CHANNEL_ID = "morbidmeter_channel";
         final int NOTIFICATION_ID = 1;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -531,7 +531,6 @@ public class MorbidMeterClock {
                 PREFS_NAME, 0).edit();
         prefsEditor.putBoolean(IN_MILESTONE + appWidgetId, inMilestone);
         prefsEditor.apply();
-
     }
 
     private static Boolean isMilestone(Context context, String time) {
@@ -544,8 +543,8 @@ public class MorbidMeterClock {
             return isEvenPercentage(time);
         } else if (configuration.timeScaleNameId == R.string.ts_universe) {
             return isEvenMillion(time);
-        } else
-            return false;
+            // TODO: temporary for testing
+        } else return isTestTime(time);
     }
 
     public static Boolean isEvenHour(String time) {

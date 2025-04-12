@@ -42,7 +42,6 @@ interface TimeScale {
         return context.getString(nameId)
     }
 
-
     companion object {
         fun getTimeScale(timeScaleNameId: Int): TimeScale? {
             val type = fromStringId(timeScaleNameId)
@@ -77,7 +76,6 @@ interface TimeScale {
                 TimeScaleType.X_UNIVERSE -> return XUniverseTimeScale()
                 // Other time scales
                 TimeScaleType.NONE -> return NoTimeScale()
-                else -> return null
             }
         }
     }

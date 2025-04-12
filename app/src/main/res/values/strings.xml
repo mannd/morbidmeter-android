@@ -75,8 +75,8 @@
     <string name="use_exact_time_checkbox_label">Use exact time</string>
 
     <!-- Time formats -->
-    <string name="long_time_format">EEEE, MMMM d yyyy\nhh:mm:ss a z</string>
-    <string name="short_time_format">EEEE, MMMM d yyyy\nhh:mm a z</string>
+    <string name="long_time_format">EEEE, MMMM d yyyy\nh:mm:ss a z</string>
+    <string name="short_time_format">EEEE, MMMM d yyyy\nh:mm a z</string>
     <string name="long_military_time_format">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
     <string name="short_military_time_format">EEEE, MMMM d yyyy\nHH:mm z</string>
     <string name="one_day_format">h:mm:ss a</string>
@@ -162,4 +162,10 @@
     </string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="cancel">Cancel</string>
+
+    <!-- Notification strings -->
+    <string name="channel_name">MorbidMeter Milestones</string>
+    <string name="channel_description">Notifications for milestones reached</string>
+    <string name="milestone_notification_title">%1$s Reached a Milestone</string>
+    <string name="milestone_notification_text">%1$d%% of Life Complete</string>
 </resources>

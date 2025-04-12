@@ -8,6 +8,7 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
+import org.epstudios.morbidmeter.MorbidMeterClock.showNotification
 import org.epstudios.morbidmeter.timescale.CalendarTimeScale
 import org.epstudios.morbidmeter.timescale.DurationTimeScale
 import org.epstudios.morbidmeter.timescale.NoTimeScale
@@ -174,16 +175,21 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             (configuration.user.percentAlive() * 100).toInt(),
             false
         )
-        val label = getLabel(context, configuration)
+        val label = getLabel(context, configuration, timeScale)
         views.setTextViewText(R.id.text, label)
         Log.d(LOG_TAG, "Label updated.")
     }
 
-    private fun getLabel(context: Context, configuration: MmConfiguration): String {
+    private fun getLabel(
+        context: Context,
+        configuration: MmConfiguration,
+        timeScale: TimeScale
+    ): String {
         var timeScaleName: String? = context.getString(R.string.timescale_prefix)
         if (configuration.reverseTime) timeScaleName +=
             context.getString(R.string.reverse_timescale_prefix)
-        timeScaleName += context.getString(configuration.timeScaleNameId)
+        timeScaleName += timeScale.getName(context)
+        //timeScaleName += context.getString(configuration.timeScaleNameId)
         val userName = (if (configuration.doNotModifyName)
             configuration.user.getName()
         else
