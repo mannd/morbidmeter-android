@@ -84,7 +84,6 @@ class PermissionRequestActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "PermissionRequestActivity.onCreate")
-        setContentView(R.layout.permisionrequest)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Log.d(LOG_TAG, "Checking for SCHEDULE_EXACT_ALARM permission")
