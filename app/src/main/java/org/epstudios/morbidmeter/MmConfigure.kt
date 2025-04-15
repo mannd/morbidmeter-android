@@ -76,8 +76,15 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
 
     private var configuration: MmConfiguration? = null
 
+    private var notification: MmNotification? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(LOG_TAG, "onCreate")
+
+        notification = MmNotification(this)
+        notification?.registerForPermission(this)
+
         val launchIntent = intent
         val extras = launchIntent.extras
         appWidgetId = Objects.requireNonNull<Bundle?>(extras).getInt(

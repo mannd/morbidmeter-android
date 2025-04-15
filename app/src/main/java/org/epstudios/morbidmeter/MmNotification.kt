@@ -1,15 +1,18 @@
-package org.epstudios.morbidmeter.timescale
+package org.epstudios.morbidmeter
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import org.epstudios.morbidmeter.R
-import android.Manifest
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -36,15 +39,33 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
 class MmNotification(private val context: Context) {
 
     companion object {
-        private const val CHANNEL_ID = "MorbidMeterChannel"
+        private const val CHANNEL_ID = "MorbidMeterMilestoneChannel"
         private const val NOTIFICATION_ID = 1000
+        private const val LOG_TAG = "MmNotification"
     }
 
     private val notificationManager: NotificationManagerCompat
-    = NotificationManagerCompat.from(context)
+        = NotificationManagerCompat.from(context)
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+
 
     init {
         createNotificationChannel()
+    }
+
+    fun registerForPermission(activity: AppCompatActivity) {
+        Log.d(LOG_TAG, "registerForPermission")
+        requestPermissionLauncher = activity.registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+            if (isGranted) {
+                // permission granted
+                Log.d(LOG_TAG, "Permission granted")
+            } else {
+                // not granted
+                Log.d(LOG_TAG, "Permission not granted")
+            }
+        }
     }
 
     private fun createNotificationChannel() {
@@ -65,6 +86,18 @@ class MmNotification(private val context: Context) {
         if (notificationManager.areNotificationsEnabled()) {
            val milestoneNotificationText = getMilestoneNotificationText(percentAlive)
             if (milestoneNotificationText != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // Permission not granted.  Show permission request.
+                        requestPermissionLauncher.launch(
+                            Manifest.permission.POST_NOTIFICATIONS)
+                        return
+                    }
+                }
                 val builder = NotificationCompat.Builder(context, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_stat_notification)
                     .setAutoCancel(true)
@@ -73,10 +106,6 @@ class MmNotification(private val context: Context) {
                     .setContentTitle(context.getString(R.string.milestone_notification_title, userName))
                     .setContentText(milestoneNotificationText)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: call ActivityCompat.requestPermissions() to request the permission
-                    return
-                }
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             }
         }
