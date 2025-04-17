@@ -126,11 +126,11 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
                 R.id.realTime,
                 "setFormat12Hour",
                 timeScale.getTimeFormat(context)
-            );
+            )
             views.setCharSequence(
                 R.id.realTime,
                 "setFormat24Hour", timeScale.getTimeFormat(context)
-            );
+            )
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.VISIBLE)
         } else if (timeScale is PercentTimeScale) {

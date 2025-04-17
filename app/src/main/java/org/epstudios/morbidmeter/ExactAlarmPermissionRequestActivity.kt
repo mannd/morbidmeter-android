@@ -33,7 +33,7 @@ You should have received a copy of the GNU General Public License
 along with TestAppWidget.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class PermissionRequestActivity : ComponentActivity() {
+class ExactAlarmPermissionRequestActivity : ComponentActivity() {
 
     companion object {
         private const val LOG_TAG = "PermissionRequest"
@@ -83,7 +83,7 @@ class PermissionRequestActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(LOG_TAG, "PermissionRequestActivity.onCreate")
+        Log.d(LOG_TAG, "ExactAlarmPermissionRequestActivity.onCreate")
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Log.d(LOG_TAG, "Checking for SCHEDULE_EXACT_ALARM permission")
@@ -113,7 +113,7 @@ class PermissionRequestActivity : ComponentActivity() {
         }
     }
 }
-//class PermissionRequestActivity : ComponentActivity() {
+//class ExactAlarmPermissionRequestActivity : ComponentActivity() {
 //
 //    companion object {
 //        private const val LOG_TAG = "PermissionRequest"
@@ -161,7 +161,7 @@ class PermissionRequestActivity : ComponentActivity() {
 //
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
-//        Log.d(LOG_TAG, "PermissionRequestActivity.onCreate")
+//        Log.d(LOG_TAG, "ExactAlarmPermissionRequestActivity.onCreate")
 //        setContentView(R.layout.permisionrequest)
 //
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {

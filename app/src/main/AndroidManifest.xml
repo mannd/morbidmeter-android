@@ -49,7 +49,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".PermissionRequestActivity"
+        <activity android:name=".ExactAlarmPermissionRequestActivity"
              />
 
     </application>

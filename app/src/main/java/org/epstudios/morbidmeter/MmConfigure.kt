@@ -17,6 +17,7 @@
  */
 package org.epstudios.morbidmeter
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.AlertDialog
@@ -25,6 +26,7 @@ import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -44,7 +46,10 @@ import android.widget.RadioGroup
 import android.widget.RemoteViews
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
 import org.epstudios.morbidmeter.Frequency.Companion.frequencyNameIds
 import org.epstudios.morbidmeter.timescale.TimeScaleType
@@ -59,7 +64,10 @@ import kotlin.jvm.java
  * The Activity that is used to configure each widget.
  */
 class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
+    // Unique widget ID determined by OS.
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
+
+    // Components of the configuration layout.
     private var userNameEditText: EditText? = null
     private var birthDayDatePicker: DatePicker? = null
     private var deathDayDatePicker: DatePicker? = null
@@ -74,16 +82,31 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private var doNotModifyNameCheckBox: CheckBox? = null
     private var useExactTimeCheckBox: CheckBox? = null
 
+    // Configuration unique to each widget.
     private var configuration: MmConfiguration? = null
 
-    private var notification: MmNotification? = null
+    // Notification related variables.
+    private lateinit var notification: MmNotification
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "onCreate")
 
         notification = MmNotification(this)
-        notification?.registerForPermission(this)
+
+        // Register for notification permission
+        requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        )  {
+            isGranted: Boolean ->
+            if (isGranted) {
+                Log.d(LOG_TAG, "POST_NOTIFICATION Permission granted")
+            } else {
+                Log.d(LOG_TAG, "POST_NOTIFICATION Permission denied")
+                showNotificationsCheckBox?.isChecked = false
+            }
+        }
 
         val launchIntent = intent
         val extras = launchIntent.extras
@@ -110,16 +133,17 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         frequencySpinner = findViewById<Spinner>(R.id.update_frequency)
         reverseTimeCheckBox = findViewById<CheckBox>(R.id.reverse_time)
         useMsecCheckBox = findViewById<CheckBox>(R.id.show_msec)
-        showNotificationsCheckBox = findViewById<CheckBox>(R.id.show_notifications)
         notificationSoundRadioGroup = findViewById<RadioGroup>(R.id.notification_sound_radio_group)
         doNotModifyNameCheckBox = findViewById<CheckBox>(R.id.do_not_modify_name_checkbox)
         useExactTimeCheckBox = findViewById<CheckBox>(R.id.use_exact_time)
 
-        val checkBox = useExactTimeCheckBox
-        checkBox?.setOnCheckedChangeListener { _,
+        showNotificationsCheckBox = findViewById<CheckBox>(R.id.show_notifications)
+
+        useExactTimeCheckBox?.setOnCheckedChangeListener { _,
                                                isChecked ->
             onExactAlarmPermissionRequested(isChecked)
         }
+
         // setting the focus is kinda annoying
         // userNameEditText.requestFocus();
         this.window.setSoftInputMode(
@@ -198,12 +222,23 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         useExactTimeCheckBox!!.setChecked(configuration!!.useExactTime)
 
         setEnabledOptions(configuration!!.timeScaleNameId)
+
         showNotificationsCheckBox!!
             .setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
                 for (i in 0..<notificationSoundRadioGroup!!
                     .childCount) {
                     notificationSoundRadioGroup!!
                         .getChildAt(i).setEnabled(isChecked)
+                }
+                if (isChecked) {
+                    if (ActivityCompat.checkSelfPermission(
+                            this,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // Permission not granted.  Show permission request.
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
                 }
             })
         notificationSoundRadioGroup!!.check(configuration!!.notificationSound)
@@ -299,7 +334,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
 
     override fun onExactAlarmPermissionRequested(useExactAlarm: Boolean) {
         if (useExactAlarm) {
-            val intent = Intent(this, PermissionRequestActivity::class.java)
+            val intent = Intent(this, ExactAlarmPermissionRequestActivity::class.java)
             startActivity(intent)
         } else {
             cancelAlarm()
