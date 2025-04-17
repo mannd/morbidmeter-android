@@ -178,6 +178,10 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val label = getLabel(context, configuration, timeScale)
         views.setTextViewText(R.id.text, label)
         Log.d(LOG_TAG, "Label updated.")
+        if (configuration.showNotifications) {
+            val notification = MmNotification(context)
+            notification.sendNotification("TEST", 50.0, configuration)
+        }
     }
 
     private fun getLabel(

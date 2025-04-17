@@ -5,6 +5,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.AudioAttributes
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
@@ -82,9 +85,14 @@ class MmNotification(private val context: Context) {
         }
     }
 
-    fun sendNotification(userName: String, percentAlive: Double) {
+    // NOTE: probably need to set custom sounds in the channel creation fun.
+    // See https://help.batch.com/en/articles/5671551-how-can-i-use-a-custom-notification-sound-on-android
+    internal fun sendNotification(userName: String, percentAlive: Double, configuration: MmConfiguration) {
         if (notificationManager.areNotificationsEnabled()) {
+            Log.d(LOG_TAG, "Sending notification")
+            Log.d(LOG_TAG, "Sound: $configuration.notificationSound")
            val milestoneNotificationText = getMilestoneNotificationText(percentAlive)
+            // FIXME: Need this here?
             if (milestoneNotificationText != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     if (ActivityCompat.checkSelfPermission(
@@ -106,6 +114,21 @@ class MmNotification(private val context: Context) {
                     .setContentTitle(context.getString(R.string.milestone_notification_title, userName))
                     .setContentText(milestoneNotificationText)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                if (configuration.notificationSound == R.id.default_sound) {
+                    Log.d(LOG_TAG, "Using default sound")
+                    builder.setSound(
+                        RingtoneManager.getDefaultUri(
+                            RingtoneManager.TYPE_NOTIFICATION
+                        )
+                    )
+                } else if (configuration.notificationSound == R.id.mm_sound) {
+                    Log.d(LOG_TAG, "Using MM sound")
+                    builder.setSound(Uri
+                        .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"));
+                } else { // no sound
+                    Log.d(LOG_TAG, "No sound")
+                    builder.setSound(null)
+                }
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             }
         }
