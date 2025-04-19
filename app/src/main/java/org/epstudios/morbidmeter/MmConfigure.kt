@@ -308,6 +308,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                 context.sendBroadcast(updateMmIntent)
                 Log.d(LOG_TAG, "onUpdate broadcast sent")
 
+                // Clear milestones
+                val notification = MmNotification(context)
+                notification.clearLastMilestone(appWidgetId)
+
                 val resultValue = Intent()
                 resultValue.putExtra(
                     AppWidgetManager.EXTRA_APPWIDGET_ID,

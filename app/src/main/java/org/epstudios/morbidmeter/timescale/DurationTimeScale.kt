@@ -1,7 +1,6 @@
 package org.epstudios.morbidmeter.timescale
 
 import android.content.Context
-import org.epstudios.morbidmeter.MorbidMeterClock
 import org.epstudios.morbidmeter.R
 import java.text.DecimalFormat
 

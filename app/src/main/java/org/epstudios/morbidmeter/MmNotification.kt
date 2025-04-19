@@ -94,7 +94,8 @@ class MmNotification(private val context: Context) {
                 Log.d(LOG_TAG, "Notifications enabled")
                 val milestone = getMileStone(percentAlive)
                 val lastMilestone = getLastMileStone(widgetId)
-                if ((milestone > lastMilestone) || (milestone > MAX_MILESTONE)) {
+                // TODO: we don't just a milestone with each percent, do we?
+                if (compareMilestones(milestone, lastMilestone)) {
                     Log.d(LOG_TAG, "New Milestone")
                     saveLastMilestone(milestone, widgetId)
                     val milestoneNotificationText = getMilestoneNotificationText(percentAlive)
@@ -149,6 +150,18 @@ class MmNotification(private val context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME + widgetId, Context.MODE_PRIVATE)
         val editor = prefs.edit()
         editor.putInt(KEY_LAST_MILESTONE, milestone)
+        editor.apply()
+    }
+
+    private fun compareMilestones(newMilestone: Int, lastMilestone: Int): Boolean {
+        return newMilestone % 10 > lastMilestone % 10
+
+    }
+
+    internal fun clearLastMilestone(widgetId: Int) {
+        val prefs = context.getSharedPreferences(PREFS_NAME + widgetId, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.remove(KEY_LAST_MILESTONE)
         editor.apply()
     }
 }
