@@ -5,9 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.AudioAttributes
-import android.media.RingtoneManager
-import android.net.Uri
 import android.os.Build
 import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
@@ -45,6 +42,9 @@ class MmNotification(private val context: Context) {
         private const val CHANNEL_ID = "MorbidMeterMilestoneChannel"
         private const val NOTIFICATION_ID = 1000
         private const val LOG_TAG = "MmNotification"
+        private const val PREFS_NAME = "org.epstudios.morbidmeter.MmNotifications"
+        private const val KEY_LAST_MILESTONE = "last_milestone"
+        private const val MAX_MILESTONE = 100
     }
 
     private val notificationManager: NotificationManagerCompat
@@ -87,43 +87,68 @@ class MmNotification(private val context: Context) {
         }
     }
 
-    internal fun sendNotification(userName: String, percentAlive: Double, configuration: MmConfiguration) {
+    internal fun sendNotification(userName: String, percentAlive: Double, widgetId: Int) {
         if (notificationManager.areNotificationsEnabled()) {
             Log.d(LOG_TAG, "Sending notification")
-           val milestoneNotificationText = getMilestoneNotificationText(percentAlive)
-            if (milestoneNotificationText != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    if (ActivityCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // Permission not granted.  Show permission request.
-                        requestPermissionLauncher.launch(
-                            Manifest.permission.POST_NOTIFICATIONS)
-                        return
+            if (notificationManager.areNotificationsEnabled()) {
+                Log.d(LOG_TAG, "Notifications enabled")
+                val milestone = getMileStone(percentAlive)
+                val lastMilestone = getLastMileStone(widgetId)
+                if ((milestone > lastMilestone) || (milestone > MAX_MILESTONE)) {
+                    Log.d(LOG_TAG, "New Milestone")
+                    saveLastMilestone(milestone, widgetId)
+                    val milestoneNotificationText = getMilestoneNotificationText(percentAlive)
+                    if (milestoneNotificationText != null) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                // Permission not granted.  Show permission request.
+                                requestPermissionLauncher.launch(
+                                    Manifest.permission.POST_NOTIFICATIONS)
+                                return
+                            }
+                        }
+                        val builder = NotificationCompat.Builder(context, CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_stat_notification)
+                            .setAutoCancel(true)
+                            .setTicker("MorbidMeter Milestone")
+                            .setWhen(System.currentTimeMillis())
+                            .setContentTitle(context.getString(R.string.milestone_notification_title, userName))
+                            .setContentText(milestoneNotificationText)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        Log.d(LOG_TAG, "Notifying")
+                        notificationManager.notify(NOTIFICATION_ID, builder.build())
                     }
                 }
-                val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_stat_notification)
-                    .setAutoCancel(true)
-                    .setTicker("MorbidMeter Milestone")
-                    .setWhen(System.currentTimeMillis())
-                    .setContentTitle(context.getString(R.string.milestone_notification_title, userName))
-                    .setContentText(milestoneNotificationText)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                Log.d(LOG_TAG, "Notifying")
-                notificationManager.notify(NOTIFICATION_ID, builder.build())
             }
         }
     }
 
     private fun getMilestoneNotificationText(percentAlive: Double): String? {
-        val milestone = (percentAlive * 10.0).toInt()
-        if (milestone % 10 == 0) {
-            return context.getString(R.string.milestone_notification_text, milestone)
+        val milestone = getMileStone(percentAlive)
+        if (milestone >= MAX_MILESTONE) {
+            return context.getString(R.string.finish_notification_text)
         } else {
-            return null
+            return context.getString(R.string.milestone_notification_text, milestone)
         }
+    }
+
+    private fun getMileStone(percentAlive: Double): Int {
+        return (percentAlive * 100.0).toInt()
+    }
+
+    private fun getLastMileStone(widgetId: Int): Int {
+        val prefs = context.getSharedPreferences(PREFS_NAME + widgetId, Context.MODE_PRIVATE)
+        return prefs.getInt(KEY_LAST_MILESTONE, 0)
+    }
+
+    private fun saveLastMilestone(milestone: Int, widgetId: Int) {
+        val prefs = context.getSharedPreferences(PREFS_NAME + widgetId, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        editor.putInt(KEY_LAST_MILESTONE, milestone)
+        editor.apply()
     }
 }

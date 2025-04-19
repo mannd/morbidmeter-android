@@ -8,7 +8,6 @@ import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import org.epstudios.morbidmeter.MorbidMeterClock.showNotification
 import org.epstudios.morbidmeter.timescale.CalendarTimeScale
 import org.epstudios.morbidmeter.timescale.DurationTimeScale
 import org.epstudios.morbidmeter.timescale.NoTimeScale
@@ -106,11 +105,12 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         val configuration = MmConfigure.loadPrefs(context, appWidgetId)
         // TODO: Need to update button with every update?
         MmConfigure.configureSkullButton(context, appWidgetId, views)
-        updateWidget(context, views, configuration)
+        updateWidget(context, views, configuration, appWidgetId)
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 
-    private fun updateWidget(context: Context, views: RemoteViews, configuration: MmConfiguration) {
+    private fun updateWidget(context: Context, views: RemoteViews, configuration: MmConfiguration,
+                             appWidgetId: Int) {
         val timeScale = TimeScale.getTimeScale(configuration.timeScaleNameId)
         frequencyId = configuration.updateFrequencyId
         if (configuration.useExactTime) {
@@ -180,13 +180,8 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         Log.d(LOG_TAG, "Label updated.")
         if (configuration.showNotifications) {
             val notification = MmNotification(context)
-            notification.sendNotification("TEST", 50.0, configuration)
+            notification.sendNotification(configuration.user.getName(), percentAlive,appWidgetId)
         }
-    }
-
-    private fun sendNotification() {
-
-
     }
 
     private fun getLabel(

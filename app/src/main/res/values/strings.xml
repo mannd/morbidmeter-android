@@ -168,4 +168,5 @@
     <string name="channel_description">Notifications for milestones reached</string>
     <string name="milestone_notification_title">%1$s Reached a Milestone</string>
     <string name="milestone_notification_text">%1$d%% of Life Complete</string>
+    <string name="finish_notification_text">You are done!</string>
 </resources>
