@@ -464,15 +464,15 @@ public class MorbidMeterClock {
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                     name, importance);
             channel.setDescription(description);
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build();
-            if (configuration.notificationSound == R.id.default_sound)
-                channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), audioAttributes);
-            else if (configuration.notificationSound == R.id.mm_sound)
-                channel.setSound(Uri
-                        .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"), audioAttributes);
+//            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+//                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+//                    .build();
+//            if (configuration.notificationSound == R.id.default_sound)
+//                channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION), audioAttributes);
+//            else if (configuration.notificationSound == R.id.mm_sound)
+//                channel.setSound(Uri
+//                        .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"), audioAttributes);
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
@@ -512,11 +512,11 @@ public class MorbidMeterClock {
                             .setPriority(Notification.PRIORITY_DEFAULT)
                             .setContentText(time)
                             .setContentIntent(notificationPendingIntent);
-                    if (configuration.notificationSound == R.id.default_sound)
-                        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-                    else if (configuration.notificationSound == R.id.mm_sound)
-                        builder.setSound(Uri
-                                .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"));
+//                    if (configuration.notificationSound == R.id.default_sound)
+//                        builder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
+//                    else if (configuration.notificationSound == R.id.mm_sound)
+//                        builder.setSound(Uri
+//                                .parse("android.resource://org.epstudios.morbidmeter/raw/bellsnotification"));
                 }
 
                 NotificationManager notificationManager = (NotificationManager) context

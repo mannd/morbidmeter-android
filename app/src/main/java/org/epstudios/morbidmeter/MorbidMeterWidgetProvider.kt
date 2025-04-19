@@ -184,6 +184,11 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
         }
     }
 
+    private fun sendNotification() {
+
+
+    }
+
     private fun getLabel(
         context: Context,
         configuration: MmConfiguration,

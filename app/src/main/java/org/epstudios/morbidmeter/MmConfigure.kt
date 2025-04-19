@@ -42,7 +42,6 @@ import android.widget.CompoundButton
 import android.widget.DatePicker
 import android.widget.DatePicker.OnDateChangedListener
 import android.widget.EditText
-import android.widget.RadioGroup
 import android.widget.RemoteViews
 import android.widget.Spinner
 import android.widget.TextView
@@ -78,7 +77,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private var reverseTimeCheckBox: CheckBox? = null
     private var useMsecCheckBox: CheckBox? = null
     private var showNotificationsCheckBox: CheckBox? = null
-    private var notificationSoundRadioGroup: RadioGroup? = null
+    //private var notificationSoundRadioGroup: RadioGroup? = null
     private var doNotModifyNameCheckBox: CheckBox? = null
     private var useExactTimeCheckBox: CheckBox? = null
 
@@ -133,7 +132,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         frequencySpinner = findViewById<Spinner>(R.id.update_frequency)
         reverseTimeCheckBox = findViewById<CheckBox>(R.id.reverse_time)
         useMsecCheckBox = findViewById<CheckBox>(R.id.show_msec)
-        notificationSoundRadioGroup = findViewById<RadioGroup>(R.id.notification_sound_radio_group)
+        //notificationSoundRadioGroup = findViewById<RadioGroup>(R.id.notification_sound_radio_group)
         doNotModifyNameCheckBox = findViewById<CheckBox>(R.id.do_not_modify_name_checkbox)
         useExactTimeCheckBox = findViewById<CheckBox>(R.id.use_exact_time)
 
@@ -225,29 +224,31 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
 
         showNotificationsCheckBox!!
             .setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-                for (i in 0..<notificationSoundRadioGroup!!
-                    .childCount) {
-                    notificationSoundRadioGroup!!
-                        .getChildAt(i).setEnabled(isChecked)
-                }
+//                for (i in 0..<notificationSoundRadioGroup!!
+//                    .childCount) {
+//                    notificationSoundRadioGroup!!
+//                        .getChildAt(i).setEnabled(isChecked)
+//                }
                 if (isChecked) {
-                    if (ActivityCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // Permission not granted.  Show permission request.
-                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (ActivityCompat.checkSelfPermission(
+                                this,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            // Permission not granted.  Show permission request.
+                            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
                     }
                 }
             })
-        notificationSoundRadioGroup!!.check(configuration!!.notificationSound)
-        if (!showNotificationsCheckBox!!.isChecked) {
-            for (i in 0..<notificationSoundRadioGroup!!.childCount) {
-                notificationSoundRadioGroup!!.getChildAt(i)
-                    .setEnabled(false)
-            }
-        }
+//        notificationSoundRadioGroup!!.check(configuration!!.notificationSound)
+//        if (!showNotificationsCheckBox!!.isChecked) {
+//            for (i in 0..<notificationSoundRadioGroup!!.childCount) {
+//                notificationSoundRadioGroup!!.getChildAt(i)
+//                    .setEnabled(false)
+//            }
+//        }
 
         val ok = findViewById<Button>(R.id.ok_button)
         ok.setOnClickListener(View.OnClickListener { v: View? ->
@@ -282,8 +283,8 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             configuration!!.useMsec = useMsecCheckBox!!.isChecked
             configuration!!.showNotifications = showNotificationsCheckBox!!
                 .isChecked
-            configuration!!.notificationSound = notificationSoundRadioGroup!!
-                .checkedRadioButtonId
+//            configuration!!.notificationSound = notificationSoundRadioGroup!!
+//                .checkedRadioButtonId
             configuration!!.useExactTime = useExactTimeCheckBox!!.isChecked
             if (configuration!!.user.isSane()) {
                 configuration!!.configurationComplete = true
@@ -507,7 +508,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         const val USE_MSEC_KEY: String = "use_msec"
         const val LAST_APP_WIDGET_ID: String = "last_app_widget_id"
         const val SHOW_NOTIFICATIONS_KEY: String = "show_notifications"
-        const val NOTIFICATION_SOUND_KEY: String = "notification_sound"
+        //const val NOTIFICATION_SOUND_KEY: String = "notification_sound"
         const val CONFIGURATION_COMPLETE_KEY: String = "configuration_complete"
         const val DO_NOT_MODIFY_NAME_KEY: String = "do_not_modify_name"
         const val USE_EXACT_TIME_KEY: String = "use_exact_time"
@@ -560,10 +561,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                     SHOW_NOTIFICATIONS_KEY + appWidgetId,
                     configuration.showNotifications
                 )
-                putInt(
-                    NOTIFICATION_SOUND_KEY + appWidgetId,
-                    configuration.notificationSound
-                )
+//                putInt(
+//                    NOTIFICATION_SOUND_KEY + appWidgetId,
+//                    configuration.notificationSound
+//                )
                 putBoolean(
                     CONFIGURATION_COMPLETE_KEY + appWidgetId,
                     configuration.configurationComplete
@@ -613,10 +614,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             configuration.showNotifications = prefs.getBoolean(
                 SHOW_NOTIFICATIONS_KEY + appWidgetId, false
             )
-            configuration.notificationSound = prefs.getInt(
-                NOTIFICATION_SOUND_KEY
-                        + appWidgetId, R.id.no_sound
-            )
+//            configuration.notificationSound = prefs.getInt(
+//                NOTIFICATION_SOUND_KEY
+//                        + appWidgetId, R.id.no_sound
+//            )
             configuration.configurationComplete = prefs.getBoolean(
                 CONFIGURATION_COMPLETE_KEY + appWidgetId, false
             )
