@@ -79,11 +79,11 @@ public class UserTest {
     public void testGetApostophedName() {
         GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
         User user = new User("David", bd, 70.0);
-        assertEquals(user.getApostrophedName(), "David's");
+        assertEquals("David's", user.getApostrophedName());
         User user1 = new User("Semis", bd, 70.0);
-        assertEquals(user1.getApostrophedName(), "Semis'");
+        assertEquals("Semis'", user1.getApostrophedName());
         User user2 = new User("DAVID", bd, 70.0);
-        assertEquals(user2.getApostrophedName(), "DAVID's");
+        assertEquals("DAVID's", user2.getApostrophedName());
 
     }
 }
