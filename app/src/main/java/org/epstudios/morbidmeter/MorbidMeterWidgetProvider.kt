@@ -182,6 +182,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             val notification = MmNotification(context)
             notification.sendNotification(configuration.user.getName(), percentAlive,appWidgetId)
         }
+        // TODO: handle prebirth and postdeath!!!
     }
 
     private fun getLabel(

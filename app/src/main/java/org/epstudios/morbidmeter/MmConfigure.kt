@@ -203,13 +203,8 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             }
         }
 
-        // best way to do this is below, so suppress warning
-//        val arrayAdapter = timeScaleSpinner!!
-//            .getAdapter() as ArrayAdapter<Int?>?
         val position = TimeScaleType.indexFromString(configuration!!.timeScaleNameId)
         timeScaleSpinner!!.setSelection(position)
-//        val frequencyArrayAdapter = frequencySpinner!!
-//            .getAdapter() as ArrayAdapter<String?>?
         val frequencyPosition = Frequency.indexFromString(configuration!!.updateFrequencyId)
         frequencySpinner!!.setSelection(frequencyPosition)
 
@@ -234,13 +229,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                     }
                 }
             })
-//        notificationSoundRadioGroup!!.check(configuration!!.notificationSound)
-//        if (!showNotificationsCheckBox!!.isChecked) {
-//            for (i in 0..<notificationSoundRadioGroup!!.childCount) {
-//                notificationSoundRadioGroup!!.getChildAt(i)
-//                    .setEnabled(false)
-//            }
-//        }
 
         val ok = findViewById<Button>(R.id.ok_button)
         ok.setOnClickListener(View.OnClickListener { _: View? ->
@@ -274,8 +262,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             configuration!!.reverseTime = reverseTimeCheckBox!!.isChecked
             configuration!!.showNotifications = showNotificationsCheckBox!!
                 .isChecked
-//            configuration!!.notificationSound = notificationSoundRadioGroup!!
-//                .checkedRadioButtonId
             configuration!!.useExactTime = useExactTimeCheckBox!!.isChecked
             if (configuration!!.user.isSane()) {
                 configuration!!.configurationComplete = true
@@ -338,17 +324,15 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     }
 
     private fun cancelAlarm() {
-        // TODO
+
     }
 
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val alarmAllowed = getSystemService(AlarmManager::class.java)
+            val exactAlarmAllowed = getSystemService(AlarmManager::class.java)
                 .canScheduleExactAlarms()
-            if (alarmAllowed) {
-                useExactTimeCheckBox!!.setChecked(true)
-            } else {
+            if (!exactAlarmAllowed) {
                 useExactTimeCheckBox!!.setChecked(false)
             }
         }
@@ -485,10 +469,8 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         const val TIMESCALE_KEY: String = "timescale"
         const val FREQUENCY_ID_KEY: String = "frequency_id"
         const val REVERSE_TIME_KEY: String = "reverse_time"
-        const val USE_MSEC_KEY: String = "use_msec"
         const val LAST_APP_WIDGET_ID: String = "last_app_widget_id"
         const val SHOW_NOTIFICATIONS_KEY: String = "show_notifications"
-        //const val NOTIFICATION_SOUND_KEY: String = "notification_sound"
         const val CONFIGURATION_COMPLETE_KEY: String = "configuration_complete"
         const val DO_NOT_MODIFY_NAME_KEY: String = "do_not_modify_name"
         const val USE_EXACT_TIME_KEY: String = "use_exact_time"

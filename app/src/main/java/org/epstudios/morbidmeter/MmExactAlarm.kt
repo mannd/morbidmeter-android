@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.SystemClock
+import android.util.Log
 
 /**
 Copyright (C) 2025 EP Studios, Inc.
@@ -29,17 +30,18 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class MmExactAlarm(context: Context, intent: Intent) : MmAlarm(context, intent) {
+    companion object {
+        const val LOG_TAG = "MmExactAlarm"
+    }
 
     override fun setAlarm(frequency: Int) {
+        Log.d(LOG_TAG, "setExactAlarm")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
             alarmManager.setExactAndAllowWhileIdle(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + frequency, pendingIntent
             )
         } else {
-            // Handle the case where exact alarms aren't allowed
-            // such as setting an inexact alarm
-            // or using work manager
             alarmManager.set(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime() + frequency, pendingIntent
