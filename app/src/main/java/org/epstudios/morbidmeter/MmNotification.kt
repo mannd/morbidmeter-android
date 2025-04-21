@@ -94,7 +94,6 @@ class MmNotification(private val context: Context) {
                 Log.d(LOG_TAG, "Notifications enabled")
                 val milestone = getMileStone(percentAlive)
                 val lastMilestone = getLastMileStone(widgetId)
-                // TODO: we don't just a milestone with each percent, do we?
                 if (compareMilestones(milestone, lastMilestone)) {
                     Log.d(LOG_TAG, "New Milestone")
                     saveLastMilestone(milestone, widgetId)
@@ -135,6 +134,10 @@ class MmNotification(private val context: Context) {
         } else {
             return context.getString(R.string.milestone_notification_text, milestone)
         }
+        // NOTE that there is no notification for preBirth.
+        // It would be complicated to implement given how we
+        // avoid repeating notifications by assessing increments
+        // in percentAlive.
     }
 
     private fun getMileStone(percentAlive: Double): Int {

@@ -171,4 +171,5 @@
     <string name="finish_notification_text">You are done!</string>
     <string name="dead">Dead and done for!</string>
     <string name="prebirth">Prebirth or before the beginning</string>
+    <string name="prestart_notification_text">Life has yet to begin.</string>
 </resources>

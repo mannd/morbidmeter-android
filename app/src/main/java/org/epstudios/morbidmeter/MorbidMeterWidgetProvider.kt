@@ -129,7 +129,6 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             views.setTextViewText(R.id.time, context.getString(R.string.dead))
             views.setViewVisibility(R.id.time, View.VISIBLE)
             views.setViewVisibility(R.id.realTime, View.GONE)
-            return
         }
         if (user.isPrebirth()) {
             views.setTextViewText(R.id.time, context.getString(R.string.prebirth))
@@ -156,7 +155,7 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             false
         )
 
-        if (isPrebirth) return
+        if (isPrebirth || user.isDead()) return
 
         if (timeScale is RealTimeScale) {
             views.setCharSequence(
