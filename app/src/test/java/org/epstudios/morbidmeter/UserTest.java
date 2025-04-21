@@ -76,6 +76,18 @@ public class UserTest {
     }
 
     @Test
+    public void testIsPrebirth() {
+        GregorianCalendar bd = new GregorianCalendar(2050, Calendar.JANUARY, 1);
+        User user = new User("", bd, 60.0); // should die in 2010
+        user.setBirthDay(bd);
+        assertTrue(user.isPrebirth());
+        GregorianCalendar bd1 = new GregorianCalendar(2000, Calendar.JANUARY, 1);
+        User user1 = new User("", bd1, 60.0); // should die in 2010
+        user.setBirthDay(bd1);
+        assertFalse(user.isPrebirth());
+    }
+
+    @Test
     public void testGetApostophedName() {
         GregorianCalendar bd = new GregorianCalendar(1950, Calendar.JANUARY, 1);
         User user = new User("David", bd, 70.0);

@@ -102,6 +102,10 @@ public class User {
         return msecAlive() + birthDayMsec() > deathDay().getTimeInMillis();
     }
 
+    public boolean isPrebirth() {
+        return System.currentTimeMillis() < birthDayMsec();
+    }
+
     long deathDayMsec() {
         return birthDayMsec() + lifeDurationMsec();
     }

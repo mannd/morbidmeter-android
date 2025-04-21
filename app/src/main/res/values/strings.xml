@@ -169,4 +169,6 @@
     <string name="milestone_notification_title">%1$s Reached a Milestone</string>
     <string name="milestone_notification_text">%1$d%% of Life Complete</string>
     <string name="finish_notification_text">You are done!</string>
+    <string name="dead">Dead and done for!</string>
+    <string name="prebirth">Prebirth or before the beginning</string>
 </resources>

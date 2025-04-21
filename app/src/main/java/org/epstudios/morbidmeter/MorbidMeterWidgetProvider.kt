@@ -111,16 +111,53 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
 
     private fun updateWidget(context: Context, views: RemoteViews, configuration: MmConfiguration,
                              appWidgetId: Int) {
+        var isPrebirth = false
         val timeScale = TimeScale.getTimeScale(configuration.timeScaleNameId)
+        Log.d(LOG_TAG, "timeScale = $timeScale")
+        if (timeScale == null) {
+            Log.d(LOG_TAG, "timeScale is null")
+            return
+        }
+
+        val label = getLabel(context, configuration, timeScale)
+        views.setTextViewText(R.id.text, label)
+        Log.d(LOG_TAG, "Label updated.")
+
+        // Check for birth and death
+        val user = configuration.user
+        if (user.isDead()) {
+            views.setTextViewText(R.id.time, context.getString(R.string.dead))
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+            return
+        }
+        if (user.isPrebirth()) {
+            views.setTextViewText(R.id.time, context.getString(R.string.prebirth))
+            views.setViewVisibility(R.id.time, View.VISIBLE)
+            views.setViewVisibility(R.id.realTime, View.GONE)
+            isPrebirth = true  // flag to override displaying time
+        }
         frequencyId = configuration.updateFrequencyId
         if (configuration.useExactTime) {
             alarmType = MmAlarmType.EXACT
         } else {
             alarmType = MmAlarmType.INEXACT
         }
-        Log.d(LOG_TAG, "timeScale = $timeScale")
-        if (timeScale == null) return
+
         val percentAlive = configuration.user.percentAlive()
+        if (configuration.showNotifications) {
+            val notification = MmNotification(context)
+            notification.sendNotification(configuration.user.getName(), percentAlive,appWidgetId)
+        }
+
+        views.setProgressBar(
+            R.id.progressBar, 100,
+            (configuration.user.percentAlive() * 100).toInt(),
+            false
+        )
+
+        if (isPrebirth) return
+
         if (timeScale is RealTimeScale) {
             views.setCharSequence(
                 R.id.realTime,
@@ -170,19 +207,6 @@ class MorbidMeterWidgetProvider : AppWidgetProvider() {
             views.setViewVisibility(R.id.time, View.GONE)
             views.setViewVisibility(R.id.realTime, View.GONE)
         }
-        views.setProgressBar(
-            R.id.progressBar, 100,
-            (configuration.user.percentAlive() * 100).toInt(),
-            false
-        )
-        val label = getLabel(context, configuration, timeScale)
-        views.setTextViewText(R.id.text, label)
-        Log.d(LOG_TAG, "Label updated.")
-        if (configuration.showNotifications) {
-            val notification = MmNotification(context)
-            notification.sendNotification(configuration.user.getName(), percentAlive,appWidgetId)
-        }
-        // TODO: handle prebirth and postdeath!!!
     }
 
     private fun getLabel(
