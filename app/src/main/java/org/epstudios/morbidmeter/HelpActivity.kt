@@ -23,7 +23,9 @@ along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
 import android.os.Bundle
 import android.util.Log
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
 import java.io.IOException
@@ -36,14 +38,27 @@ class HelpActivity : AppCompatActivity() {
         private const val LOG_TAG = "HelpActivity"
     }
 
+    private lateinit var webView: WebView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help) // Your layout for the HelpActivity
 
-        val webView = findViewById<WebView>(R.id.helpWebView)
+        webView = findViewById<WebView>(R.id.helpWebView)
+        webView.settings.javaScriptEnabled = true
+        webView.webViewClient = WebViewClient()
+        webView.addJavascriptInterface(WebAppInterface(this), "Android")
         val htmlContent = loadHelpHtml()
 
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+    }
+
+    class WebAppInterface(private val activity: HelpActivity) {
+       @JavascriptInterface
+       fun close() {
+           Log.d(LOG_TAG, "close called")
+           activity.finish()
+       }
     }
 
     private fun loadHelpHtml(): String {
