@@ -21,6 +21,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with morbidmeter-android.  If not, see <http://www.gnu.org/licenses/>.
  */
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.webkit.JavascriptInterface
@@ -40,6 +41,7 @@ class HelpActivity : AppCompatActivity() {
 
     private lateinit var webView: WebView
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help) // Your layout for the HelpActivity

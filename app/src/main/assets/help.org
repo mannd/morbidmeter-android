@@ -35,41 +35,19 @@
         }
     </style>
 #+END_EXPORT
-        MorbidMeter tracks your lifespan over an alternative timescale.
-        For example, using a single year as a timescale and an estimated longevity of 80 years,
-        a person in their 40s would have a MorbidMeter date sometime in the summer.
-        Using a day-long timescale, the MorbidMeter time would be around noon.
-        Alternatively, you can use MorbidMeter as a countdown widget, but with much more
-        entertaining options than your average countdown widget!
-
-        \n\nUse the configuration screen shown when you start the widget or touch the skull
-        button to set the timescale as well as other widget parameters.
-        Fill in your name, birth date, and predicted longevity in years.
-        You will need to pick a longevity.
-        There are sites on the Internet that can predict your longevity.
-
-        \n\nTimescales ending in S (such as DAYS) give the total number of days (or other
-        time period) you have been alive, whereas the DAY timescale stretches your life over a
-        single day.
-        PERCENT gives the percentage of your life you have lived, and UNIVERSE stretches your life
-        to the life of the universe, estimated at 15 billion years (or you can use the X-UNIVERSE
-        options if you believe the earth is 6000 years old).
-        You can reverse time and/or add milliseconds in some of the timescales.
-        Select Show Notifications and pick a notification sound if you want to be notified when
-        you reach a MorbidMeter milestone (e.g. an hour of MorbidMeter time has passed).
-
-        \n\nYou can have multiple different MorbidMeter widgets on your screen with different
-        parameters at the same time.
-        Long press and drag to the trash any MorbidMeter widget that you are done with.
-        Change the update frequency, but use a longer frequency if it seems that the widget is
-        draining the battery or you don\'t need fast updates.
-        Note that on Android Oreo (8.0) devices and beyond, update frequencies less than 1 minute
-        don\'t work, and so are not available.
-        Also note that the CURRENT TIME and similar timescales will only be as accurate as the
-        update frequency.
-        Thus if you use a current time timescale and the update frequency is one hour, the time
-        shown will be off by as much as an hour.
-        If you are using MorbidMeter to track your lifespan, update frequencies as low as once a
-        day may be appropriate.
-        MorbidMeter is not intended to be a precision clock, though you can use it to measure
-        fuzzy time.
+** MorbidMeter is a long-term timer
+- The original /raison d'être/ for MorbidMeter was to put your own lifetime into perspective.  You enter your birthdate and projected deathdate, and MorbidMeter shows you where you are in between those two dates.  Originally the idea was to map your lifetime onto a single year, so that your birthday would be on January 1st at midnight, and your deathday would be on December 31st at midnight.  For example, if you planned to live to age 80, and you were now 40 years old, your MorbidMeter date would be around July 1st.
+- However, MorbidMeter is not limited to mapping your life onto a single year.  You can map it onto a month, a week, a day, or even an hour.
+- You can also see how many months, weeks, days, minutes, or even seconds you have already lived, or have to live.  These are just some of the time scales available in the MorbidMeter widget.
+** Other uses
+- You don't have to be so morbid.  You can use MorbidMeter as a general purpose long-term timer for any long-term task, like counting down the time until retirement, or assessing how much time you have left to finish your doctoral thesis.
+- What MorbidMeter is NOT is a short-term timer.  Don't use it to time how long to steep your teabag or use it for your 3 minute eggs.
+** How to use
+- When you first drag the widget onto the screen, a configure screen appears.  You can bring back this screen later by clicking on the Skull, which is a button.
+- Use the configuration screen to fill in your name, birthday, estimated deathday (or start day and end day if you are not so morbid).
+- Choose a time scale from the drop down list.
+- Choose an update frequency.  Note that by default, MorbidMeter uses an inexact timer, which saves battery life.  If you are using MorbidMeter to time your life, you certainly don't need an exact timer that updates every minute.  Choose the longest update frequency that you can.
+- You CAN use exact timing if you wish, though you will be asked to give exact timing permission by the Android OS if you do so.
+- Note that the real time clock time scales update every second, but don't waste battery because these clocks are provided by the operating system.  However, the progress bar on the widget still uses the update frequency you select.
+** Multiple widgets
+ - You can have multiple different MorbidMeter widgets on your screen with different parameters at the same time. Long press and drag to the trash any MorbidMeter widget that you are done with.
