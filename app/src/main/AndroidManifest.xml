@@ -52,5 +52,9 @@
         <activity android:name=".ExactAlarmPermissionRequestActivity"
              />
 
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false"/>
+
     </application>
 </manifest>

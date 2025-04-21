@@ -308,7 +308,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         })
 
         val help = findViewById<Button>(R.id.help_button)
-        help.setOnClickListener(View.OnClickListener { _: View? -> displayHelpMessage() })
+        help.setOnClickListener(View.OnClickListener { _: View? ->
+            val intent = Intent(this, HelpActivity::class.java)
+            startActivity(intent)
+        })
 
         val cancel = findViewById<Button>(R.id.cancel_button)
         cancel.setOnClickListener(View.OnClickListener { _: View? -> finish() })
@@ -347,14 +350,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private fun formattedLongevity(longevity: Double): String {
         val format = DecimalFormat("###.0000")
         return format.format(longevity)
-    }
-
-    private fun displayHelpMessage() {
-        val dialog = AlertDialog.Builder(this).create()
-        val message = getString(R.string.help_message)
-        dialog.setMessage(message)
-        dialog.setTitle(getString(R.string.help_title))
-        dialog.show()
     }
 
     private fun setAdapters() {

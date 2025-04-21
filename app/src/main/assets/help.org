@@ -1,0 +1,75 @@
+# RVH -- leave title blank below
+#+TITLE:  
+#+AUTHOR:    David Mann
+#+EMAIL:     mannd@epstudiossoftware.com
+#+DATE:      [2015-03-09 Mon]
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+#+HTML_HEAD: <style  type="text/css">:root { color-scheme: light dark; }</style>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
+* MorbidMeter Help
+#+BEGIN_EXPORT html
+<button class="back-button" onclick="Android.close()">Close</button>
+    <style>
+        /* Basic styling for the back button */
+        .back-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+#+END_EXPORT
+        MorbidMeter tracks your lifespan over an alternative timescale.
+        For example, using a single year as a timescale and an estimated longevity of 80 years,
+        a person in their 40s would have a MorbidMeter date sometime in the summer.
+        Using a day-long timescale, the MorbidMeter time would be around noon.
+        Alternatively, you can use MorbidMeter as a countdown widget, but with much more
+        entertaining options than your average countdown widget!
+
+        \n\nUse the configuration screen shown when you start the widget or touch the skull
+        button to set the timescale as well as other widget parameters.
+        Fill in your name, birth date, and predicted longevity in years.
+        You will need to pick a longevity.
+        There are sites on the Internet that can predict your longevity.
+
+        \n\nTimescales ending in S (such as DAYS) give the total number of days (or other
+        time period) you have been alive, whereas the DAY timescale stretches your life over a
+        single day.
+        PERCENT gives the percentage of your life you have lived, and UNIVERSE stretches your life
+        to the life of the universe, estimated at 15 billion years (or you can use the X-UNIVERSE
+        options if you believe the earth is 6000 years old).
+        You can reverse time and/or add milliseconds in some of the timescales.
+        Select Show Notifications and pick a notification sound if you want to be notified when
+        you reach a MorbidMeter milestone (e.g. an hour of MorbidMeter time has passed).
+
+        \n\nYou can have multiple different MorbidMeter widgets on your screen with different
+        parameters at the same time.
+        Long press and drag to the trash any MorbidMeter widget that you are done with.
+        Change the update frequency, but use a longer frequency if it seems that the widget is
+        draining the battery or you don\'t need fast updates.
+        Note that on Android Oreo (8.0) devices and beyond, update frequencies less than 1 minute
+        don\'t work, and so are not available.
+        Also note that the CURRENT TIME and similar timescales will only be as accurate as the
+        update frequency.
+        Thus if you use a current time timescale and the update frequency is one hour, the time
+        shown will be off by as much as an hour.
+        If you are using MorbidMeter to track your lifespan, update frequencies as low as once a
+        day may be appropriate.
+        MorbidMeter is not intended to be a precision clock, though you can use it to measure
+        fuzzy time.
