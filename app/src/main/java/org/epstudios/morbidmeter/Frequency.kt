@@ -69,10 +69,6 @@ class Frequency(private val frequencyType: FrequencyType) {
 
         @JvmStatic
         public val frequencyNameIds = intArrayOf(
-            R.string.f_one_sec,
-            R.string.f_five_sec,
-            R.string.f_fifteen_sec,
-            R.string.f_thirty_sec,
             R.string.f_one_min,
             R.string.f_fifteen_min,
             R.string.f_thirty_min,
