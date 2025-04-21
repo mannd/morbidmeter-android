@@ -30,7 +30,7 @@ class MinutesTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.MINUTES
     override val nameId: Int = R.string.ts_minutes
 
-    private val formatString = "#,###.0000"
+    private val formatString = "#,###"
     private val formatter = DecimalFormat(formatString)
     private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.minutes_alive_result,
         TimeScaleDirection.REVERSE to R.string.reverse_minutes_alive_result)

@@ -31,7 +31,7 @@ class WeeksTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.WEEKS
     override val nameId: Int = R.string.ts_weeks
 
-    private val formatString = "#.000000"
+    private val formatString = "#,###"
     private val formatter = DecimalFormat(formatString)
     private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.weeks_alive_result,
         TimeScaleDirection.REVERSE to R.string.reverse_weeks_alive_result)

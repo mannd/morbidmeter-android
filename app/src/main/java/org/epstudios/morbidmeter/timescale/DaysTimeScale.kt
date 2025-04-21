@@ -33,7 +33,7 @@ class DaysTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.DAYS
     override val nameId: Int = R.string.ts_days
 
-    private val formatString = "#,###.00"
+    private val formatString = "#,###"
     private val formatter = DecimalFormat(formatString)
     private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.days_alive_result,
         TimeScaleDirection.REVERSE to R.string.reverse_days_alive_result)

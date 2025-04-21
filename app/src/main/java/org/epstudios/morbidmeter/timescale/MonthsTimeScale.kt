@@ -31,7 +31,7 @@ class MonthsTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.MONTHS
     override val nameId: Int = R.string.ts_months
 
-    private val formatString = "#.000000"
+    private val formatString = "#,###"
     private val formatter = DecimalFormat(formatString)
     private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.months_alive_result,
         TimeScaleDirection.REVERSE to R.string.reverse_months_alive_result)

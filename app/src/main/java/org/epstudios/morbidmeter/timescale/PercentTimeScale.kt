@@ -33,7 +33,7 @@ open class PercentTimeScale : TimeScale {
     override val type: TimeScaleType = TimeScaleType.PERCENT
     override val nameId: Int = R.string.ts_percent
 
-    open val formatString = "#.000000"
+    open val formatString = "#.00"
     open val maxValue = 100L
 
     open fun getPercentTime(

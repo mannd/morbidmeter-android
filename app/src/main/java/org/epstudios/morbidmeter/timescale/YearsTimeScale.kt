@@ -30,7 +30,7 @@ class YearsTimeScale : DurationTimeScale() {
     override val type: TimeScaleType = TimeScaleType.YEARS
     override val nameId: Int = R.string.ts_years
 
-    private val formatString = "#.000000"
+    private val formatString = "#.00"
     private val formatter = DecimalFormat(formatString)
     private val resultMap = mapOf(TimeScaleDirection.FORWARD to R.string.years_alive_result,
         TimeScaleDirection.REVERSE to R.string.reverse_years_alive_result)
