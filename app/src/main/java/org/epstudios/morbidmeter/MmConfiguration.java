@@ -23,7 +23,6 @@ class MmConfiguration {
     User user;
     int timeScaleNameId;
     boolean reverseTime;
-    boolean useMsec;
     boolean showNotifications;
     int notificationSound;
     boolean configurationComplete;

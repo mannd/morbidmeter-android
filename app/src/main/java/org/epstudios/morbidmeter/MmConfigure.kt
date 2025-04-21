@@ -75,7 +75,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private var timeScaleSpinner: Spinner? = null
     private var frequencySpinner: Spinner? = null
     private var reverseTimeCheckBox: CheckBox? = null
-    private var useMsecCheckBox: CheckBox? = null
     private var showNotificationsCheckBox: CheckBox? = null
     //private var notificationSoundRadioGroup: RadioGroup? = null
     private var doNotModifyNameCheckBox: CheckBox? = null
@@ -131,7 +130,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         timeScaleSpinner = findViewById<Spinner>(R.id.timescale)
         frequencySpinner = findViewById<Spinner>(R.id.update_frequency)
         reverseTimeCheckBox = findViewById<CheckBox>(R.id.reverse_time)
-        useMsecCheckBox = findViewById<CheckBox>(R.id.show_msec)
         //notificationSoundRadioGroup = findViewById<RadioGroup>(R.id.notification_sound_radio_group)
         doNotModifyNameCheckBox = findViewById<CheckBox>(R.id.do_not_modify_name_checkbox)
         useExactTimeCheckBox = findViewById<CheckBox>(R.id.use_exact_time)
@@ -180,7 +178,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                 .longevity
         )
         longevityEditText!!.setText(formattedLongevity(configuration!!.user.longevity))
-        longevityEditText!!.onFocusChangeListener = OnFocusChangeListener { v: View?, hasFocus: Boolean ->
+        longevityEditText!!.onFocusChangeListener = OnFocusChangeListener { _: View?, hasFocus: Boolean ->
             if (!hasFocus) {
                 var longevity: Double = try {
                     longevityEditText!!
@@ -216,19 +214,13 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         frequencySpinner!!.setSelection(frequencyPosition)
 
         reverseTimeCheckBox!!.setChecked(configuration!!.reverseTime)
-        useMsecCheckBox!!.setChecked(configuration!!.useMsec)
         showNotificationsCheckBox!!.setChecked(configuration!!.showNotifications)
         useExactTimeCheckBox!!.setChecked(configuration!!.useExactTime)
 
         setEnabledOptions(configuration!!.timeScaleNameId)
 
         showNotificationsCheckBox!!
-            .setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean ->
-//                for (i in 0..<notificationSoundRadioGroup!!
-//                    .childCount) {
-//                    notificationSoundRadioGroup!!
-//                        .getChildAt(i).setEnabled(isChecked)
-//                }
+            .setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
                 if (isChecked) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         if (ActivityCompat.checkSelfPermission(
@@ -251,7 +243,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
 //        }
 
         val ok = findViewById<Button>(R.id.ok_button)
-        ok.setOnClickListener(View.OnClickListener { v: View? ->
+        ok.setOnClickListener(View.OnClickListener { _: View? ->
             // get all variables from the various entry boxes
             configuration!!.user.name = userNameEditText!!.getText()
                 .toString()
@@ -280,7 +272,6 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
             configuration!!.updateFrequencyId =
                 frequencyIds[frequencySpinner!!.selectedItemPosition]
             configuration!!.reverseTime = reverseTimeCheckBox!!.isChecked
-            configuration!!.useMsec = useMsecCheckBox!!.isChecked
             configuration!!.showNotifications = showNotificationsCheckBox!!
                 .isChecked
 //            configuration!!.notificationSound = notificationSoundRadioGroup!!
@@ -331,10 +322,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         })
 
         val help = findViewById<Button>(R.id.help_button)
-        help.setOnClickListener(View.OnClickListener { v: View? -> displayHelpMessage() })
+        help.setOnClickListener(View.OnClickListener { _: View? -> displayHelpMessage() })
 
         val cancel = findViewById<Button>(R.id.cancel_button)
-        cancel.setOnClickListener(View.OnClickListener { v: View? -> finish() })
+        cancel.setOnClickListener(View.OnClickListener { _: View? -> finish() })
     }
 
     override fun onExactAlarmPermissionRequested(useExactAlarm: Boolean) {
@@ -437,25 +428,10 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         if (this.isLite) {
             showNotificationsCheckBox!!.setEnabled(false)
             showNotificationsCheckBox!!.setChecked(false)
-            useMsecCheckBox!!.setEnabled(false)
-            useMsecCheckBox!!.setChecked(false)
             // we will cut Lite users some slack & let'm reverse time
             //reverseTimeCheckBox.setEnabled(false);
             //reverseTimeCheckBox.setChecked(false);
             return
-        }
-        val okMsecSet: MutableSet<Int?> = HashSet<Int?>(
-            listOf<Int?>(
-                R.string.ts_day,
-                R.string.ts_hour,
-                R.string.ts_month,
-                R.string.ts_year
-            )
-        )
-        val okMsec = okMsecSet.contains(timeScaleNameId)
-        useMsecCheckBox!!.setEnabled(okMsec)
-        if (!okMsec) {
-            useMsecCheckBox!!.setChecked(false)
         }
         val reverseTimeNotOkSet: MutableSet<Int?> = HashSet<Int?>(
             listOf<Int?>(
@@ -559,16 +535,11 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                     REVERSE_TIME_KEY + appWidgetId,
                     configuration.reverseTime
                 )
-                putBoolean(USE_MSEC_KEY + appWidgetId, configuration.useMsec)
                 putInt(LAST_APP_WIDGET_ID, appWidgetId)
                 putBoolean(
                     SHOW_NOTIFICATIONS_KEY + appWidgetId,
                     configuration.showNotifications
                 )
-//                putInt(
-//                    NOTIFICATION_SOUND_KEY + appWidgetId,
-//                    configuration.notificationSound
-//                )
                 putBoolean(
                     CONFIGURATION_COMPLETE_KEY + appWidgetId,
                     configuration.configurationComplete
@@ -611,17 +582,9 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
                 REVERSE_TIME_KEY
                         + appWidgetId, false
             )
-            configuration.useMsec = prefs.getBoolean(
-                USE_MSEC_KEY + appWidgetId,
-                false
-            )
             configuration.showNotifications = prefs.getBoolean(
                 SHOW_NOTIFICATIONS_KEY + appWidgetId, false
             )
-//            configuration.notificationSound = prefs.getInt(
-//                NOTIFICATION_SOUND_KEY
-//                        + appWidgetId, R.id.no_sound
-//            )
             configuration.configurationComplete = prefs.getBoolean(
                 CONFIGURATION_COMPLETE_KEY + appWidgetId, false
             )
