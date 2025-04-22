@@ -8,8 +8,8 @@ android {
         applicationId "org.epstudios.morbidmeter"
         minSdkVersion 24
         targetSdkVersion 35
-        versionCode 24
-        versionName "2.15.0"
+        versionCode 25
+        versionName "3.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
