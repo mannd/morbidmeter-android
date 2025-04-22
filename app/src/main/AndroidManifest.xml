@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:allowBackup="true">
 
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -15,17 +17,29 @@
         tools:ignore="AllowBackup,UnusedAttribute"
         android:allowBackup="true">
         <receiver
-            android:name=".MorbidMeter"
-            android:exported="true"
+            android:name=".MorbidMeterWidgetProvider"
+            android:exported="false"
             android:icon="@drawable/icon"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.epstudios.morbidmeter.UPDATE_WIDGET" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget" />
+        </receiver>
+
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true"
+            android:directBootAware="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+            </intent-filter>
         </receiver>
 
         <activity android:name=".MmConfigure"
@@ -35,8 +49,12 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".MmService"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <activity android:name=".ExactAlarmPermissionRequestActivity"
+             />
+
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false"/>
+
     </application>
 </manifest>

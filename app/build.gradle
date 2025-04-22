@@ -1,17 +1,26 @@
 apply plugin: 'com.android.application'
+apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter"
-        minSdkVersion 19
-        targetSdkVersion 34
-        versionCode 24
-        versionName "2.15.0"
+        minSdkVersion 24
+        targetSdkVersion 35
+        versionCode 25
+        versionName "3.0.0"
 
-        testApplicationId "org.epstudios.morbidmeter.test"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+// See  https://stackoverflow.com/questions/57795263/test-events-were-not-received-when-run-tests-using-intellij
+    testOptions {
+        unitTests {
+            all {
+                useJUnitPlatform()
+            }
+        }
     }
 
     buildTypes {
@@ -25,24 +34,12 @@ android {
         }
     }
 
-    flavorDimensions "default"
-    productFlavors {
-        full {
-            dimension "default"
-            resValue "string", "app_name", "MorbidMeter"
-        }
-        lite {
-            dimension "default"
-            applicationIdSuffix ".lite"
-            resValue "string", "app_name", "MorbidMeter Lite"
-        }
-    }
-
     compileOptions {
         encoding = 'UTF-8'
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
     packagingOptions {
         jniLibs {
             excludes += ['META-INF/*']
@@ -55,12 +52,36 @@ android {
         disable 'GoogleAppIndexingWarning'
     }
     namespace 'org.epstudios.morbidmeter'
+    kotlinOptions {
+        jvmTarget = '11'
+    }
 
 
 }
 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+
 dependencies {
-    implementation 'androidx.core:core:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    androidTestImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.core:core:1.16.0'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.16.0'
+
+    // JUnit for Android instrumented tests
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // AndroidX Test Core
+    androidTestImplementation "androidx.test:core:1.6.1"
+    // AndroidX Test Runner
+    androidTestImplementation "androidx.test:runner:1.6.2"
+    // AndroidX Test Rules
+    androidTestImplementation "androidx.test:rules:1.6.1"
+    // AndroidX Test Ext JUnit
+    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    // Optional -- UI testing with Espresso
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+
 }

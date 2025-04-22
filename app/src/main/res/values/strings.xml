@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">MorbidMeter</string>
     <string name="birthday_label">Birthday or start date</string>
     <string name="longevity_label">Longevity or duration is</string>
     <string name="longevity_label_completion">years</string>
@@ -23,6 +24,7 @@
     <string name="user_name_checkbox_label">Don\'t add \'MorbidMeter\' to title text</string>
     <string name="initial_label">MorbidMeter\nClick skull to configure</string>
     <string name="loading_label">MorbidMeter loading…</string>
+
     <!-- TimeScales -->
     <string name="ts_day">ONE DAY</string>
     <string name="ts_hour">ONE HOUR</string>
@@ -39,31 +41,135 @@
     <string name="ts_years">YEARS</string>
     <string name="ts_hours">HOURS</string>
     <string name="ts_minutes">MINUTES</string>
-    <string name="ts_time">CURRENT TIME</string>
-    <string name="ts_time_no_seconds">CURRENT SHORT TIME</string>
-    <string name="ts_time_military">CURRENT MILITARY TIME</string>
-    <string name="ts_time_military_no_seconds">CURRENT SHORT MILITARY TIME</string>
+    <string name="ts_long_time">CURRENT TIME</string>
+    <string name="ts_short_time">CURRENT SHORT TIME</string>
+    <string name="ts_long_military_time">CURRENT MILITARY TIME</string>
+    <string name="ts_short_military_time">CURRENT SHORT MILITARY TIME</string>
     <string name="ts_d_h_m_s">DAYS HOURS MINS SECS</string>
     <string name="ts_d_h_m">DAYS HOURS MINS</string>
     <string name="ts_weeks">WEEKS</string>
     <string name="ts_months">MONTHS</string>
     <string name="ts_none">NONE</string>
 
+    <!-- Frequencies -->
+    <string name="f_one_sec">1 sec</string>
+    <string name="f_five_sec">5 sec</string>
+    <string name="f_fifteen_sec">15 sec</string>
+    <string name="f_thirty_sec">30 sec</string>
+    <string name="f_one_min">1 min</string>
+    <string name="f_fifteen_min">15 min</string>
+    <string name="f_thirty_min">30 min</string>
+    <string name="f_one_hour">1 hour</string>
+    <string name="f_six_hour">6 hours</string>
+    <string name="f_twelve_hour">12 hours</string>
+    <string name="f_one_day">1 day</string>
+
     <string name="user_dead_message">You are living on borrowed time!</string>
     <string name="help_title">MorbidMeter Help</string>
     <string name="update_button_label">Update button</string>
     <string name="sanity_message">User parameters are out of range. Please correct and relaunch, or cancel.</string>
     <string name="sanity_title">User parameter error</string>
-    <string name="one_sec">1 sec</string>
-    <string name="five_sec">5 sec</string>
-    <string name="fifteen_sec">15 sec</string>
-    <string name="thirty_sec">30 sec</string>
-    <string name="one_min">1 min</string>
-    <string name="fifteen_min">15 min</string>
-    <string name="thirty_min">30 min</string>
-    <string name="one_hour">1 hour</string>
-    <string name="six_hour">6 hours</string>
-    <string name="twelve_hour">12 hours</string>
-    <string name="one_day">1 day</string>
+
     <string name="name_hint">Fill in your name, or whatever</string>
+    <string name="use_exact_time_label">Use exact timing (may shorten battery life)</string>
+    <string name="use_exact_time_checkbox_label">Use exact time</string>
+
+    <!-- Time formats -->
+    <string name="long_time_format">EEEE, MMMM d yyyy\nh:mm:ss a z</string>
+    <string name="short_time_format">EEEE, MMMM d yyyy\nh:mm a z</string>
+    <string name="long_military_time_format">EEEE, MMMM d yyyy\nHH:mm:ss z</string>
+    <string name="short_military_time_format">EEEE, MMMM d yyyy\nHH:mm z</string>
+    <string name="one_day_format">h:mm:ss a</string>
+
+    <!-- Interpolated strings -->
+    <string name="percent_result">%1$s%%</string>
+    <string name="reverse_percent_result">%1$s%% left</string>
+    <string name="days_alive_result">%1$s days alive</string>
+    <string name="reverse_days_alive_result">%1$s days remaining</string>
+    <string name="secs_alive_result">%1$s secs alive</string>
+    <string name="reverse_secs_alive_result">%1$s secs remaining</string>
+    <string name="years_alive_result">%1$s years alive</string>
+    <string name="reverse_years_alive_result">%1$s years remaining</string>
+    <string name="hours_alive_result">%1$s hours alive</string>
+    <string name="reverse_hours_alive_result">%1$s hours remaining</string>
+    <string name="minutes_alive_result">%1$s mins alive</string>
+    <string name="reverse_minutes_alive_result">%1$s mins remaining</string>
+    <string name="weeks_alive_result">%1$s weeks alive</string>
+    <string name="reverse_weeks_alive_result">%1$s weeks remaining</string>
+    <string name="months_alive_result">%1$s months alive</string>
+    <string name="reverse_months_alive_result">%1$s months remaining</string>
+    <string name="universe_result">%1$s yrs from Big Bang</string>
+    <string name="reverse_universe_result">%1$s yrs to Present</string>
+    <string name="x_universe_2_result">%1$s yrs from Creation</string>
+    <string name="reverse_x_universe_2_result">%1$s yrs to Armageddon</string>
+    <string name="d_h_m_result">%1$s d %2$s h %3$s m done</string>
+    <string name="reverse_d_h_m_result">%1$s d %2$s h %3$s m left</string>
+
+    <!-- Header strings -->
+    <string name="timescale_prefix">Timescale:\n</string>
+    <string name="reverse_timescale_prefix">"REVERSE "</string>
+    <string name="error_message">MORBIDMETER ERROR!</string>
+    <string name="ts_week">ONE WEEK</string>
+
+    <string name="help_message">
+        MorbidMeter tracks your lifespan over an alternative timescale.
+        For example, using a single year as a timescale and an estimated longevity of 80 years,
+        a person in their 40s would have a MorbidMeter date sometime in the summer.
+        Using a day-long timescale, the MorbidMeter time would be around noon.
+        Alternatively, you can use MorbidMeter as a countdown widget, but with much more
+        entertaining options than your average countdown widget!
+
+        \n\nUse the configuration screen shown when you start the widget or touch the skull
+        button to set the timescale as well as other widget parameters.
+        Fill in your name, birth date, and predicted longevity in years.
+        You will need to pick a longevity.
+        There are sites on the Internet that can predict your longevity.
+
+        \n\nTimescales ending in S (such as DAYS) give the total number of days (or other
+        time period) you have been alive, whereas the DAY timescale stretches your life over a
+        single day.
+        PERCENT gives the percentage of your life you have lived, and UNIVERSE stretches your life
+        to the life of the universe, estimated at 15 billion years (or you can use the X-UNIVERSE
+        options if you believe the earth is 6000 years old).
+        You can reverse time and/or add milliseconds in some of the timescales.
+        Select Show Notifications and pick a notification sound if you want to be notified when
+        you reach a MorbidMeter milestone (e.g. an hour of MorbidMeter time has passed).
+
+        \n\nYou can have multiple different MorbidMeter widgets on your screen with different
+        parameters at the same time.
+        Long press and drag to the trash any MorbidMeter widget that you are done with.
+        Change the update frequency, but use a longer frequency if it seems that the widget is
+        draining the battery or you don\'t need fast updates.
+        Note that on Android Oreo (8.0) devices and beyond, update frequencies less than 1 minute
+        don\'t work, and so are not available.
+        Also note that the CURRENT TIME and similar timescales will only be as accurate as the
+        update frequency.
+        Thus if you use a current time timescale and the update frequency is one hour, the time
+        shown will be off by as much as an hour.
+        If you are using MorbidMeter to track your lifespan, update frequencies as low as once a
+        day may be appropriate.
+        MorbidMeter is not intended to be a precision clock, though you can use it to measure
+        fuzzy time.
+    </string>
+    <string name="exact_alarm_rationale_title">Allow Exact Timing</string>
+    <string name="exact_alarm_rationale_message">
+        You can enable exact timing in MorbidMeter
+        but this may shorten battery life.  If you wish to use exact timing,
+        press the Go to Settings button, and then give permission to
+        allow setting alarms and reminders.  You can always
+        inactivate this permission later in the Settings app.
+        If you do not wish to use exact timing, press Cancel.
+    </string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Notification strings -->
+    <string name="channel_name">MorbidMeter Milestones</string>
+    <string name="channel_description">Notifications for milestones reached</string>
+    <string name="milestone_notification_title">%1$s Reached a Milestone</string>
+    <string name="milestone_notification_text">%1$d%% of Life Complete</string>
+    <string name="finish_notification_text">You are done!</string>
+    <string name="dead">Dead and done for!</string>
+    <string name="prebirth">Prebirth or before the beginning</string>
+    <string name="prestart_notification_text">Life has yet to begin.</string>
 </resources>

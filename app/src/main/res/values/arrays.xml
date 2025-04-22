@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string-array name="timescaletypes">
+        <item>TIME</item>
+        <item>TIME_NO_SECONDS</item>
+        <item>TIME_MILITARY</item>
+        <item>TIME_MILITARY_NO_SECONDS</item>
+        <item>RAW</item>
+        <item>SECONDS</item>
+        <item>MINUTES</item>
+        <item>HOURS</item>
+        <item>DAYS</item>
+        <item>WEEKS</item>
+        <item>MONTHS</item>
+        <item>YEAR</item>
+        <item>D_H_M_S</item>
+        <item>D_H_M</item>
+        <item>DAY</item>
+        <item>HOUR</item>
+        <item>MONTH</item>
+        <item>YEAR</item>
+        <item>UNIVERSE</item>
+        <item>X_UNIVERSE</item>
+        <item>X_UNIVERSE_2</item>
+        <item>PERCENT</item>
+        <item>NONE</item>
+        <!--<item>DEBUG</item>-->
+    </string-array>
+
+    <array name="frequencies">
+        <item>@string/f_one_sec</item>
+        <item>@string/f_five_sec</item>
+        <item>@string/f_fifteen_sec</item>
+        <item>@string/f_thirty_sec</item>
+        <item>@string/f_one_min</item>
+        <item>@string/f_fifteen_min</item>
+        <item>@string/f_thirty_min</item>
+        <item>@string/f_one_hour</item>
+        <item>@string/f_six_hour</item>
+        <item>@string/f_twelve_hour</item>
+        <item>@string/f_one_day</item>
+    </array>
+
+    <array name="android_o_frequencies">
+        <item>@string/f_one_min</item>
+        <item>@string/f_fifteen_min</item>
+        <item>@string/f_thirty_min</item>
+        <item>@string/f_one_hour</item>
+        <item>@string/f_six_hour</item>
+        <item>@string/f_twelve_hour</item>
+        <item>@string/f_one_day</item>
+    </array>
+</resources>

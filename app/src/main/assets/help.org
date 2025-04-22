@@ -1,0 +1,58 @@
+# RVH -- leave title blank below
+#+TITLE:  
+#+AUTHOR:    David Mann
+#+EMAIL:     mannd@epstudiossoftware.com
+#+DATE:      [2015-03-09 Mon]
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  en
+#+OPTIONS:   H:3 num:nil toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:http://orgmode.org/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+#+HTML_HEAD: <style  type="text/css">:root { color-scheme: light dark; }</style>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="./org.css"/>
+* MorbidMeter Help
+#+BEGIN_EXPORT html
+<button class="back-button" onclick="Android.close()">Close</button>
+    <style>
+        /* Basic styling for the back button */
+        .back-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+#+END_EXPORT
+** MorbidMeter is a long-term timer
+- The original /raison d'être/ for MorbidMeter was to put your own lifetime into perspective.  You enter your birthdate and projected deathdate, and MorbidMeter shows you where you are in between those two dates.  Originally the idea was to map your lifetime onto a single year, so that your birthday would be on January 1st at midnight, and your deathday would be on December 31st at midnight.  For example, if you planned to live to age 80, and you were now 40 years old, your MorbidMeter date would be around July 1st.
+- However, MorbidMeter is not limited to mapping your life onto a single year.  You can map it onto a month, a week, a day, or even an hour.
+- You can also see how many months, weeks, days, minutes, or even seconds you have already lived, or have to live.  These are just some of the time scales available in the MorbidMeter widget.
+** Other uses
+- You don't have to be so morbid.  You can use MorbidMeter as a general purpose long-term timer for any long-term task, like counting down the time until retirement, or assessing how much time you have left to finish your doctoral thesis.
+- What MorbidMeter is NOT is a short-term timer.  Don't use it to time how long to steep your teabag or use it for your 3 minute eggs.
+** How to use
+- When you first drag the widget onto the screen, a configure screen appears.  You can bring back this screen later by clicking on the Skull, which is a button.
+- Use the configuration screen to fill in your name, birthday, estimated deathday (or start day and end day if you are not so morbid).
+- Choose a time scale from the drop down list.
+- Choose an update frequency.  Note that by default, MorbidMeter uses an inexact timer, which saves battery life.  If you are using MorbidMeter to time your life, you certainly don't need an exact timer that updates every minute.  Choose the longest update frequency that you can.
+- You CAN use exact timing if you wish, though you will be asked to give exact timing permission by the Android OS if you do so.
+- Note that the real time clock time scales update every second, but don't waste battery because these clocks are provided by the operating system.  However, the progress bar on the widget still uses the update frequency you select.
+** Multiple widgets
+ - You can have multiple different MorbidMeter widgets on your screen with different parameters at the same time. Long press and drag to the trash any MorbidMeter widgets that you are done with.
+** About
+- Version: 3.0.0
+- Source code: https://github.com/mannd/morbidmeter-android
+- Copyright (c) 2011-2025, [[https://www.epstudiossoftware.com][EP Studios]]
+- Contact: mannd@epstudiossoftware.com

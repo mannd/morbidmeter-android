@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-04-22 Tue 15:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lrm;</title>
+<meta name="author" content="David Mann" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style  type="text/css">:root { color-scheme: light dark; }</style>
+<link rel="stylesheet" type="text/css" href="./org.css"/>
+</head>
+<body>
+<div id="content" class="content">
+<div id="outline-container-org8a6ad74" class="outline-2">
+<h2 id="org8a6ad74">MorbidMeter Help</h2>
+<div class="outline-text-2" id="text-org8a6ad74">
+<button class="back-button" onclick="Android.close()">Close</button>
+    <style>
+        /* Basic styling for the back button */
+        .back-button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</div>
+<div id="outline-container-orgbe125bc" class="outline-3">
+<h3 id="orgbe125bc">MorbidMeter is a long-term timer</h3>
+<div class="outline-text-3" id="text-orgbe125bc">
+<ul class="org-ul">
+<li>The original <i>raison d'être</i> for MorbidMeter was to put your own lifetime into perspective.  You enter your birthdate and projected deathdate, and MorbidMeter shows you where you are in between those two dates.  Originally the idea was to map your lifetime onto a single year, so that your birthday would be on January 1st at midnight, and your deathday would be on December 31st at midnight.  For example, if you planned to live to age 80, and you were now 40 years old, your MorbidMeter date would be around July 1st.</li>
+<li>However, MorbidMeter is not limited to mapping your life onto a single year.  You can map it onto a month, a week, a day, or even an hour.</li>
+<li>You can also see how many months, weeks, days, minutes, or even seconds you have already lived, or have to live.  These are just some of the time scales available in the MorbidMeter widget.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org7c91bfe" class="outline-3">
+<h3 id="org7c91bfe">Other uses</h3>
+<div class="outline-text-3" id="text-org7c91bfe">
+<ul class="org-ul">
+<li>You don't have to be so morbid.  You can use MorbidMeter as a general purpose long-term timer for any long-term task, like counting down the time until retirement, or assessing how much time you have left to finish your doctoral thesis.</li>
+<li>What MorbidMeter is NOT is a short-term timer.  Don't use it to time how long to steep your teabag or use it for your 3 minute eggs.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgb18b8e4" class="outline-3">
+<h3 id="orgb18b8e4">How to use</h3>
+<div class="outline-text-3" id="text-orgb18b8e4">
+<ul class="org-ul">
+<li>When you first drag the widget onto the screen, a configure screen appears.  You can bring back this screen later by clicking on the Skull, which is a button.</li>
+<li>Use the configuration screen to fill in your name, birthday, estimated deathday (or start day and end day if you are not so morbid).</li>
+<li>Choose a time scale from the drop down list.</li>
+<li>Choose an update frequency.  Note that by default, MorbidMeter uses an inexact timer, which saves battery life.  If you are using MorbidMeter to time your life, you certainly don't need an exact timer that updates every minute.  Choose the longest update frequency that you can.</li>
+<li>You CAN use exact timing if you wish, though you will be asked to give exact timing permission by the Android OS if you do so.</li>
+<li>Note that the real time clock time scales update every second, but don't waste battery because these clocks are provided by the operating system.  However, the progress bar on the widget still uses the update frequency you select.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org0f2b6c7" class="outline-3">
+<h3 id="org0f2b6c7">Multiple widgets</h3>
+<div class="outline-text-3" id="text-org0f2b6c7">
+<ul class="org-ul">
+<li>You can have multiple different MorbidMeter widgets on your screen with different parameters at the same time. Long press and drag to the trash any MorbidMeter widgets that you are done with.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1c9978c" class="outline-3">
+<h3 id="org1c9978c">About</h3>
+<div class="outline-text-3" id="text-org1c9978c">
+<ul class="org-ul">
+<li>Version: 3.0.0</li>
+<li>Source code: <a href="https://github.com/mannd/morbidmeter-android">https://github.com/mannd/morbidmeter-android</a></li>
+<li>Copyright (c) 2011-2025, <a href="https://www.epstudiossoftware.com">EP Studios</a></li>
+<li>Contact: mannd@epstudiossoftware.com</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

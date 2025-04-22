@@ -44,6 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/buttonLayout"
+        android:padding="8dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp">
 
@@ -139,12 +140,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/reverse_time_label" />
 
-            <CheckBox
-                android:id="@+id/show_msec"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/show_msec_label" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,29 +155,14 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/notification_sound_label"
+                android:text="@string/use_exact_time_label"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <RadioGroup android:id="@+id/notification_sound_radio_group">
-
-                <RadioButton
-                    android:id="@+id/no_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/no_sound_label" />
-
-                <RadioButton
-                    android:id="@+id/default_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/default_sound_label" />
-
-                <RadioButton
-                    android:id="@+id/mm_sound"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/mm_sound_label" />
-            </RadioGroup>
+            <CheckBox
+                android:id="@+id/use_exact_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/use_exact_time_checkbox_label" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -195,6 +175,8 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
+
+
 
         </TableLayout>
 
