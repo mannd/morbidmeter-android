@@ -8,8 +8,9 @@ android {
         applicationId "org.epstudios.morbidmeter"
         minSdkVersion 24
         targetSdkVersion 35
-        versionCode 25
-        versionName "3.0.0"
+        versionCode 26
+        versionName "3.1.0"
+        // NB: Update version in help.org/.html too!
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

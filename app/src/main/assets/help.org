@@ -52,7 +52,7 @@
 ** Multiple widgets
  - You can have multiple different MorbidMeter widgets on your screen with different parameters at the same time. Long press and drag to the trash any MorbidMeter widgets that you are done with.
 ** About
-- Version: 3.0.0
+- Version: 3.1.0
 - Source code: https://github.com/mannd/morbidmeter-android
 - Copyright (c) 2011-2025, [[https://www.epstudiossoftware.com][EP Studios]]
 - Contact: mannd@epstudiossoftware.com
