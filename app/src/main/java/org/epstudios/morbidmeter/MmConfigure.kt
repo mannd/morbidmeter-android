@@ -45,11 +45,16 @@ import android.widget.EditText
 import android.widget.RemoteViews
 import android.widget.Spinner
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import org.epstudios.morbidmeter.Frequency.Companion.frequencyNameIds
 import org.epstudios.morbidmeter.timescale.TimeScaleType
 import org.epstudios.morbidmeter.timescale.TimeScaleType.Companion.timescaleNameIds
@@ -88,8 +93,9 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         Log.d(LOG_TAG, "onCreate")
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         notification = MmNotification(this)
 
@@ -121,6 +127,7 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
         // back
         // button
         setContentView(R.layout.configure)
+        setupInsets(R.id.configure_root_view)
 
         userNameEditText = findViewById<EditText>(R.id.user_name)
         birthDayDatePicker = findViewById<DatePicker>(R.id.birthday)
@@ -315,6 +322,15 @@ class MmConfigure : AppCompatActivity(), ExactAlarmCallback {
 
         val cancel = findViewById<Button>(R.id.cancel_button)
         cancel.setOnClickListener(View.OnClickListener { _: View? -> finish() })
+    }
+
+
+    protected fun setupInsets(@IdRes viewId: Int) {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(viewId)) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(bottom = insets.bottom, top = insets.top)
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     override fun onExactAlarmPermissionRequested(useExactAlarm: Boolean) {
