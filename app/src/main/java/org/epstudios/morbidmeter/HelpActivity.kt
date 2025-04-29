@@ -27,11 +27,17 @@ import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.activity.enableEdgeToEdge
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
+
 
 class HelpActivity : AppCompatActivity() {
 
@@ -44,7 +50,9 @@ class HelpActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_help) // Your layout for the HelpActivity
+        setupInsets(R.id.help_root_view)
 
         webView = findViewById<WebView>(R.id.helpWebView)
         webView.settings.javaScriptEnabled = true
@@ -53,6 +61,14 @@ class HelpActivity : AppCompatActivity() {
         val htmlContent = loadHelpHtml()
 
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+    }
+
+    protected fun setupInsets(@IdRes viewId: Int) {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(viewId)) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.updatePadding(bottom = insets.bottom, top = insets.top)
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     class WebAppInterface(private val activity: HelpActivity) {

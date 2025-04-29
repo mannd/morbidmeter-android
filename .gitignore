@@ -40,6 +40,7 @@ build/
 # MorbidMeter
 app/full
 app/lite
+app/release
 
 # Emacs
 .project
