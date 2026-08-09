@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 37
+    compileSdk  37
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter"
-        minSdkVersion 24
-        targetSdkVersion 37
+        minSdk = 24
+        targetSdk = 37
         versionCode 30
         versionName "3.1.2"
         // NB: Update version in help.org/.html too!
@@ -53,11 +52,6 @@ android {
         disable 'GoogleAppIndexingWarning'
     }
     namespace 'org.epstudios.morbidmeter'
-    kotlinOptions {
-        jvmTarget = '21'
-    }
-
-
 }
 
 tasks.withType(JavaCompile).configureEach {
