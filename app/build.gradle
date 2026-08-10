@@ -14,15 +14,6 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-// See  https://stackoverflow.com/questions/57795263/test-events-were-not-received-when-run-tests-using-intellij
-    testOptions {
-        unitTests {
-            all {
-                useJUnitPlatform()
-            }
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -52,6 +43,11 @@ android {
         disable 'GoogleAppIndexingWarning'
     }
     namespace 'org.epstudios.morbidmeter'
+}
+
+// For Groovy DSL (build.gradle)
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 tasks.withType(JavaCompile).configureEach {
