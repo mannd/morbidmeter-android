@@ -1,44 +1,34 @@
 apply plugin: 'com.android.application'
-apply plugin: 'org.jetbrains.kotlin.android'
 
 android {
-    compileSdk 35
+    compileSdk  37
 
     defaultConfig {
         applicationId "org.epstudios.morbidmeter"
-        minSdkVersion 24
-        targetSdkVersion 35
-        versionCode 26
-        versionName "3.1.0"
+        minSdk = 24
+        targetSdk = 37
+        versionCode 31
+        versionName "3.2.0"
         // NB: Update version in help.org/.html too!
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-// See  https://stackoverflow.com/questions/57795263/test-events-were-not-received-when-run-tests-using-intellij
-    testOptions {
-        unitTests {
-            all {
-                useJUnitPlatform()
-            }
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
     compileOptions {
         encoding = 'UTF-8'
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     packagingOptions {
@@ -53,11 +43,11 @@ android {
         disable 'GoogleAppIndexingWarning'
     }
     namespace 'org.epstudios.morbidmeter'
-    kotlinOptions {
-        jvmTarget = '11'
-    }
+}
 
-
+// For Groovy DSL (build.gradle)
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -66,24 +56,24 @@ tasks.withType(JavaCompile).configureEach {
 
 
 dependencies {
-    implementation("com.google.android.material:material:1.12.0")
-    implementation 'androidx.core:core:1.16.0'
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation 'androidx.core:core-ktx:1.16.0'
+    implementation("com.google.android.material:material:1.14.0")
+    implementation 'androidx.core:core:1.19.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.core:core-ktx:1.19.0'
 
     // JUnit for Android instrumented tests
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.3'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // AndroidX Test Core
-    androidTestImplementation "androidx.test:core:1.6.1"
+    androidTestImplementation "androidx.test:core:1.7.0"
     // AndroidX Test Runner
-    androidTestImplementation "androidx.test:runner:1.6.2"
+    androidTestImplementation "androidx.test:runner:1.7.0"
     // AndroidX Test Rules
-    androidTestImplementation "androidx.test:rules:1.6.1"
+    androidTestImplementation "androidx.test:rules:1.7.0"
     // AndroidX Test Ext JUnit
-    androidTestImplementation "androidx.test.ext:junit:1.2.1"
+    androidTestImplementation "androidx.test.ext:junit:1.3.0"
     // Optional -- UI testing with Espresso
-    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.7.0"
 
 }
